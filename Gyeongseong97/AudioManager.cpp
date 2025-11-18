@@ -14,10 +14,10 @@ bool InitializeAudio()
 
     if (result != MA_SUCCESS)
     {
-        cerr << "miniaudio: 오디오 엔진 초기화 실패!" << endl;
+        wcerr << "miniaudio: 오디오 엔진 초기화 실패!" << endl;
         return false;
     }
 
-    cout << "miniaudio: 오디오 엔진 초기화 성공" << endl;
+    wcout << L"miniaudio: 오디오 엔진 초기화 성공!" << endl;
     return true;
 }
