@@ -34,6 +34,7 @@ int main()
 	// 오디오 엔진 초기화
 	AudioManager* audioManager = new AudioManager;
 	audioManager->PlayAudio(L"bgm.mp3", false);
+	audioManager->PlayAudio(L"sfx.mp3", true);
 
 	// 이미지 로드
 	vector<wchar_t> pathBuffer(MAX_PATH);

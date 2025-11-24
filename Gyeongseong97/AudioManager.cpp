@@ -11,8 +11,6 @@
 
 const static std::wstring AUDIO_PATH = L"\\Sounds\\";
 
-std::list<ma_sound*> AudioManager::sounds;
-
 AudioManager::AudioManager()
 {
 	ma_result result;
@@ -76,25 +74,9 @@ void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
 
 	// 사운드의 포인터를 리스트에 추가
 	sounds.push_back(pSound);
-
-	// 반복 재생 설정
-	//ma_sound_set_looping(pSound, loop ? MA_TRUE : MA_FALSE);
-
-	//// 사운드 재생
-	//ma_sound_start(pSound);
-	//
-	//// 반복 재생하지 않는 사운드일 경우 대기 후 리스트에서 제거하고 리소스를 정리한다
-	//while (!loop)
-	//{
-	//	if (ma_sound_at_end(pSound) != MA_FALSE)
-	//	{
-	//		ma_sound_uninit(pSound);
-	//		sounds.remove(pSound);
-	//		delete pSound;
-	//	}
-	//}
 	
-	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, pSound, loop);
+	// 스레드 생성
+	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, this, pSound, loop);
 	audioThread.detach();
 }
 

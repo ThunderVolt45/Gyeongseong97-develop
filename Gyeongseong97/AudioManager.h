@@ -9,8 +9,8 @@ class AudioManager
 {
 private:
 	ma_engine audioEngine;
-	static std::list<ma_sound*> sounds;
-	static void PlayAudioThread(ma_sound* pSound, bool loop = false);
+	std::list<ma_sound*> sounds;
+	void PlayAudioThread(ma_sound* pSound, bool loop = false);
 
 public:
 	AudioManager();
