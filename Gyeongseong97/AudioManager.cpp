@@ -1,4 +1,6 @@
-﻿#define MINIAUDIO_IMPLEMENTATION
+﻿#pragma execution_character_set( "utf-8" )
+
+#define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
 #include "AudioManager.h"
@@ -21,11 +23,11 @@ AudioManager::AudioManager()
 
 	if (result != MA_SUCCESS)
 	{
-		std::wcerr << L"miniaudio : 오디오 엔진을 초기화하는데 실패했습니다." << std::endl;
+		std::cerr << "miniaudio : 오디오 엔진을 초기화하는데 실패했습니다." << std::endl;
 	}
 	else
 	{
-		std::wcout << L"miniaudio : 오디오 엔진 초기화 성공!" << std::endl;
+		std::cout << "miniaudio : 오디오 엔진 초기화 성공!" << std::endl;
 	}
 }
 
@@ -50,12 +52,12 @@ void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
 
 	if (ret == 0)
 	{
-		std::wcerr << L"Error: 파일 경로를 가져오는데 실패했습니다." << std::endl;
+		std::cerr << "Error: 파일 경로를 가져오는데 실패했습니다." << std::endl;
 		return;
 	}
 	else if (ret == pathBuffer.size())
 	{
-		std::wcerr << L"Warning: 파일 경로가 너무 깁니다.더 큰 길이 버퍼가 필요합니다." << std::endl;
+		std::cerr << "Warning: 파일 경로가 너무 깁니다.더 큰 길이 버퍼가 필요합니다." << std::endl;
 	}
 
 	auto strFilePath = pathBuffer.data() + AUDIO_PATH + audioFile;
@@ -67,12 +69,12 @@ void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
 
 	if (result != MA_SUCCESS)
 	{
-		std::wcerr << L"miniaudio : " << strFilePath << L" 파일을 불러오는데 실패했습니다." << std::endl;
+		std::cerr << "miniaudio : " << filePath << " 파일을 불러오는데 실패했습니다." << std::endl;
 		delete pSound;
 		return;
 	}
 
-	// 사운드의 포인터를 리스트에 추가
+	// 포인터를 리스트에 추가
 	sounds.push_back(pSound);
 	
 	// 스레드 생성
