@@ -1,0 +1,17 @@
+#pragma once
+#include "ImageLoader.h"
+
+class GameObject
+{
+public:
+	int x = 0;
+	int y = 0;
+	Sprite sprite;
+
+	GameObject();
+	GameObject(int x, int y);
+	~GameObject();
+
+	virtual void Update();
+};
+
