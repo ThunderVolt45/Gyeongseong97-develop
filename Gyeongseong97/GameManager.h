@@ -21,6 +21,7 @@ private:
 	bool isGameOver = false;
 
 	void Reset();
+	void DrawObjectSprite(ftxui::Canvas& canvas, GameObject object);
 
 public:
 	std::atomic<bool> IsRunning;

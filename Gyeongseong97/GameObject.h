@@ -10,6 +10,7 @@ public:
 
 	GameObject();
 	GameObject(int x, int y);
+	GameObject(int x, int y, int w, int h, std::wstring spriteName);
 	~GameObject();
 
 	virtual void Update();

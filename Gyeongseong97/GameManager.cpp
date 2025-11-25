@@ -1,5 +1,4 @@
-﻿#pragma execution_character_set( "utf-8" )
-
+#pragma execution_character_set( "utf-8" )
 #include "GameManager.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
@@ -15,14 +14,14 @@
 // 게임 설정 상수
 const int GAME_WIDTH = 160;
 const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
+const int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
+const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 10;
+
 
 GameManager::GameManager()
 {
-	player = GameObject();
-
-	// 플레이어 위치 초기화
-	player.x = GAME_WIDTH / 2;
-	player.y = GAME_HEIGHT / 2 - 10;
+	// 플레이어 초기화
+	player = GameObject(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y, 40, 30, L"image.png");
 
 	IsRunning = true;
 }
@@ -35,14 +34,61 @@ GameManager::~GameManager()
 void GameManager::Reset()
 {
 	// 플레이어 위치 초기화
-	player.x = GAME_WIDTH / 2;
-	player.y = GAME_HEIGHT / 2 - 10;
+	player.x = PLAYER_DEFAULT_POSITION_X;
+	player.y = PLAYER_DEFAULT_POSITION_Y;
 
 	bullets.clear();
 	enemies.clear();
 	score = 0;
 	isGameOver = false;
 	tick = 0;
+}
+
+void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
+{
+	int spriteIndex = 0;
+	for (int y = object.y; y < object.y + object.sprite.sizeY; y++)
+	{
+		// Sprite의 위가 잘리는 경우
+		if (y < 0)
+		{
+			spriteIndex += object.sprite.sizeX;
+			continue;
+		}
+
+		// Sprite의 아래가 잘리는 경우
+		if (y >= GAME_HEIGHT)
+		{
+			break;
+		}
+
+		for (int x = object.x; x < object.x + object.sprite.sizeX; x++)
+		{
+			// Sprite의 왼쪽이 잘리는 경우
+			if (x < 0)
+			{
+				spriteIndex++;
+				continue;
+			}
+
+			// Sprite의 오른쪽이 잘리는 경우
+			if (x >= GAME_WIDTH)
+			{
+				spriteIndex++;
+				continue;
+			}
+
+			// index 값이 vector 크기를 넘을 경우 중단
+			if (spriteIndex > object.sprite.colors.size() - 1)
+			{
+				break;
+			}
+
+			// Canvas에 색상으로 점(블록)을 찍는다.
+			canvas.DrawBlock(x, y, true, object.sprite.colors[spriteIndex]);
+			spriteIndex++;
+		}
+	}
 }
 
 void GameManager::Update()
@@ -144,10 +190,13 @@ ftxui::Element GameManager::Render()
 	auto canvas = ftxui::Canvas(GAME_WIDTH, GAME_HEIGHT);
 
 	// 플레이어 그리기 (초록색 ㅗ)
-	canvas.DrawBlock(player.x, player.y - 1, true, ftxui::Color::Green);
+	/*canvas.DrawBlock(player.x, player.y - 1, true, ftxui::Color::Green);
 	canvas.DrawBlock(player.x - 1, player.y, true, ftxui::Color::Green);
 	canvas.DrawBlock(player.x, player.y, true, ftxui::Color::Green);
-	canvas.DrawBlock(player.x + 1, player.y, true, ftxui::Color::Green);
+	canvas.DrawBlock(player.x + 1, player.y, true, ftxui::Color::Green);*/
+
+	// 플레이어 그리기
+	DrawObjectSprite(canvas, player);
 
 	// 총알 그리기
 	for (GameObject bullet : bullets)
@@ -173,7 +222,7 @@ ftxui::Element GameManager::Render()
 	// 렌더링 타겟 반환
 	return ftxui::window
 	(
-		ftxui::text("Gyeongseong 97"),
+		ftxui::text("京姓 Gyeongseong 97"),
 		ftxui::hbox(
 			{
 				UI,

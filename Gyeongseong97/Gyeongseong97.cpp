@@ -1,4 +1,4 @@
-﻿#pragma execution_character_set( "utf-8" )
+#pragma execution_character_set( "utf-8" )
 
 #include <stb_image.h>
 #include <iostream>
@@ -41,8 +41,8 @@ int main()
 	// 화면 정리
 	system("cls");
 
-	// FTXUI 캔버스 생성
-	auto screen = ScreenInteractive::Fullscreen();
+	// FTXUI 스크린 생성
+	auto screen = ScreenInteractive::FitComponent();
 
 	// 컴포넌트 연결
 	// Renderer: 화면을 그리는 역할
@@ -71,7 +71,7 @@ int main()
 	);
 
 	// 게임 로직 스레드 생성
-	// UI 렌더링과 별개로 게임의 로직을 20ms 간격으로 수행
+	// UI 렌더링과 별개로 게임의 로직을 일정 간격으로 실행
 	thread thread(
 		[&] {
 			while (gameManager.IsRunning)
@@ -81,7 +81,7 @@ int main()
 				// 화면 갱신
 				screen.Post(Event::Custom);
 
-				// 20ms 동안 취침
+				// 일정 시간 동안 취침
 				this_thread::sleep_for(TICK_TIME);
 			}
 		}
