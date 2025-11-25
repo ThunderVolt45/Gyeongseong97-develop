@@ -15,7 +15,7 @@ std::string Utility::ConvertWideToUtf8(const wchar_t* wideStr)
 
 	if (requiredSize == 0)
 	{
-		std::wcerr << L"Error: UTF-8 º¯È¯À» À§ÇØ ÇÊ¿äÇÑ ¹öÆÛ Å©±â¸¦ È®º¸ÇÏ´Âµ¥ ½ÇÆÐÇß½À´Ï´Ù. Error code: " << GetLastError() << std::endl;
+		std::wcerr << L"Error: UTF-8 ë³€í™˜ì„ ìœ„í•´ í•„ìš”í•œ ë²„í¼ í¬ê¸°ë¥¼ í™•ë³´í•˜ëŠ”ë° ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. Error code: " << GetLastError() << std::endl;
 		return "";
 	}
 
@@ -24,7 +24,7 @@ std::string Utility::ConvertWideToUtf8(const wchar_t* wideStr)
 
 	if (result == 0)
 	{
-		std::wcerr << L"Error: wide string¸¦ UTF-8·Î º¯È¯ÇÏ´Âµ¥ ½ÇÆÐÇß½À´Ï´Ù. Error code: " << GetLastError() << std::endl;
+		std::wcerr << L"Error: wide stringë¥¼ UTF-8ë¡œ ë³€í™˜í•˜ëŠ”ë° ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤. Error code: " << GetLastError() << std::endl;
 		return "";
 	}
 

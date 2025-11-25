@@ -1,4 +1,4 @@
-#pragma execution_character_set( "utf-8" )
+﻿#pragma execution_character_set( "utf-8" )
 #include "GameManager.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
@@ -216,13 +216,13 @@ ftxui::Element GameManager::Render()
 	// UI 구성
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
-	std::string uiText = "Score : " + std::to_string(score);
-	if (isGameOver) uiText += " | GAME OVER! (R키를 눌러 재시작, Q키를 눌러 나가기)";
+	std::wstring uiText = L"Score : " + std::to_wstring(score);
+	if (isGameOver) uiText += L" | GAME OVER! (R키를 눌러 재시작, Q키를 눌러 나가기)";
 
 	// 렌더링 타겟 반환
 	return ftxui::window
 	(
-		ftxui::text("京姓 Gyeongseong 97"),
+		ftxui::text(L"Gyeongseong 97"),
 		ftxui::hbox(
 			{
 				UI,
