@@ -31,7 +31,9 @@ void GameLoop(ScreenInteractive& screen);
 #pragma endregion
 
 // 게임 설정 상수
-const std::chrono::milliseconds TICK_TIME = 20ms; // 20ms = 약 50fps
+extern const int GAME_WIDTH = 160;
+extern const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
+extern const std::chrono::microseconds TICK_TIME = 16667us; // 16667us = 약 60fps
 
 int main()
 {
@@ -39,8 +41,8 @@ int main()
 	SetConsoleOutputCP(CP_UTF8);
 
 	// 오디오 엔진 초기화
-	AudioManager* audioManager = new AudioManager;
-	audioManager->PlayAudio(L"bgm_hk97_16bit.mp3", true);
+	AudioManager& audioManager = AudioManager::GetInstance();
+	audioManager.PlayAudio(L"bgm_hk97_16bit.mp3", true);
 
 	// 화면 정리
 	system("cls");
@@ -61,9 +63,6 @@ int main()
 
 	// 게임 시작
 	GameLoop(screen);
-
-	// 정리
-	delete audioManager;
 
 	return 0;
 }
@@ -196,8 +195,8 @@ void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine
 
 void GameLoop(ScreenInteractive& screen)
 {
-	// 게임 매니저 생성
-	GameManager gameManager;
+	// 게임 매니저 인스턴스
+	GameManager& gameManager = GameManager::GetInstance();
 
 	// 컴포넌트 연결
 	// Renderer: 화면을 그리는 역할

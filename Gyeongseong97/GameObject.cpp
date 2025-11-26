@@ -14,8 +14,8 @@ GameObject::GameObject(int x, int y)
 
 GameObject::GameObject(int x, int y, int w, int h, std::wstring spriteName)
 {
-	this->x = x;
-	this->y = y;
+	this->x = x - w / 2;
+	this->y = y - h / 2;
 
 	sprite = ImageLoader::CreateSpriteFromImage(spriteName, w, h);
 }

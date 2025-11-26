@@ -13,15 +13,15 @@
 #include <ftxui/component/component.hpp>
 
 // 게임 설정 상수
-const int GAME_WIDTH = 160;
-const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
+extern const int GAME_WIDTH;
+extern const int GAME_HEIGHT;
 const int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
 const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 20;
 
 GameManager::GameManager()
 {
 	// 플레이어 초기화
-	player = GameObject(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y, 40, 30, L"image.png");
+	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y, 40, 30, L"image.png");
 
 	IsRunning = true;
 }
@@ -29,6 +29,12 @@ GameManager::GameManager()
 GameManager::~GameManager()
 {
 
+}
+
+GameManager& GameManager::GetInstance()
+{
+	static GameManager instance;
+	return instance;
 }
 
 void GameManager::Reset()
@@ -91,6 +97,11 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
 	}
 }
 
+void GameManager::CreateBullet(Bullet bullet)
+{
+	bullets.push_back(bullet);
+}
+
 void GameManager::Update()
 {
 	// 게임 오버 상태에선 중단
@@ -101,27 +112,13 @@ void GameManager::Update()
 
 	tick++;
 
-	// 사격 쿨다운
-	if (shootCooldown > 0) shootCooldown--;
+	// 플레이어 업데이트
+	player.Update();
 
-	// GetAsyncKeyState를 사용하여 키 상태를 직접 확인 (동시 입력 및 부드러운 이동 지원)
-	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) && player.x > 2) player.x -= 2;
-	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) && player.x < GAME_WIDTH - 2) player.x += 2;
-	if ((GetAsyncKeyState(VK_UP) & 0x8000) && player.y > 2) player.y -= 1;
-	if ((GetAsyncKeyState(VK_DOWN) & 0x8000) && player.y < GAME_HEIGHT - 2) player.y += 1;
-
-	// 발사 (Z 키)
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && shootCooldown <= 0)
-	{
-		GameObject bullet = GameObject(player.x, player.y - 3);
-		bullets.push_back(bullet);
-		shootCooldown = 10; // 10틱(약 200ms) 쿨다운
-	}
-	
-	// 총알 이동
+	// 총알 업데이트
 	for (GameObject& bullet : bullets)
 	{
-		bullet.y -= 4;
+		bullet.Update();
 	}
 
 	// 화면 밖으로 나간 총알 제거

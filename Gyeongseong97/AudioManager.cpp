@@ -44,7 +44,13 @@ AudioManager::~AudioManager()
 	ma_engine_uninit(&audioEngine);
 }
 
-void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
+AudioManager& AudioManager::GetInstance()
+{
+	static AudioManager instance;
+	return instance;
+}
+
+void AudioManager::PlayAudio(std::wstring audioPath, bool loop)
 {
 	// 파일 경로 정의
 	std::vector<wchar_t> pathBuffer(MAX_PATH);
@@ -60,7 +66,7 @@ void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
 		std::cerr << "Warning: 파일 경로가 너무 깁니다.더 큰 길이 버퍼가 필요합니다." << std::endl;
 	}
 
-	auto strFilePath = pathBuffer.data() + AUDIO_PATH + audioFile;
+	auto strFilePath = pathBuffer.data() + AUDIO_PATH + audioPath;
 	auto filePath = Utility::ConvertWideToUtf8(strFilePath.c_str());
 
 	// ma_sound 객체를 생성
@@ -81,6 +87,11 @@ void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
 	// 메인 스레드가 묶이므로 소리를 재생하기 위한 백그라운드 스레드를 하나 생성한다.
 	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, this, pSound, loop);
 	audioThread.detach();
+}
+
+void AudioManager::StopAudio(std::wstring audioPath)
+{
+
 }
 
 void AudioManager::PlayAudioThread(ma_sound* pSound, bool loop)
