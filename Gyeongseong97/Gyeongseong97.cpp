@@ -26,12 +26,12 @@ using namespace std;
 
 #pragma region Declarations
 void TitleScreen(ScreenInteractive& screen);
-void IntroScreen(ScreenInteractive& screen);
+void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4);
 void GameLoop(ScreenInteractive& screen);
 #pragma endregion
 
 // 게임 설정 상수
-const std::chrono::milliseconds TICK_TIME = 20ms;
+const std::chrono::milliseconds TICK_TIME = 20ms; // 20ms = 약 50fps
 
 int main()
 {
@@ -40,8 +40,7 @@ int main()
 
 	// 오디오 엔진 초기화
 	AudioManager* audioManager = new AudioManager;
-	audioManager->PlayAudio(L"sfx.mp3", true);
-	audioManager->PlayAudio(L"bgm.mp3", true);
+	audioManager->PlayAudio(L"bgm_hk97_16bit.mp3", true);
 
 	// 화면 정리
 	system("cls");
@@ -52,8 +51,13 @@ int main()
 	// 타이틀 화면 출력
 	TitleScreen(screen);
 
-	// 인트로 화면 출력
-	IntroScreen(screen);
+	// 인트로 컷신 출력
+	DrawCutscene(screen, 
+		L"intro.png",
+		L"시작하기에 앞서...",
+		L"정상적인 플레이를 위해 \'스페이스바를 눌러 계속\' 문자가 보일 때까지",
+		L"터미널 크기를 키워주세요.",
+		L"");
 
 	// 게임 시작
 	GameLoop(screen);
@@ -98,7 +102,6 @@ void TitleScreen(ScreenInteractive& screen)
 		[&] {
 			return vbox({
 				/*
-
 				_____                                                                     _____  ______
 				|  __ \                                                                   |  _  ||___  /
 				| |  \/ _   _   ___   ___   _ __    __ _  ___   ___   ___   _ __    __ _  | |_| |   / /
@@ -107,9 +110,7 @@ void TitleScreen(ScreenInteractive& screen)
 				 \____/ \__, | \___| \___/ |_| |_| \__, ||___/ \___| \___/ |_| |_| \__, | \____/ \_/
 						 __/ |                      __/ |                           __/ |
 						|___/                      |___/                           |___/
-
 				*/
-				text(L""),
 				text(L""),
 				text(L"    _____                                                                     _____  ______   ") | bold | color(Color::Red) | center,
 				text(L"   |  __ \\                                                                   |  _  ||___  /   ") | bold | color(Color::Red) | center,
@@ -124,6 +125,8 @@ void TitleScreen(ScreenInteractive& screen)
 				text(L"홍콩 97 / 야인시대 패러디 게임") | color(Color::White) | center,
 				text(L"(이 게임은 제작자의 정치적 성향과는 어떠한 연관도 없으며 그냥 웃기려고 만든 겁니다)") | color(Color::White) | center,
 				text(L""),
+				text(L"WinAPI + FTXUI + miniaudio C++ 콘솔 게임 포트폴리오") | color(Color::Yellow) | center,
+				text(L""),
 				button->Render() | center
 			}) | border | center | color(Color::Red);
 		}
@@ -135,9 +138,60 @@ void TitleScreen(ScreenInteractive& screen)
 	system("cls");
 }
 
-void IntroScreen(ScreenInteractive& screen)
+void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4)
 {
+	// 캔버스 생성
+	int canvasWidth = 160;
+	int canvasHeight = 100;
+	auto canvas = ftxui::Canvas(canvasWidth, canvasHeight);
 
+	// Sprite 로드
+	Sprite sprite = ImageLoader::CreateSpriteFromImage(imageName, canvasWidth, canvasHeight);
+	
+	// 캔버스에 Sprite 그리기
+	for (int y = 0; y < canvasHeight; y++)
+	{
+		for (int x = 0; x < canvasWidth; x++)
+		{
+			// Canvas에 색상으로 점(블록)을 찍는다.
+			canvas.DrawBlock(x, y, true, sprite.colors[x + (y * canvasWidth)]);
+		}
+	}
+
+	// 인트로 화면 생성
+	auto canvasElement = ftxui::canvas(std::move(canvas));
+	auto introScreenRenderer = Renderer(
+		[&] {
+			return vbox({
+				canvasElement | center,
+				vbox({
+					text(textLine1) | center,
+					text(textLine2) | center,
+					text(textLine3) | center,
+					text(textLine4) | center,
+					text(L"스페이스바를 눌러 계속...") | align_right | color(Color::GrayDark)
+				}) | border
+			});
+		}
+	);
+
+	// 입력 이벤트 처리
+	auto introScreenComponent = CatchEvent(introScreenRenderer,
+		[&](Event event) {
+			if (event.character() == " ")
+			{
+				screen.Exit(); // 스페이스바 입력을 받으면 탈출
+			}
+
+			return true;
+		}
+	);
+
+	// 화면 출력
+	screen.Loop(introScreenComponent);
+	
+	// 화면 정리
+	system("cls");
 }
 
 void GameLoop(ScreenInteractive& screen)
@@ -172,7 +226,7 @@ void GameLoop(ScreenInteractive& screen)
 	);
 
 	// 게임 로직 스레드 생성
-	// UI 렌더링과 별개로 게임의 로직을 일정 간격으로 실행
+	// UI 렌더링과 별개로 게임의 로직을 일정 간격(TICK_TIME)으로 실행
 	std::thread thread(
 		[&] {
 			while (gameManager.IsRunning)

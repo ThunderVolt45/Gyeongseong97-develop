@@ -16,7 +16,7 @@
 const int GAME_WIDTH = 160;
 const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
 const int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
-const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 10;
+const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 20;
 
 GameManager::GameManager()
 {
@@ -207,7 +207,7 @@ ftxui::Element GameManager::Render()
 		canvas.DrawBlock(enemy.x + 1, enemy.y + 1, true, ftxui::Color::Red);
 	}
 
-	// UI 구성
+	// 화면 생성
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
 	std::wstring textScore = L"Score : " + std::to_wstring(score);
