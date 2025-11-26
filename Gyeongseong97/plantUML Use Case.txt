@@ -1,0 +1,40 @@
+@startuml
+' 유스케이스 다이어그램 초안, 추후 변동 가능성이 있음
+
+' 다이어그램 방향 설정
+left to right direction
+
+' 플레이어는 게임을 플레이하는 유일한 행위자
+actor "Player" as player
+
+rectangle "Gyeongseong97" {
+    usecase "게임 시작" as StartGame
+    usecase "캐릭터 조작" as Control
+    usecase "이동" as Move
+    usecase "사격" as Shoot
+    usecase "적 처치" as KillEnemy
+    usecase "점수 획득" as Score
+    usecase "게임 오버" as GameOver
+    usecase "게임 나가기" as Exit
+    usecase "오디오 출력" as Audio
+
+    player -- StartGame
+    player -- Control
+    player -- Exit
+
+    ' 제어(Control)는 이동과 공격을 포함합니다.
+    Control <.. Move : <<extend>>
+    Control <.. Shoot : <<extend>>
+
+    ' 게임 플레이 중 발생하는 사건들
+    Shoot ..> KillEnemy : triggers
+    KillEnemy ..> Score : triggers
+
+    ' 플레이어의 생존 여부와 관련된 흐름
+    Control ..> GameOver : leads to (on collision/damage)
+
+    ' 오디오는 게임 실행 전반에 걸쳐 발생
+    StartGame ..> Audio : include
+    Shoot ..> Audio : include
+}
+@enduml

@@ -1,4 +1,4 @@
-﻿#pragma execution_character_set( "utf-8" )
+#pragma execution_character_set( "utf-8" )
 #include "GameManager.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
@@ -7,6 +7,7 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/canvas.hpp>
+#include <ftxui/dom/node.hpp>
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/screen/color.hpp>
 #include <ftxui/component/component.hpp>
@@ -16,7 +17,6 @@ const int GAME_WIDTH = 160;
 const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
 const int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
 const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 10;
-
 
 GameManager::GameManager()
 {
@@ -115,13 +115,13 @@ void GameManager::Update()
 	{
 		GameObject bullet = GameObject(player.x, player.y - 3);
 		bullets.push_back(bullet);
-		shootCooldown = 5; // 5틱(약 100ms) 쿨다운
+		shootCooldown = 10; // 10틱(약 200ms) 쿨다운
 	}
 	
 	// 총알 이동
 	for (GameObject& bullet : bullets)
 	{
-		bullet.y -= 2;
+		bullet.y -= 4;
 	}
 
 	// 화면 밖으로 나간 총알 제거
@@ -189,12 +189,6 @@ ftxui::Element GameManager::Render()
 	// 캔버스 생성
 	auto canvas = ftxui::Canvas(GAME_WIDTH, GAME_HEIGHT);
 
-	// 플레이어 그리기 (초록색 ㅗ)
-	/*canvas.DrawBlock(player.x, player.y - 1, true, ftxui::Color::Green);
-	canvas.DrawBlock(player.x - 1, player.y, true, ftxui::Color::Green);
-	canvas.DrawBlock(player.x, player.y, true, ftxui::Color::Green);
-	canvas.DrawBlock(player.x + 1, player.y, true, ftxui::Color::Green);*/
-
 	// 플레이어 그리기
 	DrawObjectSprite(canvas, player);
 
@@ -216,23 +210,24 @@ ftxui::Element GameManager::Render()
 	// UI 구성
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
-	std::wstring uiText = L"Score : " + std::to_wstring(score);
-	if (isGameOver) uiText += L" | GAME OVER! (R키를 눌러 재시작, Q키를 눌러 나가기)";
+	std::wstring textScore = L"Score : " + std::to_wstring(score);
+	std::wstring textGameOver = isGameOver ? L"GAME OVER!" : L"";
+	std::wstring textRestart = isGameOver ? L"R키를 눌러 재시작" : L"";
+	std::wstring textQuit = isGameOver ? L"Q키를 눌러 나가기" : L"";
 
 	// 렌더링 타겟 반환
-	return ftxui::window
-	(
-		ftxui::text(L"Gyeongseong 97"),
-		ftxui::hbox(
-			{
-				UI,
-				ftxui::vbox(
-					{
-						ftxui::text(uiText) | ftxui::border | ftxui::bold
-					}
-				) | ftxui::center
-			}
-		)
+	return ftxui::hbox(
+		{
+			UI | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, GAME_WIDTH / 2),
+			ftxui::vbox(
+				{
+					ftxui::text(textScore) | ftxui::border | ftxui::bold,
+					ftxui::text(textGameOver) | ftxui::bold,
+					ftxui::text(textRestart) | ftxui::bold,
+					ftxui::text(textQuit) | ftxui::bold
+				}
+			)
+		}
 	);
 }
 

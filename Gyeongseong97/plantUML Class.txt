@@ -1,0 +1,133 @@
+@startuml
+' 클래스 다이어그램 초안, 추후 변동 가능성이 있음
+
+' 다이어그램 방향 설정
+' left to right direction
+
+' 클래스 속성 아이콘 크기를 0으로 설정하여 다이어그램을 깔끔하게 만듬
+skinparam classAttributeIconSize 0
+
+' 구조체 정의
+struct Sprite {
+    + int sizeX
+    + int sizeY
+    + std::vector<ftxui::Color> colors
+}
+
+' 클래스 정의
+class AudioManager {
+    - ma_engine audioEngine
+    - std::list<ma_sound*> sounds
+    - void PlayAudioThread(ma_sound* pSound, bool loop)
+    + AudioManager()
+    + ~AudioManager()
+    + void PlayAudio(std::wstring audioPath, bool loop)
+}
+
+class GameManager {
+    - Player player
+    - std::vector<Bullet> bullets
+    - std::vector<Enemy> enemies
+    - std::vector<GameObject> gameObjects
+    - int score
+    - long long tick
+    - int shootCooldown
+    - bool isGameOver
+    - void Reset()
+    - void DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
+    + std::atomic<bool> IsRunning
+    + GameManager()
+    + ~GameManager()
+    + void Update()
+    + ftxui::Element Render()
+    + bool OnEvent(ftxui::Event event)
+}
+
+class ImageLoader {
+    + {static} Sprite CreateSpriteFromImage(std::wstring fileName, int sizeX, int sizeY)
+}
+
+class Utility {
+    + {static} std::string ConvertWideToUtf8(const wchar_t* wideStr)
+}
+
+
+' 게임 오브젝트 클래스 정의
+class GameObject {
+    + int x
+    + int y
+    + Sprite sprite
+    + GameObject()
+    + GameObject(int x, int y)
+    + GameObject(int x, int y, int w, int h, std::wstring spriteName)
+    + ~GameObject()
+    + void Update()
+}
+
+class Player {
+    - int health
+    + void Update()
+    + int GetHealth()
+    + void OnHit()
+}
+
+class Bullet {
+    - float speedX
+    - float speedY
+    + bool isAlly
+    + Bullet(bool isAlly, float speedX, float speedY)
+    + void Update()
+}
+
+class Enemy {
+    - long long tick
+    - int health
+    + void Update()
+    + void OnHit()
+}
+
+class Car {
+    + void Update()
+}
+
+class Boss {
+    + void Update()
+}
+
+class Explosion {
+    - int lifeTime
+    - int tick
+    + void Update()
+}
+
+' 관계 정의
+' 상속 관계
+GameObject <-- Player
+GameObject <-- Bullet
+GameObject <-- Enemy
+GameObject <-- Explosion
+Enemy <-- Car
+Enemy <-- Boss
+
+' GameManager는 여러 GameObject들을 관리합니다.
+GameManager "1" *-- "1" Player : player
+GameManager "1" *-- "*" Bullet : bullets
+GameManager "1" *-- "*" Enemy : enemies
+GameManager "1" *-- "*" GameObject : gameObjects
+
+' GameObject는 Sprite를 멤버로 가집니다.
+GameObject *-- Sprite
+
+' ImageLoader는 Sprite를 생성하여 반환합니다.
+ImageLoader ..> Sprite : creates
+
+' GameObject는 생성자 등에서 ImageLoader를 사용할 수 있습니다.
+GameObject ..> ImageLoader : uses
+
+' Bullet은 생성자 등에서 AudioManager를 사용할 수 있습니다.
+Bullet ..> AudioManager : uses
+
+' Explosion은 생성자 등에서 AudioManager를 사용할 수 있습니다.
+Explosion ..> AudioManager : uses
+
+@enduml

@@ -1,4 +1,4 @@
-﻿#pragma execution_character_set( "utf-8" )
+#pragma execution_character_set( "utf-8" )
 
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
@@ -77,7 +77,8 @@ void AudioManager::PlayAudio(std::wstring audioFile, bool loop)
 	// 포인터를 리스트에 추가
 	sounds.push_back(pSound);
 	
-	// 스레드 생성
+	// 소리 재생을 메인 스레드에서 실행하면 재생이 끝날 때까지
+	// 메인 스레드가 묶이므로 소리를 재생하기 위한 백그라운드 스레드를 하나 생성한다.
 	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, this, pSound, loop);
 	audioThread.detach();
 }
