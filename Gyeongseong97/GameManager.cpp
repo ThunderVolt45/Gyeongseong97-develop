@@ -39,14 +39,15 @@ GameManager& GameManager::GetInstance()
 
 void GameManager::Reset()
 {
-	// 플레이어 위치 초기화
-	player.x = PLAYER_DEFAULT_POSITION_X;
-	player.y = PLAYER_DEFAULT_POSITION_Y;
+	// 플레이어 초기화
+	player.Reset();
+	player.x = PLAYER_DEFAULT_POSITION_X - player.sprite.sizeX / 2;
+	player.y = PLAYER_DEFAULT_POSITION_Y - player.sprite.sizeY / 2;
 
 	bullets.clear();
 	enemies.clear();
 	score = 0;
-	isGameOver = false;
+	IsGameOver = false;
 	tick = 0;
 }
 
@@ -104,12 +105,6 @@ void GameManager::CreateBullet(Bullet bullet)
 
 void GameManager::Update()
 {
-	// 게임 오버 상태에선 중단
-	if (isGameOver)
-	{
-		return;
-	}
-
 	tick++;
 
 	// 플레이어 업데이트
@@ -124,8 +119,14 @@ void GameManager::Update()
 	// 화면 밖으로 나간 총알 제거
 	bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const GameObject& obj) { return obj.y < 0; }), bullets.end());
 
+	// 게임 오버 상태가 되면 여기서 중단한다
+	if (IsGameOver)
+	{
+		return;
+	}
+
 	// 일정 간격으로 적 생성
-	if (tick % 50 == 0)
+	if (tick % 30 == 0)
 	{
 		int randomX = std::rand() % (GAME_WIDTH - 4) + 2;
 		GameObject enemy = GameObject(randomX, 0);
@@ -138,29 +139,42 @@ void GameManager::Update()
 		enemy.y += tick % 2 == 0 ? 1 : 0;
 	}
 
-	// 충돌 판정
-	// 총알 -> 적
+	// Bullet 충돌 처리
 	for (auto bullet = bullets.begin(); bullet != bullets.end();)
 	{
 		bool hit = false;
 
-		for (auto enemy = enemies.begin(); enemy != enemies.end();)
+		// 플레이어 Bullet -> 적
+		if (bullet->isMine)
 		{
-			// 거리 기반 충돌 체크
-			if (std::abs(bullet->x - enemy->x) < 3 && std::abs(bullet->y - enemy->y) < 3)
+			for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++)
 			{
-				enemies.erase(enemy);
+				// 거리 기반 충돌 체크
+				if (bullet->IsColliding(*enemy))
+				{
+					enemies.erase(enemy);
 				
-				hit = true;
-				score += 100;
-				break;
+					hit = true;
+					score += 100;
+					break;
+				}
 			}
-			else
+		}
+		else // 적 Bullet -> 플레이어
+		{
+			if (bullet->IsColliding(player))
 			{
-				enemy++;
+				hit = true;
+				player.health -= 1;
+
+				if (player.health < 0)
+				{
+					IsGameOver = true;
+				}
 			}
 		}
 
+		// Bullet 명중시 제거
 		if (hit)
 		{
 			bullet = bullets.erase(bullet);
@@ -171,12 +185,22 @@ void GameManager::Update()
 		}
 	}
 
-	// 적 -> 플레이어
-	for (auto enemy : enemies)
+	// 플레이어 - 적 충돌 처리
+	for (auto enemy = enemies.begin(); enemy != enemies.end();)
 	{
-		if (std::abs(enemy.x - player.x) < 3 && std::abs(enemy.y - player.y) < 3)
+		if (enemy->IsColliding(player))
 		{
-			isGameOver = true;
+			enemy = enemies.erase(enemy);
+			player.health -= 1;
+
+			if (player.health < 0)
+			{
+				IsGameOver = true;
+			}
+		}
+		else
+		{
+			enemy++;
 		}
 	}
 }
@@ -190,9 +214,16 @@ ftxui::Element GameManager::Render()
 	DrawObjectSprite(canvas, player);
 
 	// 총알 그리기
-	for (GameObject bullet : bullets)
+	for (Bullet bullet : bullets)
 	{
-		canvas.DrawBlock(bullet.x, bullet.y, true, ftxui::Color::Yellow);
+		if (bullet.isMine)
+		{
+			canvas.DrawBlock(bullet.x, bullet.y, true, ftxui::Color::Yellow);
+		}
+		else
+		{
+			canvas.DrawBlock(bullet.x, bullet.y, true, ftxui::Color::HotPink);
+		}
 	}
 
 	// 적 그리기
@@ -204,13 +235,20 @@ ftxui::Element GameManager::Render()
 		canvas.DrawBlock(enemy.x + 1, enemy.y + 1, true, ftxui::Color::Red);
 	}
 
-	// 화면 생성
+	// 캔버스를 박스로 감싸준다
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
+	// 체력 바 그리기
+	auto healthBar = ftxui::vbox({
+			ftxui::text(L"Health : "),
+			ftxui::gauge(player.health / player.maxHealth) | color(ftxui::Color::Red) | bgcolor(ftxui::Color::GrayDark)
+		});
+
+	// 기타 UI
 	std::wstring textScore = L"Score : " + std::to_wstring(score);
-	std::wstring textGameOver = isGameOver ? L"GAME OVER!" : L"";
-	std::wstring textRestart = isGameOver ? L"R키를 눌러 재시작" : L"";
-	std::wstring textQuit = isGameOver ? L"Q키를 눌러 나가기" : L"";
+	std::wstring textGameOver = IsGameOver ? L"GAME OVER!" : L"";
+	std::wstring textRestart = IsGameOver ? L"R키를 눌러 재시작" : L"";
+	std::wstring textQuit = IsGameOver ? L"Q키를 눌러 나가기" : L"";
 
 	// 렌더링 타겟 반환
 	return ftxui::hbox(
@@ -221,9 +259,10 @@ ftxui::Element GameManager::Render()
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
 					ftxui::text(textGameOver) | ftxui::bold,
 					ftxui::text(textRestart) | ftxui::bold,
-					ftxui::text(textQuit) | ftxui::bold
+					ftxui::text(textQuit) | ftxui::bold,
+					healthBar
 				}
-			)
+			) | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, 20)
 		}
 	);
 }
@@ -244,7 +283,7 @@ bool GameManager::OnEvent(ftxui::Event event)
 	}
 
 	// 재시작 (R)
-	if (isGameOver)
+	if (IsGameOver)
 	{
 		if (event == ftxui::Event::Character('r'))
 		{

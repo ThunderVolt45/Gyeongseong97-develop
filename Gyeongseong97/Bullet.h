@@ -6,9 +6,10 @@ class Bullet : public GameObject
 private:
 	float speedX;
 	float speedY;
-	bool isMine;
 
 public:
+	bool isMine;
+
 	Bullet(int x, int y, float speedX, float speedY, bool isMine);
 	void Update() override;
 };

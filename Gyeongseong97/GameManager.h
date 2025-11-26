@@ -36,7 +36,6 @@ private:
 	int score = 0;
 	long long tick = 0;
 	int shootCooldown = 0;
-	bool isGameOver = false;
 
 	void Reset();
 	void DrawObjectSprite(ftxui::Canvas& canvas, GameObject object);
@@ -49,6 +48,7 @@ public:
 	static GameManager& GetInstance();
 
 	std::atomic<bool> IsRunning;
+	std::atomic<bool> IsGameOver = false;
 
 	void Update();
 	ftxui::Element Render();

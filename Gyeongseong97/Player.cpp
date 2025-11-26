@@ -1,8 +1,8 @@
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
 #include <windows.h>
 
-#include "Player.h"
 #include "GameManager.h"
+#include "Player.h"
 #include "Bullet.h"
 
 extern const int GAME_WIDTH;
@@ -26,11 +26,19 @@ Player::Player(int x, int y, int w, int h, std::wstring spriteName) : GameObject
 
 void Player::Reset()
 {
+	tick = 0;
+	cooldown = 0;
 
+	health = maxHealth;
 }
 
 void Player::Update()
 {
+	if (health < 0)
+	{
+		return;
+	}
+
 	tick++;
 
 	// 사격 쿨다운
@@ -51,4 +59,8 @@ void Player::Update()
 
 		cooldown = 6; // 6틱(약 100ms) 쿨다운
 	}
+
+	// 체력 회복 (초당 0.2)
+	health += 0.2 / 60;
+	if (health > maxHealth) health = maxHealth;
 }

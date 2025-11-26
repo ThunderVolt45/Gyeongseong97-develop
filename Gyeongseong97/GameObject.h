@@ -14,5 +14,6 @@ public:
 	~GameObject();
 
 	virtual void Update();
+	bool IsColliding(const GameObject& other);
 };
 

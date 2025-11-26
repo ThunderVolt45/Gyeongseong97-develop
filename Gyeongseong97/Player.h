@@ -3,10 +3,8 @@
 
 class Player : public GameObject
 {
-private:
-	float maxHealth;
-
 public:
+	float maxHealth;
 	float health;
 	long long tick;
 	int cooldown;
