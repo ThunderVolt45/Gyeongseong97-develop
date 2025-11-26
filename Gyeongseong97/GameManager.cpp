@@ -144,8 +144,7 @@ void GameManager::Update()
 	{
 		bool hit = false;
 
-		// 플레이어 Bullet -> 적
-		if (bullet->isMine)
+		if (bullet->isMine) // 플레이어 Bullet -> 적
 		{
 			for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++)
 			{

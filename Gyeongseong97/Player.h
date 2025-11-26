@@ -6,7 +6,6 @@ class Player : public GameObject
 public:
 	float maxHealth;
 	float health;
-	long long tick;
 	int cooldown;
 
 	Player();

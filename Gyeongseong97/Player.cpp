@@ -12,7 +12,6 @@ Player::Player() : GameObject()
 {
 	maxHealth = 5;
 	health = 5;
-	tick = 0;
 	cooldown = 0;
 }
 
@@ -20,15 +19,12 @@ Player::Player(int x, int y, int w, int h, std::wstring spriteName) : GameObject
 {
 	maxHealth = 5;
 	health = 5;
-	tick = 0;
 	cooldown = 0;
 }
 
 void Player::Reset()
 {
-	tick = 0;
 	cooldown = 0;
-
 	health = maxHealth;
 }
 
@@ -38,8 +34,6 @@ void Player::Update()
 	{
 		return;
 	}
-
-	tick++;
 
 	// 사격 쿨다운
 	if (cooldown > 0) cooldown--;

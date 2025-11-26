@@ -122,12 +122,14 @@ void TitleScreen(ScreenInteractive& screen)
 				text(L"           |___/                      |___/                           |___/                   ") | bold | color(Color::Red) | center,
 				text(L""),
 				text(L""),
+				text(L"WinAPI + FTXUI + miniaudio C++ 콘솔 게임 포트폴리오") | color(Color::Yellow) | center,
+				text(L""),
 				text(L"홍콩 97 / 야인시대 패러디 게임") | color(Color::White) | center,
 				text(L"(이 게임은 제작자의 정치적 성향과는 어떠한 연관도 없으며 그냥 웃기려고 만든 겁니다)") | color(Color::White) | center,
 				text(L""),
-				text(L"WinAPI + FTXUI + miniaudio C++ 콘솔 게임 포트폴리오") | color(Color::Yellow) | center,
 				text(L""),
-				button->Render() | center
+				button->Render() | center,
+				text(L""),
 			}) | border | center | color(Color::Red);
 		}
 	);
