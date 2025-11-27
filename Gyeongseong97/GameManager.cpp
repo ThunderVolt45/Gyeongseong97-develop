@@ -307,14 +307,14 @@ ftxui::Element GameManager::Render()
 	// 캔버스 생성
 	auto canvas = ftxui::Canvas(GAME_WIDTH, GAME_HEIGHT);
 
-	// 플레이어 그리기
-	DrawObjectSprite(canvas, player);
-
-	// 임계 구역
+	// 임계 구역 설정
 	{
 		// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
 		// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
 		std::lock_guard<std::recursive_mutex> lock(gameMutex);
+
+		// 플레이어 오브젝트 그리기
+		DrawObjectSprite(canvas, player);
 
 		// 게임 오브젝트 그리기
 		for (const auto& object : gameObjects)
@@ -324,10 +324,7 @@ ftxui::Element GameManager::Render()
 	}
 
 	// FPS 표시
-	canvas.DrawText(0, 0, "FPS : " + std::to_string(currentFps) + ", Logic : " + std::to_string(currentLps),
-		[](ftxui::Pixel& p) {
-			p.foreground_color = ftxui::Color::Cyan;
-		});
+	canvas.DrawText(0, 0, "FPS : " + std::to_string(currentFps) + ", Logic : " + std::to_string(currentLps));
 
 	// 게임 오버 시 게임 오버 메시지 표시
 	if (IsGameOver)
@@ -359,6 +356,8 @@ ftxui::Element GameManager::Render()
 			ftxui::vbox(
 				{
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
+					ftxui::text(L""),
+					ftxui::text(L""),
 					ftxui::text(L""),
 					ftxui::text(L""),
 					ftxui::text(L""),

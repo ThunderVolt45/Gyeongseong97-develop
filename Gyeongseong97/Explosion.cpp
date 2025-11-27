@@ -6,6 +6,10 @@
 const int SIZE_X = 32;
 const int SIZE_Y = 24;
 
+// 플라이웨이트 패턴
+// 어차피 폭8 오브젝트는 다 같은 Sprite를 돌려쓰므로 그냥 static으로 하나만 저장하면 된다.
+std::vector<Sprite> Explosion::commonSprites;
+
 Explosion::Explosion(int x, int y)
 {
 	this->x = x;
@@ -15,16 +19,31 @@ Explosion::Explosion(int x, int y)
 	lifeTimeTick = 120;
 	animationIndex = 0;
 
-	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.mp3",  0.25f);
-	sprite = ImageLoader::CreateSpriteFromImage(L"폭8/폭8_0000.png", SIZE_X, SIZE_Y);
+	// 효과음 재생
+	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.mp3", 0.25f, false);
 
+	// 에셋이 로드되지 않았다면 로드 (Lazy Loading)
+	if (commonSprites.empty())
+	{
+		LoadAssets();
+	}
+
+	// 첫 번째 프레임 설정
+	if (!commonSprites.empty())
+	{
+		sprite = commonSprites[0];
+	}
+}
+
+void Explosion::LoadAssets()
+{
 	// Sprites 초기화
 	for (int i = 0; i < 36; i++)
 	{
 		std::wstringstream ss;
 		ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
 		Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), SIZE_X, SIZE_Y);
-		sprites.push_back(sprite);
+		commonSprites.push_back(sprite);
 	}
 }
 
@@ -39,8 +58,8 @@ void Explosion::Update()
 	}
 
 	// 애니메이션 재생
-	if (tick % 4 == 0 && animationIndex < sprites.size() - 1)
+	if (tick % 4 == 0 && !commonSprites.empty() && animationIndex < commonSprites.size() - 1)
 	{
-		sprite = sprites[++animationIndex];
+		sprite = commonSprites[++animationIndex];
 	}
 }

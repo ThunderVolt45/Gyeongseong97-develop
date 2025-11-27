@@ -4,7 +4,7 @@
 class Explosion : public GameObject
 {
 private:
-	std::vector<Sprite> sprites;
+	static std::vector<Sprite> commonSprites;
 	int lifeTimeTick;
 	int tick;
 	int animationIndex;
@@ -12,5 +12,7 @@ private:
 public:
 	Explosion(int x, int y);
 	void Update() override;
+
+	static void LoadAssets();
 };
 
