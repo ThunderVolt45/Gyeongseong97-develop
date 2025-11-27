@@ -28,11 +28,8 @@ Explosion::Explosion(int x, int y)
 		LoadAssets();
 	}
 
-	// 첫 번째 프레임 설정
-	if (!commonSprites.empty())
-	{
-		sprite = commonSprites[0];
-	}
+	// 기본 Sprite 설정
+	Sprite sprite = ImageLoader::CreateSpriteFromImage(L"폭8_0001.png", SIZE_X, SIZE_Y);
 }
 
 void Explosion::LoadAssets()

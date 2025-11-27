@@ -33,7 +33,7 @@ Enemy::Enemy(int x, int y, int w, int h, std::wstring spriteName, int health = 1
 void Enemy::Destroy()
 {
 	std::shared_ptr<Explosion> explosion(new Explosion(x - 16, y - 12));
-	GameManager::GetInstance().CreateGameObject(explosion);
+	GameManager::GetInstance().CreateGameObject(explosion, false);
 	GameManager::GetInstance().DestroyGameObject(this);
 	GameManager::GetInstance().score += killScore;
 }

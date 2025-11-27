@@ -37,6 +37,9 @@ private:
 	// 삭제할 오브젝트들을 모아둘 set
 	std::set<GameObject*> objectsToDestroy;
 
+	// 새로 생성할 오브젝트들을 모아둘 vector
+	std::vector<std::shared_ptr<GameObject>> objectsToCreate;
+
 	// 스레드 동기화를 위한 뮤텍스
 	std::recursive_mutex gameMutex;
 	

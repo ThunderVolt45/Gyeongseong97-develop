@@ -55,6 +55,7 @@ void GameManager::Reset()
 	// 게임 오브젝트 초기화
 	gameObjects.clear();
 	objectsToDestroy.clear();
+	objectsToCreate.clear();
 
 	score = 0;
 	IsGameOver = false;
@@ -73,6 +74,10 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& obje
 	if (object.sprite.sizeX == 0)
 	{
 		canvas.DrawBlock(objX, objY, true, ftxui::Color::White);
+		canvas.DrawBlock(objX + 1, objY, true, ftxui::Color::White);
+		canvas.DrawBlock(objX, objY + 1, true, ftxui::Color::White);
+		canvas.DrawBlock(objX + 1, objY + 1, true, ftxui::Color::White);
+
 		return;
 	}
 
@@ -125,14 +130,17 @@ void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool 
 {
 	std::lock_guard<std::recursive_mutex> lock(gameMutex);
 
-	if (pushToBack)
+	// 반복문 도중 벡터 수정으로 인한 충돌을 막기 위해 대기열에 넣음                                                        │
+	 objectsToCreate.push_back(gameObject);
+
+	/*if (pushToBack)
 	{
 		gameObjects.push_back(gameObject);
 	}
 	else
 	{
 		gameObjects.push_front(gameObject);
-	}
+	}*/
 }
 
 void GameManager::DestroyGameObject(GameObject* gameObject)
@@ -149,6 +157,14 @@ void GameManager::Update()
 
 	// 틱
 	tick++;
+
+	// 대기열에 있는 오브젝트들을 실제 게임 오브젝트 리스트에 추가
+	if (!objectsToCreate.empty())
+	{
+		gameObjects.insert(gameObjects.end(), objectsToCreate.begin(), objectsToCreate.end());
+		objectsToCreate.clear();
+	}
+	
 
 	// 플레이어 업데이트
 	player.Update();

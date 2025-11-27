@@ -64,9 +64,17 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 		cacheImages.insert(std::pair<std::string, RawImage>(filePath, raw));
 	}
 
-	// 이미지 로딩에 실패했다면
-	if (data == nullptr)
+	// 이미지 로딩에 실패했다면 핑크색으로 채워서 보낸다
+	if (!data)
 	{
+		for (int y = 0; y < sizeY; y++)
+		{
+			for (int x = 0; x < sizeX; x++)
+			{
+				sprite.colors.push_back(ftxui::Color::Pink1);
+			}
+		}
+
 		return sprite;
 	}
 
