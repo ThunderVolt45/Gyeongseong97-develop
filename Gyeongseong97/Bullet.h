@@ -8,9 +8,10 @@ private:
 	float speedY;
 
 public:
-	bool isMine;
+	bool isPlayer;
 
 	Bullet(int x, int y, float speedX, float speedY, bool isMine);
+
 	void Update() override;
 };
 

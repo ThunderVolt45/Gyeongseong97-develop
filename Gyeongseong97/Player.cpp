@@ -48,13 +48,38 @@ void Player::Update()
 	// 발사 (Space 키)
 	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && cooldown <= 0)
 	{
-		Bullet bullet = Bullet(x + sprite.sizeX / 2, y - 3, 0, 4, true);
-		GameManager::GetInstance().CreateBullet(bullet);
+		int posX = static_cast<int>(x + sprite.sizeX / 2);
+		int posY = static_cast<int>(y - 3);
+
+		std::shared_ptr<Bullet> bullet(new Bullet(posX, posY, 0.0f, 4.0f, true));
+		GameManager::GetInstance().CreateGameObject(bullet);
 
 		cooldown = 6; // 6틱(약 100ms) 쿨다운
 	}
 
 	// 체력 회복 (초당 0.2)
-	health += 0.2 / 60;
+	health += 0.2f / 60;
 	if (health > maxHealth) health = maxHealth;
+}
+
+void Player::OnCollision(GameObject& other)
+{
+	// 만약 Bullet과 충돌했다면
+	Bullet* bullet = dynamic_cast<Bullet*>(&other);
+	if (bullet)
+	{
+		if (!bullet->isPlayer)
+		{
+			health -= 1;
+		}
+
+		return;
+	}
+
+	// 만약 Enemy와 충돌했다면
+	Enemy* enemy = dynamic_cast<Enemy*>(&other);
+	if (enemy)
+	{
+		health -= 0.1f;
+	}
 }

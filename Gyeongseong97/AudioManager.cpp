@@ -50,7 +50,7 @@ AudioManager& AudioManager::GetInstance()
 	return instance;
 }
 
-void AudioManager::PlayAudio(std::wstring audioPath, bool loop)
+void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 {
 	// 파일 경로 정의
 	std::vector<wchar_t> pathBuffer(MAX_PATH);
@@ -80,6 +80,9 @@ void AudioManager::PlayAudio(std::wstring audioPath, bool loop)
 		return;
 	}
 
+	// 사운드 볼륨 설정
+	ma_sound_set_volume(pSound, volume);
+
 	// 포인터를 리스트에 추가
 	sounds.push_back(pSound);
 	
@@ -87,6 +90,12 @@ void AudioManager::PlayAudio(std::wstring audioPath, bool loop)
 	// 메인 스레드가 묶이므로 소리를 재생하기 위한 백그라운드 스레드를 하나 생성한다.
 	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, this, pSound, loop);
 	audioThread.detach();
+}
+
+void AudioManager::SetMasterVolume(float volume)
+{
+	// miniaudio 엔진의 마스터 볼륨 설정
+	ma_engine_set_volume(&audioEngine, volume);
 }
 
 void AudioManager::StopAudio(std::wstring audioPath)

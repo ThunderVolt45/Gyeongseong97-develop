@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <memory>
+#include <set>
+#include <mutex>
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -7,6 +10,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "Enemy.h"
 
 class GameManager
 {
@@ -28,17 +32,19 @@ private:
 	GameManager& operator=(const GameManager&) = delete;
 
 	Player player;
-	std::vector<Bullet> bullets;
-	std::vector<GameObject> enemies;
-	
-	std::vector<GameObject> gameObjects;
+	std::list<std::shared_ptr<GameObject>> gameObjects;
 
-	int score = 0;
+	// 삭제할 오브젝트들을 모아둘 set
+	std::set<GameObject*> objectsToDestroy;
+
+	// 스레드 동기화를 위한 뮤텍스
+	std::mutex gameMutex;
+	
 	long long tick = 0;
 	int shootCooldown = 0;
 
 	void Reset();
-	void DrawObjectSprite(ftxui::Canvas& canvas, GameObject object);
+	void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);
 
 public:
 	/// <summary>
@@ -47,13 +53,17 @@ public:
 	/// <returns>GameManager 객체의 참조값</returns>
 	static GameManager& GetInstance();
 
+	std::atomic<int> score = 0;
 	std::atomic<bool> IsRunning;
 	std::atomic<bool> IsGameOver = false;
+	std::atomic<int> currentFps = 0;
+	std::atomic<int> currentLps = 0;
 
 	void Update();
 	ftxui::Element Render();
 	bool OnEvent(ftxui::Event event);
 
-	void CreateBullet(Bullet bullet);
+	void CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack = true);
+	void DestroyGameObject(GameObject* gameObject);
 };
 

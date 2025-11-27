@@ -1,6 +1,9 @@
 #include "GameObject.h"
 #include "ImageLoader.h"
 
+extern const int GAME_WIDTH;
+extern const int GAME_HEIGHT;
+
 GameObject::GameObject()
 {
 
@@ -30,18 +33,43 @@ void GameObject::Update()
 
 }
 
+bool GameObject::IsOutOfScreen()
+{
+	bool isOutofScreen = false;
+
+	int w = sprite.sizeX;
+	int h = sprite.sizeY;
+
+	if (x + w / 2 < 0) isOutofScreen = true;
+	if (x - w / 2 > GAME_WIDTH) isOutofScreen = true;
+	if (y + h / 2 < 0) isOutofScreen = true;
+	if (y - h / 2 > GAME_HEIGHT) isOutofScreen = true;
+
+	return isOutofScreen;
+}
+
 bool GameObject::IsColliding(const GameObject& other)
 {
-	// 스프라이트 크기가 유효하지 않으면 3x3로 처리
-	int width = sprite.sizeX > 0 ? sprite.sizeX : 3;
-	int height = sprite.sizeY > 0 ? sprite.sizeY : 3;
+	// 크기가 너무 작다면 판정 크기를 3 x 3 으로 처리
+	int width = sprite.sizeX > 3 ? sprite.sizeX : 3;
+	int height = sprite.sizeY > 3 ? sprite.sizeY : 3;
 
-	int otherWidth = other.sprite.sizeX > 0 ? other.sprite.sizeX : 3;
-	int otherHeight = other.sprite.sizeY > 0 ? other.sprite.sizeY : 3;
+	int otherWidth = other.sprite.sizeX > 3 ? other.sprite.sizeX : 3;
+	int otherHeight = other.sprite.sizeY > 3 ? other.sprite.sizeY : 3;
 
 	// AABB 충돌 검사
 	return x < other.x + otherWidth &&
 		   x + width > other.x &&
 		   y < other.y + otherHeight &&
 		   y + height > other.y;
+}
+
+void GameObject::OnCollision(GameObject& other)
+{
+
+}
+
+void GameObject::Destroy()
+{
+	
 }

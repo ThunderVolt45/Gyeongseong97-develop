@@ -33,7 +33,7 @@ void GameLoop(ScreenInteractive& screen);
 // 게임 설정 상수
 extern const int GAME_WIDTH = 160;
 extern const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
-extern const std::chrono::microseconds TICK_TIME = 16667us; // 16667us = 약 60fps
+extern const std::chrono::microseconds TICK_TIME = 16700us; // 16667us = 약 60fps
 
 int main()
 {
@@ -42,7 +42,7 @@ int main()
 
 	// 오디오 엔진 초기화
 	AudioManager& audioManager = AudioManager::GetInstance();
-	audioManager.PlayAudio(L"bgm_hk97_16bit.mp3", true);
+	audioManager.PlayAudio(L"bgm_hk97_16bit.mp3", 0.5f, true);
 
 	// 화면 정리
 	system("cls");
@@ -231,15 +231,45 @@ void GameLoop(ScreenInteractive& screen)
 	// UI 렌더링과 별개로 게임의 로직을 일정 간격(TICK_TIME)으로 실행
 	std::thread thread(
 		[&] {
+			using clock = std::chrono::steady_clock;
+
+			auto nextFrameTime = clock::now();
+			auto lastFpsTime = clock::now();
+			int frames = 0;
+			int logics = 0;
+
 			while (gameManager.IsRunning)
 			{
-				gameManager.Update();
+				auto now = clock::now();
+
+				// 로직 업데이트
+				// 시간이 많이 지났으면 Update를 여러 번 호출해서 게임 속도를 맞춤
+				int updateCount = 0;
+
+				while (now >= nextFrameTime && updateCount < 4) // 최대 4번까지만 따라잡기 (무한루프 방지)
+				{
+					gameManager.Update();
+					logics++;
+					nextFrameTime += TICK_TIME;
+					updateCount++;
+				}
 
 				// 화면 갱신
 				screen.Post(Event::Custom);
+				frames++;
 
-				// 일정 시간 동안 취침
-				this_thread::sleep_for(TICK_TIME);
+				// FPS 계산 (1초마다 갱신)
+				if (now - lastFpsTime >= std::chrono::milliseconds(1000))
+				{
+					gameManager.currentLps = logics;
+					gameManager.currentFps = frames;
+					logics = 0;
+					frames = 0;
+					lastFpsTime = now;
+				}
+
+				// 3. 남은 시간 대기 (CPU 과점유 방지)
+				std::this_thread::sleep_for(std::chrono::milliseconds(1));
 			}
 		}
 	);

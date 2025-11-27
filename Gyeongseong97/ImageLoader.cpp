@@ -1,4 +1,4 @@
-﻿#pragma execution_character_set( "utf-8" )
+#pragma execution_character_set( "utf-8" )
 
 #include "ImageLoader.h"
 #include "Utility.h"
@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 
 #include <windows.h>
 
@@ -15,6 +16,9 @@
 #include <stb_image.h>
 
 const static std::wstring IMAGE_PATH = L"\\Sprites\\";
+
+// 정적 멤버 변수 정의
+std::map<std::string, RawImage> ImageLoader::cacheImages;
 
 Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int sizeY)
 {
@@ -38,14 +42,31 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 	const char* filePath = strFilePath.c_str();
 
 	int width, height, n_channels;
+	unsigned char* data;
 
-	// 이미지 파일의 픽셀 데이터를 메모리로 로드한다.
-	unsigned char* data = stbi_load(filePath, &width, &height, &n_channels, 4);
+	// 이미지가 캐싱되어 있는 지 검사한다.
+	if (cacheImages.contains(filePath))
+	{
+		// 캐싱된 이미지를 가져온다.
+		RawImage raw = cacheImages[filePath];
+		width = raw.width;
+		height = raw.height;
+		n_channels = raw.n_channels;
+		data = raw.data;
+	}
+	else
+	{
+		// 이미지 파일의 픽셀 데이터를 메모리로 로드한다.
+		data = stbi_load(filePath, &width, &height, &n_channels, 4);
+
+		// 로드된 픽셀 데이터를 캐싱한다.
+		RawImage raw = RawImage(width, height, n_channels, data);
+		cacheImages.insert(std::pair<std::string, RawImage>(filePath, raw));
+	}
 
 	// 이미지 로딩에 실패했다면
 	if (data == nullptr)
 	{
-		std::wcerr << L"stb: 이미지를 로드할 수 없습니다. " << filePath << L" 파일이 존재하는지 확인하세요." << std::endl;
 		return sprite;
 	}
 
@@ -99,8 +120,8 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 		}
 	}
 
-	// 메모리 해제
-	stbi_image_free(data);
+	// 메모리 해제 (캐싱된 이미지는 해제하면 안 됨)
+	 //stbi_image_free(data);
 
 	// Sprite 반환
 	return sprite;

@@ -1,8 +1,11 @@
 #pragma execution_character_set( "utf-8" )
+#include <set>
 #include "GameManager.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
+#define NODRAWTEXT
 #include <windows.h>
+#include <algorithm>
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -17,6 +20,11 @@ extern const int GAME_WIDTH;
 extern const int GAME_HEIGHT;
 const int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
 const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 20;
+
+// 공간 분할을 위한 그리드 설정
+const int CELL_SIZE = 20; // 격자 크기 (20x20)
+const int GRID_COLS = (160 + CELL_SIZE - 1) / CELL_SIZE; // 160 / 20 = 8
+const int GRID_ROWS = (120 + CELL_SIZE - 1) / CELL_SIZE; // 120 / 20 = 6
 
 GameManager::GameManager()
 {
@@ -44,17 +52,32 @@ void GameManager::Reset()
 	player.x = PLAYER_DEFAULT_POSITION_X - player.sprite.sizeX / 2;
 	player.y = PLAYER_DEFAULT_POSITION_Y - player.sprite.sizeY / 2;
 
-	bullets.clear();
-	enemies.clear();
+	// 게임 오브젝트 초기화
+	gameObjects.clear();
+	objectsToDestroy.clear();
+
 	score = 0;
 	IsGameOver = false;
 	tick = 0;
 }
 
-void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
+void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
 {
 	int spriteIndex = 0;
-	for (int y = object.y; y < object.y + object.sprite.sizeY; y++)
+
+	// 오브젝트 좌표 값을 int로 반올림해 형변환
+	int objX = static_cast<int>(std::round(object.x));
+	int objY = static_cast<int>(std::round(object.y));
+
+	// 만약 Sprite 정보가 없다면 흰색 블럭 하나를 찍는다
+	if (object.sprite.sizeX == 0)
+	{
+		canvas.DrawBlock(objX, objY, true, ftxui::Color::White);
+		return;
+	}
+
+	// Sprite의 색상 값을 보고 Canvas에 블럭을 그린다.
+	for (int y = objY; y < objY + object.sprite.sizeY; y++)
 	{
 		// Sprite의 위가 잘리는 경우
 		if (y < 0)
@@ -69,7 +92,7 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
 			break;
 		}
 
-		for (int x = object.x; x < object.x + object.sprite.sizeX; x++)
+		for (int x = objX; x < objX + object.sprite.sizeX; x++)
 		{
 			// Sprite의 왼쪽이 잘리는 경우
 			if (x < 0)
@@ -86,7 +109,7 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
 			}
 
 			// index 값이 vector 크기를 넘을 경우 중단
-			if (spriteIndex > object.sprite.colors.size() - 1)
+			if (spriteIndex >= object.sprite.colors.size())
 			{
 				break;
 			}
@@ -98,9 +121,21 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, GameObject object)
 	}
 }
 
-void GameManager::CreateBullet(Bullet bullet)
+void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack)
 {
-	bullets.push_back(bullet);
+	if (pushToBack)
+	{
+		gameObjects.push_back(gameObject);
+	}
+	else
+	{
+		gameObjects.push_front(gameObject);
+	}
+}
+
+void GameManager::DestroyGameObject(GameObject* gameObject)
+{
+	objectsToDestroy.insert(gameObject);
 }
 
 void GameManager::Update()
@@ -110,97 +145,156 @@ void GameManager::Update()
 	// 플레이어 업데이트
 	player.Update();
 
-	// 총알 업데이트
-	for (GameObject& bullet : bullets)
+	// 플레이어의 체력이 다 떨어졌다면 게임 오버
+	if (player.health <= 0)
 	{
-		bullet.Update();
+		IsGameOver = true;
 	}
 
-	// 화면 밖으로 나간 총알 제거
-	bullets.erase(std::remove_if(bullets.begin(), bullets.end(), [](const GameObject& obj) { return obj.y < 0; }), bullets.end());
+	// Grid 초기화
+	// 각 셀은 해당 영역에 있는 오브젝트들의 포인터 목록을 갖는다
+	std::vector<GameObject*> grid[GRID_ROWS][GRID_COLS];
 
-	// 게임 오버 상태가 되면 여기서 중단한다
-	if (IsGameOver)
+	// 게임 오브젝트 업데이트 및 그리드 등록 (Broad Phase)
+	for (auto iter = gameObjects.begin(); iter != gameObjects.end(); )
 	{
-		return;
+		auto& obj = *iter;
+		
+		// 객체별 로직 업데이트
+		obj->Update();
+
+		// 화면 밖으로 나갔다면 즉시 제거 목록에 추가하고 업데이트 중단
+		if (obj->IsOutOfScreen())
+		{
+			iter = gameObjects.erase(iter);
+			continue;
+		}
+
+		// 객체가 차지하는 그리드 셀 범위 계산
+		// 객체의 크기(Sprite Size)에 따라 여러 셀에 걸칠 수 있음을 고려
+		int w = obj->sprite.sizeX > 0 ? obj->sprite.sizeX : 1;
+		int h = obj->sprite.sizeY > 0 ? obj->sprite.sizeY : 1;
+
+		// std::max(0, ...) -> 값 < 0 ? 0 : 값
+		// std::min(GRID_COLS - 1, ...) -> 값 > GRID_COLS - 1 ? GRID_COLS - 1 : 값
+		int tempVal;
+
+		tempVal = obj->x / CELL_SIZE;
+		int startCol = tempVal < 0 ? 0 : tempVal;
+
+		tempVal = (obj->x + w) / CELL_SIZE;
+		int endCol = tempVal > GRID_COLS - 1 ? GRID_COLS - 1 : tempVal;
+
+		tempVal = obj->y / CELL_SIZE;
+		int startRow = tempVal < 0 ? 0 : tempVal;
+
+		tempVal = (obj->y + h) / CELL_SIZE;
+		int endRow = tempVal > GRID_ROWS - 1 ? GRID_ROWS - 1 : tempVal;
+
+		// 해당 범위의 모든 셀에 객체 포인터 등록
+		for (int r = startRow; r <= endRow; ++r)
+		{
+			for (int c = startCol; c <= endCol; ++c)
+			{
+				grid[r][c].push_back(obj.get());
+			}
+		}
+
+		iter++;
 	}
 
-	// 일정 간격으로 적 생성
+	// 충돌 검사
+	
+	// (A) 플레이어 충돌 검사
+	// 플레이어가 위치한 그리드 셀만 검사하면 됩니다.
+	int tempVal;
+
+	tempVal = player.x / CELL_SIZE;
+	int pStartCol = tempVal < 0 ? 0 : tempVal;
+
+	tempVal = (player.x + player.sprite.sizeX) / CELL_SIZE;
+	int pEndCol = tempVal > GRID_COLS - 1 ? GRID_COLS - 1 : tempVal;
+
+	tempVal = player.y / CELL_SIZE;
+	int pStartRow = tempVal < 0 ? 0 : tempVal;
+
+	tempVal = (player.y + player.sprite.sizeY) / CELL_SIZE;
+	int pEndRow = tempVal > GRID_ROWS - 1 ? GRID_ROWS - 1 : tempVal;
+
+	for (int r = pStartRow; r <= pEndRow; ++r)
+	{
+		for (int c = pStartCol; c <= pEndCol; ++c)
+		{
+			for (GameObject* other : grid[r][c])
+			{
+				// 이미 죽은 객체는 무시
+				if (objectsToDestroy.count(other)) continue;
+
+				if (player.IsColliding(*other))
+				{
+					player.OnCollision(*other);
+					other->OnCollision(player);
+				}
+			}
+		}
+	}
+
+	// (B) 오브젝트 간 충돌 검사 (총알 vs 적 등)
+	for (int r = 0; r < GRID_ROWS; ++r)
+	{
+		for (int c = 0; c < GRID_COLS; ++c)
+		{
+			auto& cell = grid[r][c];
+			if (cell.size() < 2) continue; // 2개 이상 있어야 충돌 가능
+
+			for (size_t i = 0; i < cell.size(); ++i)
+			{
+				for (size_t j = i + 1; j < cell.size(); ++j)
+				{
+					GameObject* objA = cell[i];
+					GameObject* objB = cell[j];
+
+					// 둘 중 하나라도 이미 죽은 상태면 건너뜀
+					if (objectsToDestroy.count(objA) || objectsToDestroy.count(objB)) continue;
+
+					// 충돌 검사
+					if (objA->IsColliding(*objB))
+					{
+						objA->OnCollision(*objB);
+						objB->OnCollision(*objA);
+					}
+				}
+			}
+		}
+	}
+
+	// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
+	// std::lock_guard를 쓰면 코드 블록을 벗어날 때 자동으로 mutex가 해제된다.
+	std::lock_guard<std::mutex> lock(gameMutex);
+
+	// 제거 명단에 오른 오브젝트를 모두 제거
+	if (!objectsToDestroy.empty())
+	{
+		gameObjects.erase(
+			std::remove_if(gameObjects.begin(), gameObjects.end(),
+				[&](const std::shared_ptr<GameObject>& ptr) {
+					return objectsToDestroy.count(ptr.get()) > 0;
+				}
+			),
+			gameObjects.end()
+		);
+		objectsToDestroy.clear();
+	}
+
+	// 게임 오버 상태가 되면 여기서 중단
+	if (IsGameOver) return;
+
+	// 적 생성
 	if (tick % 30 == 0)
 	{
 		int randomX = std::rand() % (GAME_WIDTH - 4) + 2;
-		GameObject enemy = GameObject(randomX, 0);
-		enemies.push_back(enemy);
-	}
-
-	// 적 이동
-	for (GameObject& enemy : enemies)
-	{
-		enemy.y += tick % 2 == 0 ? 1 : 0;
-	}
-
-	// Bullet 충돌 처리
-	for (auto bullet = bullets.begin(); bullet != bullets.end();)
-	{
-		bool hit = false;
-
-		if (bullet->isMine) // 플레이어 Bullet -> 적
-		{
-			for (auto enemy = enemies.begin(); enemy != enemies.end(); enemy++)
-			{
-				// 거리 기반 충돌 체크
-				if (bullet->IsColliding(*enemy))
-				{
-					enemies.erase(enemy);
-				
-					hit = true;
-					score += 100;
-					break;
-				}
-			}
-		}
-		else // 적 Bullet -> 플레이어
-		{
-			if (bullet->IsColliding(player))
-			{
-				hit = true;
-				player.health -= 1;
-
-				if (player.health < 0)
-				{
-					IsGameOver = true;
-				}
-			}
-		}
-
-		// Bullet 명중시 제거
-		if (hit)
-		{
-			bullet = bullets.erase(bullet);
-		}
-		else
-		{
-			bullet++;
-		}
-	}
-
-	// 플레이어 - 적 충돌 처리
-	for (auto enemy = enemies.begin(); enemy != enemies.end();)
-	{
-		if (enemy->IsColliding(player))
-		{
-			enemy = enemies.erase(enemy);
-			player.health -= 1;
-
-			if (player.health < 0)
-			{
-				IsGameOver = true;
-			}
-		}
-		else
-		{
-			enemy++;
-		}
+		auto enemy = std::make_shared<Enemy>(randomX, 0, 1, 0.5f, 100);
+		CreateGameObject(enemy);
 	}
 }
 
@@ -212,26 +306,35 @@ ftxui::Element GameManager::Render()
 	// 플레이어 그리기
 	DrawObjectSprite(canvas, player);
 
-	// 총알 그리기
-	for (Bullet bullet : bullets)
+	// Update와 Render가 동시에 호출되어 Render 도중에
+	// Update가 vector를 수정하면서 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
+	gameMutex.lock();
+
+	// 게임 오브젝트 그리기
+	for (const auto& object : gameObjects)
 	{
-		if (bullet.isMine)
-		{
-			canvas.DrawBlock(bullet.x, bullet.y, true, ftxui::Color::Yellow);
-		}
-		else
-		{
-			canvas.DrawBlock(bullet.x, bullet.y, true, ftxui::Color::HotPink);
-		}
+		if (object)
+			DrawObjectSprite(canvas, *object);
 	}
 
-	// 적 그리기
-	for (GameObject enemy : enemies)
+	// 볼 일이 다 끝났으면 잠금을 푼다.
+	gameMutex.unlock();
+
+	// FPS 표시
+	canvas.DrawText(0, 0, "FPS : " + std::to_string(currentFps) + ", Logic : " + std::to_string(currentLps),
+		[](ftxui::Pixel& p) {
+			p.foreground_color = ftxui::Color::Cyan;
+		});
+
+	// 게임 오버 시 게임 오버 메시지 표시
+	if (IsGameOver)
 	{
-		canvas.DrawBlock(enemy.x, enemy.y, true, ftxui::Color::Red);
-		canvas.DrawBlock(enemy.x + 1, enemy.y, true, ftxui::Color::Red);
-		canvas.DrawBlock(enemy.x, enemy.y + 1, true, ftxui::Color::Red);
-		canvas.DrawBlock(enemy.x + 1, enemy.y + 1, true, ftxui::Color::Red);
+		canvas.DrawText(GAME_WIDTH / 4 + 28, GAME_HEIGHT / 2 - 8, "GAME OVER!",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::Black;
+				p.background_color = ftxui::Color::Red;
+			});
+		canvas.DrawText(GAME_WIDTH / 4 + 2, GAME_HEIGHT / 2, "R키를 눌러 재시작, Q키를 눌러 나가기");
 	}
 
 	// 캔버스를 박스로 감싸준다
@@ -245,9 +348,6 @@ ftxui::Element GameManager::Render()
 
 	// 기타 UI
 	std::wstring textScore = L"Score : " + std::to_wstring(score);
-	std::wstring textGameOver = IsGameOver ? L"GAME OVER!" : L"";
-	std::wstring textRestart = IsGameOver ? L"R키를 눌러 재시작" : L"";
-	std::wstring textQuit = IsGameOver ? L"Q키를 눌러 나가기" : L"";
 
 	// 렌더링 타겟 반환
 	return ftxui::hbox(
@@ -256,10 +356,30 @@ ftxui::Element GameManager::Render()
 			ftxui::vbox(
 				{
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
-					ftxui::text(textGameOver) | ftxui::bold,
-					ftxui::text(textRestart) | ftxui::bold,
-					ftxui::text(textQuit) | ftxui::bold,
-					healthBar
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					ftxui::text(L""),
+					healthBar | ftxui::border
 				}
 			) | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, 20)
 		}

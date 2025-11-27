@@ -45,8 +45,15 @@ public:
 	/// 오디오 파일을 재생합니다.
 	/// </summary>
 	/// <param name="audioPath">오디오 파일의 이름</param>
+	/// <param name="volume">재생 볼륨 (0.0f ~ 1.0f)</param>
 	/// <param name="loop">반복 재생 여부</param>
-	void PlayAudio(std::wstring audioPath, bool loop = false);
+	void PlayAudio(std::wstring audioPath, float volume = 1.0f, bool loop = false);
+
+	/// <summary>
+	/// 모든 오디오의 마스터 볼륨을 조절합니다.
+	/// </summary>
+	/// <param name="volume">마스터 볼륨 (0.0f ~ 1.0f)</param>
+	void SetMasterVolume(float volume);
 
 	/// <summary>
 	/// 현재 재생 중인 오디오 파일의 재생을 중단합니다.
