@@ -20,7 +20,7 @@ Explosion::Explosion(int x, int y)
 	animationIndex = 0;
 
 	// 효과음 재생
-	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.mp3", 0.25f, false);
+	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.wav", 0.25f, false);
 
 	// 에셋이 로드되지 않았다면 로드 (Lazy Loading)
 	if (commonSprites.empty())

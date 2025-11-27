@@ -59,7 +59,7 @@ int main()
 		L"시작하기에 앞서...",
 		L"<------------- \'스페이스바를 눌러 계속\' 문자가 보일 때까지 터미널 크기를 키워주세요 ------------->",
 		L"<---------------- 그리고 좌우 화살표의 끝이 보일 때까지 터미널 크기를 키워주세요 ---------------->",
-		L"안하면 체력바 안 보입니다!"
+		L"(안하면 체력바 안 보입니다!)"
 		);
 
 	// 게임 시작
@@ -112,14 +112,14 @@ void TitleScreen(ScreenInteractive& screen)
 						|___/                      |___/                           |___/
 				*/
 				text(L""),
-				text(L"    _____                                                                     _____  ______   ") | bold | color(Color::Red) | center,
-				text(L"   |  __ \\                                                                   |  _  ||___  /   ") | bold | color(Color::Red) | center,
-				text(L"   | |  \\/ _   _   ___   ___   _ __    __ _  ___   ___   ___   _ __    __ _  | |_| |   / /    ") | bold | color(Color::Red) | center,
-				text(L"   | | __ | | | | / _ \\ / _ \\ | '_ \\  / _` |/ __| / _ \\ / _ \\ | '_ \\  / _` | \\____ |  / /     ") | bold | color(Color::Red) | center,
-				text(L"   | |_\\ \\| |_| ||  __/| (_) || | | || (_| |\\__ \\|  __/| (_) || | | || (_| | .___/ /./ /      ") | bold | color(Color::Red) | center,
-				text(L"    \\____/ \\__, | \\___| \\___/ |_| |_| \\__, ||___/ \\___| \\___/ |_| |_| \\__, | \\____/ \\_/       ") | bold | color(Color::Red) | center,
-				text(L"            __/ |                      __/ |                           __/ |                  ") | bold | color(Color::Red) | center,
-				text(L"           |___/                      |___/                           |___/                   ") | bold | color(Color::Red) | center,
+				text(L"    _____                                                                     _____  ______   ") | bold | color(Color::Red1) | center,
+				text(L"   |  __ \\                                                                   |  _  ||___  /   ") | bold | color(Color::Red1) | center,
+				text(L"   | |  \\/ _   _   ___   ___   _ __    __ _  ___   ___   ___   _ __    __ _  | |_| |   / /    ") | bold | color(Color::Red1) | center,
+				text(L"   | | __ | | | | / _ \\ / _ \\ | '_ \\  / _` |/ __| / _ \\ / _ \\ | '_ \\  / _` | \\____ |  / /     ") | bold | color(Color::Red1) | center,
+				text(L"   | |_\\ \\| |_| ||  __/| (_) || | | || (_| |\\__ \\|  __/| (_) || | | || (_| | .___/ /./ /      ") | bold | color(Color::Red1) | center,
+				text(L"    \\____/ \\__, | \\___| \\___/ |_| |_| \\__, ||___/ \\___| \\___/ |_| |_| \\__, | \\____/ \\_/       ") | bold | color(Color::Red1) | center,
+				text(L"            __/ |                      __/ |                           __/ |                  ") | bold | color(Color::Red1) | center,
+				text(L"           |___/                      |___/                           |___/                   ") | bold | color(Color::Red1) | center,
 				text(L""),
 				text(L""),
 				text(L"WinAPI + FTXUI + miniaudio C++ 콘솔 게임 포트폴리오") | color(Color::Yellow) | center,

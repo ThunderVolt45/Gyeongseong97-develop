@@ -350,7 +350,10 @@ ftxui::Element GameManager::Render()
 				p.foreground_color = ftxui::Color::Black;
 				p.background_color = ftxui::Color::Red;
 			});
-		canvas.DrawText(GAME_WIDTH / 4 + 2, GAME_HEIGHT / 2, "R키를 눌러 재시작, Q키를 눌러 나가기");
+		canvas.DrawText(GAME_WIDTH / 4 + 2, GAME_HEIGHT / 2, "R키를 눌러 재시작, Q키를 눌러 나가기",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::White;
+			});
 	}
 
 	// 캔버스를 박스로 감싸준다
