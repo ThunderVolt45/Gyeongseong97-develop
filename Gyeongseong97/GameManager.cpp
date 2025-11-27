@@ -123,6 +123,8 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& obje
 
 void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack)
 {
+	std::lock_guard<std::recursive_mutex> lock(gameMutex);
+
 	if (pushToBack)
 	{
 		gameObjects.push_back(gameObject);
@@ -135,11 +137,17 @@ void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool 
 
 void GameManager::DestroyGameObject(GameObject* gameObject)
 {
+	std::lock_guard<std::recursive_mutex> lock(gameMutex);
 	objectsToDestroy.insert(gameObject);
 }
 
 void GameManager::Update()
 {
+	// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
+	// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
+	std::lock_guard<std::recursive_mutex> lock(gameMutex);
+
+	// 틱
 	tick++;
 
 	// 플레이어 업데이트
@@ -268,10 +276,6 @@ void GameManager::Update()
 		}
 	}
 
-	// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
-	// std::lock_guard를 쓰면 코드 블록을 벗어날 때 자동으로 mutex가 해제된다.
-	std::lock_guard<std::mutex> lock(gameMutex);
-
 	// 제거 명단에 오른 오브젝트를 모두 제거
 	if (!objectsToDestroy.empty())
 	{
@@ -306,19 +310,18 @@ ftxui::Element GameManager::Render()
 	// 플레이어 그리기
 	DrawObjectSprite(canvas, player);
 
-	// Update와 Render가 동시에 호출되어 Render 도중에
-	// Update가 vector를 수정하면서 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
-	gameMutex.lock();
-
-	// 게임 오브젝트 그리기
-	for (const auto& object : gameObjects)
+	// 임계 구역
 	{
-		if (object)
-			DrawObjectSprite(canvas, *object);
-	}
+		// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
+		// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
+		std::lock_guard<std::recursive_mutex> lock(gameMutex);
 
-	// 볼 일이 다 끝났으면 잠금을 푼다.
-	gameMutex.unlock();
+		// 게임 오브젝트 그리기
+		for (const auto& object : gameObjects)
+		{
+			DrawObjectSprite(canvas, *object);
+		}
+	}
 
 	// FPS 표시
 	canvas.DrawText(0, 0, "FPS : " + std::to_string(currentFps) + ", Logic : " + std::to_string(currentLps),

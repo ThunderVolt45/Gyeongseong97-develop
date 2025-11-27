@@ -38,7 +38,7 @@ private:
 	std::set<GameObject*> objectsToDestroy;
 
 	// 스레드 동기화를 위한 뮤텍스
-	std::mutex gameMutex;
+	std::recursive_mutex gameMutex;
 	
 	long long tick = 0;
 	int shootCooldown = 0;

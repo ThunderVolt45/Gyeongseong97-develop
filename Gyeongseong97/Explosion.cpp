@@ -15,8 +15,8 @@ Explosion::Explosion(int x, int y)
 	lifeTimeTick = 120;
 	animationIndex = 0;
 
-	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.mp3",  0.5f);
-	sprite = ImageLoader::CreateSpriteFromImage(L"폭8/폭8_0003.png", SIZE_X, SIZE_Y);
+	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.mp3",  0.25f);
+	sprite = ImageLoader::CreateSpriteFromImage(L"폭8/폭8_0000.png", SIZE_X, SIZE_Y);
 
 	// Sprites 초기화
 	for (int i = 0; i < 36; i++)
