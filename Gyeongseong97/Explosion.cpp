@@ -12,8 +12,8 @@ std::vector<Sprite> Explosion::commonSprites;
 
 Explosion::Explosion(int x, int y)
 {
-	this->x = x;
-	this->y = y;
+	this->x = (float)x;
+	this->y = (float)y;
 
 	tick = 0;
 	lifeTimeTick = 120;
@@ -27,23 +27,25 @@ Explosion::Explosion(int x, int y)
 	{
 		LoadAssets();
 	}
-
+	
 	// 기본 Sprite 설정
-	Sprite sprite = ImageLoader::CreateSpriteFromImage(L"폭8_0001.png", SIZE_X, SIZE_Y);
-}
-
-void Explosion::LoadAssets()
-{
-	// Sprites 초기화
-	for (int i = 0; i < 36; i++)
+	if (!commonSprites.empty())
 	{
-		std::wstringstream ss;
-		ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
-		Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), SIZE_X, SIZE_Y);
-		commonSprites.push_back(sprite);
+		sprite = commonSprites[0];
 	}
-}
-
+	}
+	
+	void Explosion::LoadAssets()
+	{
+		// Sprites 초기화
+		for (int i = 1; i <= 37; i++)
+		{
+			std::wstringstream ss;
+			ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
+			Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), SIZE_X, SIZE_Y);
+			commonSprites.push_back(sprite);
+		}
+	}
 void Explosion::Update()
 {
 	tick += 1;
