@@ -1,6 +1,7 @@
 #pragma execution_character_set( "utf-8" )
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "StageManager.h"
 #include "GameConstants.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
@@ -20,6 +21,9 @@
 
 GameManager::GameManager()
 {
+	// 스테이지 초기화
+	stage.Initialize();
+
 	// 플레이어 초기화
 	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y, 40, 30, L"image.png");
 
@@ -48,6 +52,9 @@ void GameManager::Reset()
 	gameObjects.clear();
 	objectsToDestroy.clear();
 	objectsToCreate.clear();
+
+	// 스테이지 초기화
+	stage.Reset();
 
 	score = 0;
 	IsGameOver = false;
@@ -307,13 +314,8 @@ void GameManager::Update()
 	// 게임 오버 상태가 되면 여기서 중단
 	if (IsGameOver) return;
 
-	// 적 생성
-	if (tick % 30 == 0)
-	{
-		int randomX = std::rand() % (GAME_WIDTH - 4) + 2;
-		auto enemy = std::make_shared<Enemy>(randomX, 0, 1, 0.5f, 100);
-		CreateGameObject(enemy);
-	}
+	// 스테이지 갱신
+	stage.Update();
 }
 
 ftxui::Element GameManager::Render()

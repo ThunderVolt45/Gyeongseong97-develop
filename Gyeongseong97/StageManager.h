@@ -31,8 +31,12 @@ struct Wave
 
 class StageManager
 {
+private:
+	long long tick;
+
 public:
 	void Initialize();
+	void Reset();
 	void Update();
 };
 

@@ -8,6 +8,7 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 
+#include "StageManager.h"
 #include "GameObject.h"
 #include "Player.h"
 #include "Bullet.h"
@@ -33,6 +34,7 @@ private:
 	GameManager& operator=(const GameManager&) = delete;
 
 	Player player;
+	StageManager stage;
 	std::list<std::shared_ptr<GameObject>> gameObjects;
 
 	// 삭제할 오브젝트들을 모아둘 set
