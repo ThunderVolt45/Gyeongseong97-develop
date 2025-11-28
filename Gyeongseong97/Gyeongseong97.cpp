@@ -238,6 +238,9 @@ void GameLoop(ScreenInteractive& screen)
 			int frames = 0;
 			int logics = 0;
 
+			// 게임 시작 시간
+			auto startTime = clock::now();
+
 			while (gameManager.IsRunning)
 			{
 				auto now = clock::now();
@@ -268,8 +271,21 @@ void GameLoop(ScreenInteractive& screen)
 					lastFpsTime = now;
 				}
 
-				// 3. 남은 시간 대기 (CPU 과점유 방지)
-				std::this_thread::sleep_for(std::chrono::milliseconds(1));
+				// 게임 진행 시간 계산
+				if (!gameManager.IsGameOver)
+				{
+					chrono::duration<double> duration = now - startTime;
+					long long durationSecond = static_cast<long long>(duration.count());
+					long long mm = durationSecond / 60;
+					long long ss = durationSecond % 60;
+
+					wstringstream strStream;
+					strStream << to_wstring(mm) << L":" << setw(2) << setfill(L'0') << to_wstring(ss);
+					gameManager.gameTime = strStream.str();
+				}
+
+				// 잠깐 대기 (CPU 과점유 방지)
+				this_thread::sleep_for(std::chrono::milliseconds(1));
 			}
 		}
 	);

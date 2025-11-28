@@ -71,6 +71,9 @@ void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 
 	// ma_sound 객체를 생성
 	ma_sound* pSound = new ma_sound;
+
+	// ma_sound_init_from_file 함수는 소리를 재생한 후
+	// 내부적으로 재사용을 위해 메모리에 저장하므로 별도의 오브젝트 풀링 코드를 작성할 필요가 없다.
 	ma_result result = ma_sound_init_from_file(&audioEngine, filePath.c_str(), 0, NULL, NULL, pSound);
 
 	if (result != MA_SUCCESS)
@@ -111,11 +114,14 @@ void AudioManager::PlayAudioThread(ma_sound* pSound, bool loop)
 	// 사운드 재생
 	ma_sound_start(pSound);
 
-	// 반복 재생하지 않는 사운드일 경우 대기 후 리스트에서 제거하고 리소스를 정리한다
+	// 메모리 해제: 반복 재생하지 않는 사운드일 경우 대기 후 리스트에서 제거하고 리소스를 정리한다
+	// 한번 로드한 사운드를 계속 우려먹어야 하므로 메모리 해제는 소멸자에서만 호출한다.
+	/*
 	while (!loop)
 	{
 		if (ma_sound_at_end(pSound) != MA_FALSE)
 		{
+			// 메모리 해제
 			ma_sound_uninit(pSound);
 			sounds.remove(pSound);
 			delete pSound;
@@ -123,4 +129,5 @@ void AudioManager::PlayAudioThread(ma_sound* pSound, bool loop)
 			return;
 		}
 	}
+	*/
 }

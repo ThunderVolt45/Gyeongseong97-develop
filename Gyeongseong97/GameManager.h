@@ -3,6 +3,7 @@
 #include <memory>
 #include <set>
 #include <mutex>
+#include <string>
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -61,6 +62,7 @@ public:
 	std::atomic<bool> IsGameOver = false;
 	std::atomic<int> currentFps = 0;
 	std::atomic<int> currentLps = 0;
+	std::wstring gameTime;
 
 	void Update();
 	ftxui::Element Render();

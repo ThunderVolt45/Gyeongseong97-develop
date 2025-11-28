@@ -19,7 +19,7 @@ Explosion::Explosion(int x, int y)
 	lifeTimeTick = 120;
 	animationIndex = 0;
 
-	// 효과음 재생
+	// 폭8 효과음 재생
 	AudioManager::GetInstance().PlayAudio(L"sfx_explosion.wav", 0.25f, false);
 
 	// 에셋이 로드되지 않았다면 로드 (Lazy Loading)

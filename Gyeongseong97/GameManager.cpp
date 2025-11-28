@@ -358,6 +358,7 @@ ftxui::Element GameManager::Render()
 	// 캔버스를 박스로 감싸준다
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
+
 	// 체력 바 그리기
 	auto healthBar = ftxui::vbox({
 			ftxui::text(L"Health : "),
@@ -365,6 +366,7 @@ ftxui::Element GameManager::Render()
 		});
 
 	// 기타 UI
+	std::wstring textTime = L"Time : " + gameTime;
 	std::wstring textScore = L"Score : " + std::to_wstring(score);
 
 	// 렌더링 타겟 반환
@@ -373,10 +375,8 @@ ftxui::Element GameManager::Render()
 			UI | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, GAME_WIDTH / 2),
 			ftxui::vbox(
 				{
+					ftxui::text(textTime) | ftxui::border | ftxui::bold,
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
 					ftxui::text(L""),
 					ftxui::text(L""),
 					ftxui::text(L""),
