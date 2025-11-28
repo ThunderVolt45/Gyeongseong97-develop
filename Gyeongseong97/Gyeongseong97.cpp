@@ -17,6 +17,7 @@
 #include <ftxui/component/component.hpp>
 
 #include "GameManager.h"
+#include "GameConstants.h"
 #include "Utility.h"
 #include "AudioManager.h"
 #include "ImageLoader.h"
@@ -29,11 +30,6 @@ void TitleScreen(ScreenInteractive& screen);
 void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4);
 void GameLoop(ScreenInteractive& screen);
 #pragma endregion
-
-// 게임 설정 상수
-extern const int GAME_WIDTH = 160;
-extern const int GAME_HEIGHT = 120; // 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
-extern const std::chrono::microseconds TICK_TIME = 16700us; // 16667us = 약 60fps
 
 int main()
 {

@@ -16,7 +16,9 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore) : GameObject(
 	this->speed = speed;
 	this->killScore = killScore;
 
-	sprite = Sprite(1, 1, { ftxui::Color::Red });
+	using color = ftxui::Color;
+
+	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 24, 24);
 }
 
 Enemy::Enemy(int x, int y, int w, int h, std::wstring spriteName, int health = 1, float speed = 0.5f, int killScore = 100) : GameObject(x, y, w, h, spriteName)
@@ -32,7 +34,7 @@ Enemy::Enemy(int x, int y, int w, int h, std::wstring spriteName, int health = 1
 
 void Enemy::Destroy()
 {
-	std::shared_ptr<Explosion> explosion(new Explosion(x - 16, y - 12));
+	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY()));
 	GameManager::GetInstance().CreateGameObject(explosion, false);
 	GameManager::GetInstance().DestroyGameObject(this);
 	GameManager::GetInstance().score += killScore;

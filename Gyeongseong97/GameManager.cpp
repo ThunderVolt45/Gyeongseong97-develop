@@ -1,10 +1,13 @@
 #pragma execution_character_set( "utf-8" )
-#include <set>
 #include "GameManager.h"
+#include "AudioManager.h"
+#include "GameConstants.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
 #define NODRAWTEXT
 #include <windows.h>
+
+#include <set>
 #include <algorithm>
 
 #include <ftxui/component/screen_interactive.hpp>
@@ -14,17 +17,6 @@
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/screen/color.hpp>
 #include <ftxui/component/component.hpp>
-
-// 게임 설정 상수
-extern const int GAME_WIDTH;
-extern const int GAME_HEIGHT;
-const int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
-const int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 20;
-
-// 공간 분할을 위한 그리드 설정
-const int CELL_SIZE = 20; // 격자 크기 (20x20)
-const int GRID_COLS = (160 + CELL_SIZE - 1) / CELL_SIZE; // 160 / 20 = 8
-const int GRID_ROWS = (120 + CELL_SIZE - 1) / CELL_SIZE; // 120 / 20 = 6
 
 GameManager::GameManager()
 {
@@ -61,6 +53,9 @@ void GameManager::Reset()
 	IsGameOver = false;
 	tick = 0;
 }
+
+// 게임 오브젝트 업데이트 및 그리드 등록 (Broad Phase)
+	// ...
 
 void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
 {
@@ -120,7 +115,11 @@ void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& obje
 			}
 
 			// Canvas에 색상으로 점(블록)을 찍는다.
-			canvas.DrawBlock(x, y, true, object.sprite.colors[spriteIndex]);
+			ftxui::Color pixelColor = object.sprite.colors[spriteIndex];
+			if (pixelColor.IsOpaque())
+			{
+				canvas.DrawBlock(x, y, true, pixelColor);
+			}
 			spriteIndex++;
 		}
 	}
@@ -130,7 +129,7 @@ void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool 
 {
 	std::lock_guard<std::recursive_mutex> lock(gameMutex);
 
-	// 반복문 도중 벡터 수정으로 인한 충돌을 막기 위해 대기열에 넣음                                                        │
+	// 반복문 도중 벡터 수정으로 인한 충돌을 막기 위해 대기열에 넣음
 	// objectsToCreate.push_back(gameObject);
 
 	if (pushToBack)
@@ -164,7 +163,7 @@ void GameManager::Update()
 		gameObjects.insert(gameObjects.end(), objectsToCreate.begin(), objectsToCreate.end());
 		objectsToCreate.clear();
 	}*/
-
+	
 	// 플레이어 업데이트
 	player.Update();
 
@@ -344,12 +343,16 @@ ftxui::Element GameManager::Render()
 	// 게임 오버 시 게임 오버 메시지 표시
 	if (IsGameOver)
 	{
-		canvas.DrawText(GAME_WIDTH / 4 + 28, GAME_HEIGHT / 2 - 8, "GAME OVER!",
+		canvas.DrawText(GAME_WIDTH / 2 - (5 * 2) - 2, GAME_HEIGHT / 2 - 8, "GAME OVER!",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::Black;
 				p.background_color = ftxui::Color::Red;
 			});
-		canvas.DrawText(GAME_WIDTH / 4 + 2, GAME_HEIGHT / 2, "R키를 눌러 재시작, Q키를 눌러 나가기",
+		canvas.DrawText(GAME_WIDTH / 2 - (22 * 2) - 2, GAME_HEIGHT / 2, "김두한은 오렌지병이었던 고혈압으로 쓰러졌다.",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::White;
+			});
+		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, "(R키를 눌러 재시작, Q키를 눌러 나가기)",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
@@ -377,28 +380,7 @@ ftxui::Element GameManager::Render()
 				{
 					ftxui::text(textTime) | ftxui::border | ftxui::bold,
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
-					ftxui::text(L""),
+					ftxui::filler(),
 					healthBar | ftxui::border
 				}
 			) | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, 20)

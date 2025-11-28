@@ -3,8 +3,8 @@
 #include "AudioManager.h"
 #include "ImageLoader.h"
 
-const int SIZE_X = 32;
-const int SIZE_Y = 24;
+const int SIZE_X = 40;
+const int SIZE_Y = 30;
 
 // 플라이웨이트 패턴
 // 어차피 폭8 오브젝트는 다 같은 Sprite를 돌려쓰므로 그냥 static으로 하나만 저장하면 된다.
@@ -12,8 +12,8 @@ std::vector<Sprite> Explosion::commonSprites;
 
 Explosion::Explosion(int x, int y)
 {
-	this->x = (float)x;
-	this->y = (float)y;
+	this->x = (float)(x - SIZE_X / 2);
+	this->y = (float)(y - SIZE_Y / 2);
 
 	tick = 0;
 	lifeTimeTick = 120;

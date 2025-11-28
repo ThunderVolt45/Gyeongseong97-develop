@@ -1,8 +1,6 @@
 #include "GameObject.h"
 #include "ImageLoader.h"
-
-extern const int GAME_WIDTH;
-extern const int GAME_HEIGHT;
+#include "GameConstants.h"
 
 GameObject::GameObject()
 {
@@ -26,6 +24,16 @@ GameObject::GameObject(int x, int y, int w, int h, std::wstring spriteName)
 GameObject::~GameObject()
 {
 
+}
+
+float GameObject::GetCenterX()
+{
+	return x + sprite.sizeX / 2;
+}
+
+float GameObject::GetCenterY()
+{
+	return y + sprite.sizeY / 2;
 }
 
 void GameObject::Update()

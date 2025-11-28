@@ -4,9 +4,7 @@
 #include "GameManager.h"
 #include "Player.h"
 #include "Bullet.h"
-
-extern const int GAME_WIDTH;
-extern const int GAME_HEIGHT;
+#include "GameConstants.h"
 
 Player::Player() : GameObject()
 {
@@ -48,10 +46,7 @@ void Player::Update()
 	// 발사 (Space 키)
 	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && cooldown <= 0)
 	{
-		int posX = static_cast<int>(x + sprite.sizeX / 2);
-		int posY = static_cast<int>(y - 3);
-
-		std::shared_ptr<Bullet> bullet(new Bullet(posX, posY, 0.0f, 4.0f, true));
+		std::shared_ptr<Bullet> bullet(new Bullet(GetCenterX(), y, 0.0f, 4.0f, true));
 		GameManager::GetInstance().CreateGameObject(bullet);
 
 		cooldown = 6; // 6틱(약 100ms) 쿨다운

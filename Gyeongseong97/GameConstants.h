@@ -1,0 +1,19 @@
+#pragma once
+
+#include <chrono>
+
+using namespace std;
+
+// 게임 설정 상수
+constexpr int GAME_WIDTH = 240; // 기본값 : 160,
+constexpr int GAME_HEIGHT = 180; // 기본값 : 120, 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
+constexpr std::chrono::microseconds TICK_TIME = 16700us; // 16667us = 약 60fps
+
+// 플레이어 기본 위치
+constexpr int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
+constexpr int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 20;
+
+// 공간 분할을 위한 그리드 설정
+constexpr int CELL_SIZE = 20; // 격자 크기 (20x20)
+constexpr int GRID_COLS = (GAME_WIDTH + CELL_SIZE - 1) / CELL_SIZE; // 160 / 20 = 8
+constexpr int GRID_ROWS = (GAME_HEIGHT + CELL_SIZE - 1) / CELL_SIZE; // 120 / 20 = 6

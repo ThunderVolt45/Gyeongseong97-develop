@@ -34,12 +34,20 @@ AudioManager::AudioManager()
 
 AudioManager::~AudioManager()
 {
+	// 뮤텍스를 사용하여 리스트 접근 보호
+	std::lock_guard<std::mutex> lock(soundMutex);
+
 	// 모든 활성 사운드 리소스를 정리
-	for (ma_sound* pSound : sounds)
+	for (PlayingSoundInfo* info : activeSounds)
 	{
-		ma_sound_uninit(pSound);
-		delete pSound;
+		ma_sound_uninit(info->pSound);
+
+		delete info->pSound; // ma_sound 객체 해제
+		delete info; // PlayingSoundInfo 객체 해제
 	}
+
+	// 리스트 비우기
+	activeSounds.clear();
 
 	// 오디오 엔진 리소스 정리
 	ma_engine_uninit(&audioEngine);
@@ -73,8 +81,6 @@ void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 	// ma_sound 객체를 생성
 	ma_sound* pSound = new ma_sound;
 
-	// ma_sound_init_from_file 함수는 소리를 재생한 후
-	// 내부적으로 재사용을 위해 메모리에 저장하므로 별도의 오브젝트 풀링 코드를 작성할 필요가 없다.
 	ma_result result = ma_sound_init_from_file(&audioEngine, filePath.c_str(), 0, NULL, NULL, pSound);
 
 	if (result != MA_SUCCESS)
@@ -87,15 +93,23 @@ void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 	// 사운드 볼륨 설정
 	ma_sound_set_volume(pSound, volume);
 
-	// 포인터를 리스트에 추가 (스레드 안전하게 보호)
+	// PlayingSoundInfo 객체 생성 및 초기화
+	PlayingSoundInfo* pInfo = new PlayingSoundInfo;
+	pInfo->pSound = pSound;
+	pInfo->audioPath = audioPath; // 원본 wstring 경로 저장
+	pInfo->isLooping = loop;     // 반복 재생 여부 저장
+
 	{
+		// 뮤텍스를 사용하여 리스트 접근 보호
 		std::lock_guard<std::mutex> lock(soundMutex);
-		sounds.push_back(pSound);
+
+		// 포인터를 리스트에 추가한다.
+		activeSounds.push_back(pInfo);
 	}
 	
 	// 소리 재생을 메인 스레드에서 실행하면 재생이 끝날 때까지
 	// 메인 스레드가 묶이므로 소리를 재생하기 위한 백그라운드 스레드를 하나 생성한다.
-	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, this, pSound, loop);
+	std::thread audioThread = std::thread(&AudioManager::PlayAudioThread, this, pInfo);
 	audioThread.detach();
 }
 
@@ -107,37 +121,50 @@ void AudioManager::SetMasterVolume(float volume)
 
 void AudioManager::StopAudio(std::wstring audioPath)
 {
+	// 뮤텍스를 사용하여 리스트 접근 보호
+    std::lock_guard<std::mutex> lock(soundMutex);
 
+    // activeSounds 리스트를 순회하며 해당 audioPath를 가진 사운드를 찾음
+    for (PlayingSoundInfo* pInfo : activeSounds)
+    {
+		// 해당 오디오 경로를 가진 모든 재생 중인 사운드를 중지시킨다.
+        if (pInfo->audioPath == audioPath)
+        {
+            ma_sound_stop(pInfo->pSound);
+            ma_sound_set_looping(pInfo->pSound, MA_FALSE); // 반복 재생 중지
+
+            // PlayAudioThread가 ma_sound_is_playing()이 false가 되는 것을 감지하여 정리할 것임.
+        }
+    }
 }
 
-void AudioManager::PlayAudioThread(ma_sound* pSound, bool loop)
+void AudioManager::PlayAudioThread(PlayingSoundInfo* pInfo)
 {
 	// 반복 재생 설정
-	ma_sound_set_looping(pSound, loop ? MA_TRUE : MA_FALSE);
+	ma_sound_set_looping(pInfo->pSound, pInfo->isLooping ? MA_TRUE : MA_FALSE);
 
 	// 사운드 재생
-	ma_sound_start(pSound);
+	ma_sound_start(pInfo->pSound);
 
-	// 메모리 해제
-	// 반복 재생하지 않는 사운드일 경우 대기 후 리스트에서 제거하고 리소스를 정리한다
-	if (!loop)
+	// 사운드가 재생 중인 동안 대기 (StopAudio에 의해 중지될 수 있음)
+	// ma_sound_is_playing은 사운드가 일시정지되거나 멈췄을 때 false를 반환합니다.
+	while (ma_sound_is_playing(pInfo->pSound))
 	{
-		// 재생할 소리의 길이 값을 구한다.
-		ma_result result;
-		float length;
-		result = ma_sound_get_length_in_seconds(pSound, &length);
-
-		// 사운드 재생이 끝날 때까지 대기
-		long long lengthToLL = static_cast<long long>(length * 1000 + 1);
-		std::this_thread::sleep_for(std::chrono::milliseconds(lengthToLL));
-
-		ma_sound_uninit(pSound);
-
-		{
-			std::lock_guard<std::mutex> lock(soundMutex);
-			sounds.remove(pSound);
-		}
-
-		delete pSound;
+		// CPU 점유율을 낮추기 위해 잠시 대기 (100ms)
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
+	
+	// 사운드가 재생을 멈췄으므로 리소스 정리
+	ma_sound_uninit(pInfo->pSound);
+
+	{
+		// 뮤텍스를 사용하여 리스트 접근 보호
+		std::lock_guard<std::mutex> lock(soundMutex);
+
+		// 리스트에서 해당 PlayingSoundInfo 제거 및 메모리 해제
+		activeSounds.remove(pInfo); // pInfo가 리스트에 있는 포인터와 동일해야 함
+	}
+
+	delete pInfo->pSound; // ma_sound 객체 해제
+	delete pInfo; // PlayingSoundInfo 객체 해제
 }

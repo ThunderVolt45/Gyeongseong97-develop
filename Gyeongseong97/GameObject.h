@@ -20,6 +20,18 @@ public:
 	~GameObject();
 
 	/// <summary>
+	/// GameObject의 중심 좌표의 X값을 반환하는 함수
+	/// </summary>
+	/// <returns>GameObject의 중심 좌표의 X값</returns>
+	float GetCenterX();
+
+	/// <summary>
+	/// GameObject의 중심 좌표의 Y값을 반환하는 함수
+	/// </summary>
+	/// <returns>GameObject의 중심 좌표의 Y값</returns>
+	float GetCenterY();
+
+	/// <summary>
 	/// 매 Logic Frame 마다 호출되는 메서드
 	/// </summary>
 	virtual void Update();

@@ -8,10 +8,16 @@
 
 class AudioManager
 {
-private:
 	ma_engine audioEngine;
-	std::list<ma_sound*> sounds;
-	std::mutex soundMutex;
+	
+	struct PlayingSoundInfo {
+		ma_sound* pSound;
+		std::wstring audioPath; // For identifying which sound to stop
+		bool isLooping;       // To track if it's a looping sound
+	};
+	std::list<PlayingSoundInfo*> activeSounds; // List of currently playing sounds
+
+	std::mutex soundMutex; // Mutex for activeSounds list
 
 	/// <summary>
 	/// AudioManager의 생성자
@@ -32,9 +38,8 @@ private:
 	/// <summary>
 	/// AudioManager 내부적으로 백그라운드 오디오 재생을 위해 Thread를 생성하는 함수
 	/// </summary>
-	/// <param name="pSound"></param>
-	/// <param name="loop"></param>
-	void PlayAudioThread(ma_sound* pSound, bool loop = false);
+	/// <param name="pSoundInfo">재생할 사운드의 정보</param>
+	void PlayAudioThread(PlayingSoundInfo* pSoundInfo);
 
 public:
 	/// <summary>
