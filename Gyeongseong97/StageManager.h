@@ -32,11 +32,34 @@ struct Wave
 class StageManager
 {
 private:
+	std::vector<Wave> waves; // 웨이브 목록
+	float tickTimeToFloat;
 	long long tick;
 
+	size_t currentWaveIndex = 0;
+	size_t currentEnemyIndex = 0;
+	float delayTimer = 0.0f;
+
+	/// <summary>
+	/// SpawnData를 받아와 적을 생성하는 함수
+	/// </summary>
+	/// <param name="spawnData">생성할 적의 SpawnData</param>
+	void CreateEnemy(SpawnData spawnData);
+
 public:
+	/// <summary>
+	/// StageManager를 초기화시키는 함수
+	/// </summary>
 	void Initialize();
+
+	/// <summary>
+	/// StageManager를 초기 상태로 되돌리는 함수
+	/// </summary>
 	void Reset();
+
+	/// <summary>
+	/// StageManager의 tick을 진행시키는 함수
+	/// </summary>
 	void Update();
 };
 

@@ -33,8 +33,10 @@ private:
 	GameManager(const GameManager&) = delete;
 	GameManager& operator=(const GameManager&) = delete;
 
-	Player player;
+	// 스테이지 매니저
 	StageManager stage;
+
+	// 게임 내에 생성된 모든 GameObject를 담을 list
 	std::list<std::shared_ptr<GameObject>> gameObjects;
 
 	// 삭제할 오브젝트들을 모아둘 set
@@ -53,6 +55,8 @@ private:
 	void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);
 
 public:
+	Player player;
+
 	/// <summary>
 	/// GameManager의 유일한 인스턴스에 접근하는 메서드
 	/// </summary>

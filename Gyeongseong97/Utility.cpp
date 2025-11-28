@@ -2,6 +2,7 @@
 
 #include "Utility.h"
 #include <iostream>
+#include <random>
 #include <windows.h>
 
 std::string Utility::ConvertWideToUtf8(const wchar_t* wideStr)
@@ -31,4 +32,18 @@ std::string Utility::ConvertWideToUtf8(const wchar_t* wideStr)
 	utf8str.resize(requiredSize - 1);
 
 	return utf8str;
+}
+
+
+int Utility::GenerateRandomNumber(int begin, int end)
+{
+	// 난수 생성기 초기화
+	std::random_device random;
+	std::mt19937 engine(random());
+
+	// 난수 범위 설정
+	std::uniform_int_distribution<int> distribution(begin, end);
+
+	// 난수 생성
+	return distribution(engine);
 }
