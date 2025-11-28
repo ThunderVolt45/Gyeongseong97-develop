@@ -19,6 +19,9 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore) : GameObject(
 	using color = ftxui::Color;
 
 	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 24, 24);
+
+	this->x = (float)(x - (sprite.sizeX / 2));
+	this->y = (float)(y - (sprite.sizeY / 2));
 }
 
 Enemy::Enemy(int x, int y, int w, int h, std::wstring spriteName, int health = 1, float speed = 0.5f, int killScore = 100) : GameObject(x, y, w, h, spriteName)

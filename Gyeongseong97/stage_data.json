@@ -3,6 +3,11 @@
     {
       "nextWaveDelay": 2.0,
       "enemies": [
+        { "type": 0, "x": 40, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 80, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 120, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 160, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 200, "y": 0, "nextEnemyDelay": 2.0 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
@@ -43,11 +48,11 @@
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 1.5 },
-        { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.0 },
-        { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.0 },
-        { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.0 },
-        { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.0 },
-        { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.0 }
+        { "type": 0, "x": 40, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 80, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 120, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 160, "y": 0, "nextEnemyDelay": 0.0 },
+        { "type": 0, "x": 200, "y": 0, "nextEnemyDelay": 0.0 }
       ]
     }
   ]
