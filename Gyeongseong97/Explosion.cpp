@@ -33,19 +33,20 @@ Explosion::Explosion(int x, int y)
 	{
 		sprite = commonSprites[0];
 	}
-	}
-	
-	void Explosion::LoadAssets()
+}
+
+void Explosion::LoadAssets()
+{
+	// Sprites 초기화
+	for (int i = 1; i <= 37; i++)
 	{
-		// Sprites 초기화
-		for (int i = 1; i <= 37; i++)
-		{
-			std::wstringstream ss;
-			ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
-			Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), SIZE_X, SIZE_Y);
-			commonSprites.push_back(sprite);
-		}
+		std::wstringstream ss;
+		ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
+		Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), SIZE_X, SIZE_Y);
+		commonSprites.push_back(sprite);
 	}
+}
+
 void Explosion::Update()
 {
 	tick += 1;

@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include "AudioManager.h"
 
 Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine)
 {
@@ -16,6 +17,9 @@ Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine)
 	}
 
 	sprite = Sprite(1, 1, { color });
+
+	// 총 소리 출력
+	AudioManager::GetInstance().PlayAudio(L"sfx_gunfire.wav", 0.15f);
 }
 
 void Bullet::Update()

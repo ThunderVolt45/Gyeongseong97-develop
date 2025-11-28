@@ -128,7 +128,8 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 		}
 	}
 
-	// 메모리 해제 (캐싱된 이미지는 해제하면 안 됨)
+	// 메모리 해제
+	// 이미지 데이터를 캐싱해서 사용할 것이므로 메모리 해제는 C++ 런타임이 직접 수행하게 해야 한다.
 	 //stbi_image_free(data);
 
 	// Sprite 반환
