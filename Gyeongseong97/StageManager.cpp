@@ -38,7 +38,7 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	}
 
 	// 적을 생성한다
-	auto enemy = std::make_shared<Enemy>(spawnX, spawnY, 1, 0.5f, 100);
+	auto enemy = std::make_shared<Enemy>(spawnX, spawnY, 1.5f, 0.5f, 100);
 	GameManager::GetInstance().CreateGameObject(enemy);
 }
 
@@ -48,7 +48,7 @@ void StageManager::Initialize()
 	tick = 0;
 	currentWaveIndex = 0;
 	currentEnemyIndex = 0;
-	delayTimer = 1.0f; // 첫 Wave는 1초 후 시작
+	delayTimer = 2.0f; // 첫 Wave는 1초 후 시작
 
 	// tick 값 (마이크로초) 를 float 값 (초) 로 변환한다
 	std::chrono::duration<float> floatSeconds = std::chrono::duration_cast<std::chrono::duration<float>>(TICK_TIME);
@@ -97,7 +97,7 @@ void StageManager::Reset()
 	tick = 0;
 	currentWaveIndex = 0;
 	currentEnemyIndex = 0;
-	delayTimer = 0.0f;
+	delayTimer = 2.0f;
 }
 
 void StageManager::Update()

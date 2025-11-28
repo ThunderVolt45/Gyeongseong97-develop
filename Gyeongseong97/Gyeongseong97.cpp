@@ -123,10 +123,12 @@ void TitleScreen(ScreenInteractive& screen)
 				text(L"홍콩 97 / 야인시대 패러디 게임") | color(Color::White) | center,
 				text(L"(이 게임은 제작자의 정치적 성향과는 어떠한 연관도 없으며 그냥 웃기려고 만든 겁니다)") | color(Color::White) | center,
 				text(L""),
+				text(L"이 게임은 140 x 47 이상 크기의 터미널 창에서만 정상적으로 플레이할 수 있습니다") | bold | color(Color::Green) | center,
+				text(L""),
 				text(L""),
 				button->Render() | center,
 				text(L""),
-			}) | border | center | color(Color::Red);
+			}) | border | center | color(Color::Red) | size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2);
 		}
 	);
 
@@ -139,8 +141,8 @@ void TitleScreen(ScreenInteractive& screen)
 void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4)
 {
 	// 캔버스 생성
-	int canvasWidth = 160;
-	int canvasHeight = 100;
+	int canvasWidth = GAME_WIDTH + 40;
+	int canvasHeight = GAME_HEIGHT - 20;
 	auto canvas = ftxui::Canvas(canvasWidth, canvasHeight);
 
 	// Sprite 로드
@@ -168,7 +170,7 @@ void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine
 					text(textLine3) | center,
 					text(textLine4) | center,
 					text(L"스페이스바를 눌러 계속...") | align_right | color(Color::GrayDark)
-				}) | border
+				}) | border | size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
 			});
 		}
 	);
