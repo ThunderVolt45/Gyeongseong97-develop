@@ -10,6 +10,7 @@
 #include <vector>
 #include <thread>
 #include <windows.h>
+#include <chrono>
 
 const static std::wstring AUDIO_PATH = L"\\Sounds\\";
 
@@ -86,8 +87,11 @@ void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 	// 사운드 볼륨 설정
 	ma_sound_set_volume(pSound, volume);
 
-	// 포인터를 리스트에 추가
-	sounds.push_back(pSound);
+	// 포인터를 리스트에 추가 (스레드 안전하게 보호)
+	{
+		std::lock_guard<std::mutex> lock(soundMutex);
+		sounds.push_back(pSound);
+	}
 	
 	// 소리 재생을 메인 스레드에서 실행하면 재생이 끝날 때까지
 	// 메인 스레드가 묶이므로 소리를 재생하기 위한 백그라운드 스레드를 하나 생성한다.
@@ -114,20 +118,26 @@ void AudioManager::PlayAudioThread(ma_sound* pSound, bool loop)
 	// 사운드 재생
 	ma_sound_start(pSound);
 
-	// 메모리 해제: 반복 재생하지 않는 사운드일 경우 대기 후 리스트에서 제거하고 리소스를 정리한다
-	// 한번 로드한 사운드를 계속 우려먹어야 하므로 메모리 해제는 소멸자에서만 호출한다.
-	/*
-	while (!loop)
+	// 메모리 해제
+	// 반복 재생하지 않는 사운드일 경우 대기 후 리스트에서 제거하고 리소스를 정리한다
+	if (!loop)
 	{
-		if (ma_sound_at_end(pSound) != MA_FALSE)
-		{
-			// 메모리 해제
-			ma_sound_uninit(pSound);
-			sounds.remove(pSound);
-			delete pSound;
+		// 재생할 소리의 길이 값을 구한다.
+		ma_result result;
+		float length;
+		result = ma_sound_get_length_in_seconds(pSound, &length);
 
-			return;
+		// 사운드 재생이 끝날 때까지 대기
+		long long lengthToLL = static_cast<long long>(length * 1000 + 1);
+		std::this_thread::sleep_for(std::chrono::milliseconds(lengthToLL));
+
+		ma_sound_uninit(pSound);
+
+		{
+			std::lock_guard<std::mutex> lock(soundMutex);
+			sounds.remove(pSound);
 		}
+
+		delete pSound;
 	}
-	*/
 }

@@ -4,12 +4,14 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <mutex>
 
 class AudioManager
 {
 private:
 	ma_engine audioEngine;
 	std::list<ma_sound*> sounds;
+	std::mutex soundMutex;
 
 	/// <summary>
 	/// AudioManager의 생성자
