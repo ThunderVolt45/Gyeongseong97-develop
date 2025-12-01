@@ -48,8 +48,8 @@ private:
 	// 스레드 동기화를 위한 뮤텍스
 	std::recursive_mutex gameMutex;
 	
+	// 게임 틱
 	long long tick = 0;
-	int shootCooldown = 0;
 
 	void Reset();
 	void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);

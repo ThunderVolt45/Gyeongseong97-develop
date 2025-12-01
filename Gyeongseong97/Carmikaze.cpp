@@ -1,5 +1,9 @@
 #include "Carmikaze.h"
 #include "GameConstants.h"
+#include "GameManager.h"
+#include "Explosion.h"
+
+#pragma region Constructer & Destroyer
 
 Carmikaze::Carmikaze()
 {
@@ -12,6 +16,7 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 	
+	// 스프라이트 로드
 	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Carmikaze.png", 60, 30);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
@@ -27,9 +32,32 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	{
 		this->direction = 1;
 	}
+
+	// 등장 SFX
+
 }
+
+#pragma endregion
+
+#pragma region Protected
+
+void Carmikaze::Destroy()
+{
+	GameManager& gameManager = GameManager::GetInstance();
+
+	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY(), 60, 45));
+	gameManager.CreateGameObject(explosion, false);
+	gameManager.DestroyGameObject(this);
+	gameManager.score += killScore;
+}
+
+#pragma endregion
+
+#pragma region Public
 
 void Carmikaze::Update()
 {
 	x += speed * direction;
 }
+
+#pragma endregion

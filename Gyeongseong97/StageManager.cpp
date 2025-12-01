@@ -5,6 +5,7 @@
 #include "GameConstants.h"
 #include "Utility.h"
 #include "Enemy.h"
+#include "Vanguard.h"
 #include "Carmikaze.h"
 
 #include "json.hpp"
@@ -56,6 +57,8 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	{
 	case EnemyType::Vanguard:
 	{
+		auto vanguard = std::make_shared<Vanguard>(spawnX, spawnY, spawnData.health, spawnData.speed, 500);
+		GameManager::GetInstance().CreateGameObject(vanguard);
 		break;
 	}
 	case EnemyType::Carmikaze:
@@ -83,7 +86,7 @@ void StageManager::Initialize()
 	tick = 0;
 	currentWaveIndex = 0;
 	currentEnemyIndex = 0;
-	delayTimer = 2.0f; // 첫 Wave는 1초 후 시작
+	delayTimer = 2.0f; // 첫 Wave는 2초 후 시작
 
 	// tick 값 (마이크로초) 를 float 값 (초) 로 변환한다
 	std::chrono::duration<float> floatSeconds = std::chrono::duration_cast<std::chrono::duration<float>>(TICK_TIME);

@@ -5,6 +5,7 @@ class Carmikaze : public Enemy
 {
 private:
 	int direction = 1;
+	void Destroy() override;
 
 public:
 	Carmikaze();

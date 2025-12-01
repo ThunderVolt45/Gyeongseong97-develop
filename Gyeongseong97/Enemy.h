@@ -3,7 +3,7 @@
 
 class Enemy : public GameObject
 {
-private:
+protected:
 	void Destroy() override;
 
 public:

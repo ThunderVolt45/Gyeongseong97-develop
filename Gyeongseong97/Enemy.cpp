@@ -25,14 +25,16 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 
 #pragma endregion
 
-#pragma region Private
+#pragma region Protected
 
 void Enemy::Destroy()
 {
+	GameManager& gameManager = GameManager::GetInstance();
+
 	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY()));
-	GameManager::GetInstance().CreateGameObject(explosion, false);
-	GameManager::GetInstance().DestroyGameObject(this);
-	GameManager::GetInstance().score += killScore;
+	gameManager.CreateGameObject(explosion, false);
+	gameManager.DestroyGameObject(this);
+	gameManager.score += killScore;
 }
 
 #pragma endregion
