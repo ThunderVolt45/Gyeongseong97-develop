@@ -2,9 +2,10 @@
 #include <windows.h>
 
 #include "GameManager.h"
+#include "GameConstants.h"
 #include "Player.h"
 #include "Bullet.h"
-#include "GameConstants.h"
+#include "Explosion.h"
 
 Player::Player() : GameObject()
 {
@@ -18,6 +19,14 @@ Player::Player(int x, int y, int w, int h, std::wstring spriteName) : GameObject
 	maxHealth = 5;
 	health = 5;
 	cooldown = 0;
+}
+
+void Player::Destroy()
+{
+	GameManager& gameManager = GameManager::GetInstance();
+
+	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY()));
+	gameManager.CreateGameObject(explosion, false);
 }
 
 void Player::Reset()
@@ -59,6 +68,8 @@ void Player::Update()
 
 void Player::OnCollision(GameObject& other)
 {
+	GameManager& gameManager = GameManager::GetInstance();
+
 	// 만약 Bullet과 충돌했다면
 	Bullet* bullet = dynamic_cast<Bullet*>(&other);
 	if (bullet)
@@ -68,8 +79,14 @@ void Player::OnCollision(GameObject& other)
 			health -= 1;
 		}
 
+		// 체력이 다 닳았으면 파괴
+		if (health <= 0 && !gameManager.IsGameOver)
+		{
+			Destroy();
+		}
+
 		// 총알 파괴
-		GameManager::GetInstance().DestroyGameObject(bullet);
+		gameManager.DestroyGameObject(bullet);
 
 		return;
 	}
@@ -79,5 +96,11 @@ void Player::OnCollision(GameObject& other)
 	if (enemy)
 	{
 		health -= 0.1f;
+
+		// 체력이 다 닳았으면 파괴
+		if (health <= 0 && !gameManager.IsGameOver)
+		{
+			Destroy();
+		}
 	}
 }
