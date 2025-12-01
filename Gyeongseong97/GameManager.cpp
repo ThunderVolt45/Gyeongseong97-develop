@@ -25,7 +25,7 @@ GameManager::GameManager()
 	stage.Initialize();
 
 	// 플레이어 생성
-	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y, 40, 30, L"image.png");
+	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y);
 
 	// 백그라운드 생성
 	// 배경은 없는 게 성능 상 나은 듯 ㅈㅈ

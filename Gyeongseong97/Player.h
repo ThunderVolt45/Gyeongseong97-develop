@@ -16,7 +16,7 @@ public:
 	int cooldown;
 
 	Player();
-	Player(int x, int y, int w, int h, std::wstring spriteName);
+	Player(int x, int y);
 
 	void Reset();
 	void Update() override;

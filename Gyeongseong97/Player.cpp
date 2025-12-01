@@ -14,8 +14,18 @@ Player::Player() : GameObject()
 	cooldown = 0;
 }
 
-Player::Player(int x, int y, int w, int h, std::wstring spriteName) : GameObject(x, y, w, h, spriteName)
+Player::Player(int x, int y)
 {
+	int w = 40;
+	int h = 30;
+
+	this->x = (float)(x - (w / 2));
+	this->y = (float)(y - (h / 2));
+
+	defaultSprite = ImageLoader::CreateSpriteFromImage(L"image.png", w, h);
+	deathSprite = ImageLoader::CreateSpriteFromImage(L"player_death.png", 40, 30);
+	sprite = defaultSprite;
+
 	maxHealth = 5;
 	health = 5;
 	cooldown = 0;
@@ -27,12 +37,16 @@ void Player::Destroy()
 
 	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY()));
 	gameManager.CreateGameObject(explosion, false);
+
+	sprite = deathSprite;
 }
 
 void Player::Reset()
 {
 	cooldown = 0;
 	health = maxHealth;
+
+	sprite = defaultSprite;
 }
 
 void Player::Update()
