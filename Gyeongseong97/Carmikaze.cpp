@@ -12,7 +12,7 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 	
-	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Carmikaze.png", 80, 45);
+	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Carmikaze.png", 60, 30);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
 	this->y = (float)(y - (sprite.sizeY / 2));

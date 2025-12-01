@@ -60,7 +60,7 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	}
 	case EnemyType::Carmikaze:
 	{
-		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 10, 1.5f, 1000);
+		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, spawnData.health, spawnData.speed, 1000);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
 		break;
 	}
@@ -70,7 +70,7 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	}
 	default:
 	{
-		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, 1, 0.5f, 0);
+		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, spawnData.health, spawnData.speed, 0);
 		GameManager::GetInstance().CreateGameObject(instigated);
 		break;
 	}
@@ -110,6 +110,8 @@ void StageManager::Initialize()
 				spawn.type = static_cast<EnemyType>(enemyData["type"]);
 				spawn.x = enemyData["x"];
 				spawn.y = enemyData["y"];
+				spawn.health = enemyData["health"];
+				spawn.speed = enemyData["speed"];
 				spawn.nextEnemyDelay = enemyData["nextEnemyDelay"];
 
 				wave.enemies.push_back(spawn);

@@ -22,6 +22,8 @@ struct SpawnData
 	EnemyType type;
 	int x = static_cast<int>(SpawnPosition::Random);
 	int y = 0;
+	int health = 1;
+	float speed = 1.0f;
 	float nextEnemyDelay; // 이 몬스터가 생성된 후 다음 몬스터 생성까지의 대기 시간
 };
 
