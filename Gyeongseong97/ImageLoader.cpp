@@ -157,3 +157,20 @@ Sprite ImageLoader::FlipSpriteX(Sprite spriteToFlip)
 
 	return newSprite;
 }
+
+Sprite ImageLoader::CreateHitSprite(Sprite originalSprite)
+{
+	Sprite newSprite;
+	newSprite.sizeX = originalSprite.sizeX;
+	newSprite.sizeY = originalSprite.sizeY;
+	newSprite.colors.reserve(originalSprite.colors.size()); // Reserve space for efficiency
+
+	// Sprite의 모든 픽셀을 순회
+	for (int i = 0; i < originalSprite.colors.size(); i++)
+	{
+		ftxui::Color color = ftxui::Color::RGBA(255, 0, 0, originalSprite.colors[i].IsOpaque() ? 255 : 0);
+		newSprite.colors.push_back(color);
+	}
+
+	return newSprite;
+}

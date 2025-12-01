@@ -18,7 +18,10 @@ Vanguard::Vanguard(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_vanguard.png", 12, 36);
+	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_vanguard.png", 18, 36);
+	sprite = originalSprite;
+
+	hitSprite = ImageLoader::CreateHitSprite(sprite);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
 	this->y = (float)(y - (sprite.sizeY / 2));
@@ -30,6 +33,8 @@ Vanguard::Vanguard(int x, int y, int health, float speed, int killScore)
 
 void Vanguard::Update()
 {
+	ProcessHitEffect();
+
 	y += speed / 4;
 	if (cooldown > 0) cooldown -= 1;
 	if (stunTime > 0) stunTime -= 1;
@@ -74,11 +79,11 @@ void Vanguard::Attack()
 	if (cooldown > 0) return;
 
 	// 발사!
-	std::shared_ptr<Bullet> bullet(new Bullet(GetCenterX(), GetCenterY() + 2, 0.0f, -2.0f, false));
+	std::shared_ptr<Bullet> bullet(new Bullet(GetCenterX(), GetCenterY(), 0.0f, -1.5f, false));
 	GameManager::GetInstance().CreateGameObject(bullet);
 
-	cooldown += 60; // 60틱 마다 한번 공격
-	stunTime += 15; // 사격 후 15틱 간 대기
+	cooldown += 90; // 90틱 마다 한번 공격
+	stunTime += 30; // 사격 후 30틱 간 대기
 }
 
 #pragma endregion

@@ -18,21 +18,24 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	this->killScore = killScore;
 	
 	// 스프라이트 로드
-	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Carmikaze.png", 60, 30);
-
-	this->x = (float)(x - (sprite.sizeX / 2));
-	this->y = (float)(y - (sprite.sizeY / 2));
+	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_Carmikaze.png", 60, 30);
 
 	// 만약 오른쪽에서 생성된다면 sprite를 뒤집어준다
 	if (x > GAME_WIDTH / 2)
 	{
 		this->direction = -1;
-		sprite = ImageLoader::FlipSpriteX(sprite);
+		originalSprite = ImageLoader::FlipSpriteX(originalSprite);
 	}
 	else
 	{
 		this->direction = 1;
 	}
+
+	this->x = (float)(x - (sprite.sizeX / 2));
+	this->y = (float)(y - (sprite.sizeY / 2));
+
+	sprite = originalSprite;
+	hitSprite = ImageLoader::CreateHitSprite(sprite);
 
 	// 등장 SFX
 	AudioManager::GetInstance().PlayAudio(L"sfx_car.wav");
@@ -58,6 +61,8 @@ void Carmikaze::Destroy()
 
 void Carmikaze::Update()
 {
+	ProcessHitEffect();
+
 	x += speed * direction;
 }
 

@@ -155,10 +155,17 @@ void StageManager::Update()
 		return;
 	}
 
-	// 현재 Wave 내의 모든 Enemy를 생성했다면 다음 Wave로 넘어간다
+	// 현재 Wave 내의 모든 Enemy를 생성했다면
 	const auto& currentWave = waves[currentWaveIndex];
 	if (currentEnemyIndex >= currentWave.enemies.size())
 	{
+		// 필드에 모든 적이 처치될 때까지 기다리고
+		if (GameManager::GetInstance().IsEnemyAlive())
+		{
+			return;
+		}
+
+		// 다음 Wave로 넘어간다
 		delayTimer += currentWave.nextWaveDelay;
 		currentWaveIndex++;
 		currentEnemyIndex = 0;

@@ -28,5 +28,6 @@ private:
 public:
 	static Sprite CreateSpriteFromImage(std::wstring fileName, int sizeX, int sizeY);
 	static Sprite FlipSpriteX(Sprite spriteToFilp);
+	static Sprite CreateHitSprite(Sprite originalSprite);
 };
 

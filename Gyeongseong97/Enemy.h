@@ -4,6 +4,12 @@
 class Enemy : public GameObject
 {
 protected:
+	int hitEffectTick = 0;
+
+	Sprite originalSprite;
+	Sprite hitSprite;
+
+	void ProcessHitEffect();
 	void Destroy() override;
 
 public:

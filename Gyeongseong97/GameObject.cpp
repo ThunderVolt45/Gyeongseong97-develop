@@ -49,9 +49,9 @@ bool GameObject::IsOutOfScreen()
 	int h = sprite.sizeY;
 
 	if (x + w < 0) isOutofScreen = true;
-	if (x > GAME_WIDTH) isOutofScreen = true;
+	if (x - w > GAME_WIDTH) isOutofScreen = true;
 	if (y + h < 0) isOutofScreen = true;
-	if (y > GAME_HEIGHT) isOutofScreen = true;
+	if (y - h > GAME_HEIGHT) isOutofScreen = true;
 
 	return isOutofScreen;
 }

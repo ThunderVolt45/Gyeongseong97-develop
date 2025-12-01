@@ -156,6 +156,20 @@ void GameManager::DestroyGameObject(GameObject* gameObject)
 	objectsToDestroy.insert(gameObject);
 }
 
+bool GameManager::IsEnemyAlive()
+{
+	for (const auto& object : gameObjects)
+	{
+		if (dynamic_cast<Enemy*>(object.get()) != nullptr)
+		{
+			// Enemy가 하나라도 발견되면 true 반환
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void GameManager::Update()
 {
 	// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.

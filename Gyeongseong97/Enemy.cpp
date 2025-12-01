@@ -17,7 +17,10 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 12, 36);
+	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 18, 36);
+	sprite = originalSprite;
+
+	hitSprite = ImageLoader::CreateHitSprite(sprite);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
 	this->y = (float)(y - (sprite.sizeY / 2));
@@ -26,6 +29,22 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 #pragma endregion
 
 #pragma region Protected
+
+void Enemy::ProcessHitEffect()
+{
+	if (hitEffectTick == 0) return;
+
+	hitEffectTick--;
+
+	if (hitEffectTick > 0)
+	{
+		sprite = hitSprite;
+	}
+	else
+	{
+		sprite = originalSprite;
+	}
+}
 
 void Enemy::Destroy()
 {
@@ -43,6 +62,8 @@ void Enemy::Destroy()
 
 void Enemy::Update()
 {
+	ProcessHitEffect();
+
 	y += speed;
 }
 
@@ -56,6 +77,7 @@ void Enemy::OnCollision(GameObject& other)
 		if (bullet->isPlayer)
 		{
 			health -= 1;
+			hitEffectTick = 2;
 
 			// 히트 당 기본 점수
 			GameManager::GetInstance().score += SCORE_FOR_HIT;
@@ -77,6 +99,7 @@ void Enemy::OnCollision(GameObject& other)
 	if (player)
 	{
 		health -= 0.1f;
+		hitEffectTick = 2;
 
 		// 체력이 다 닳았으면 파괴
 		if (health <= 0)
