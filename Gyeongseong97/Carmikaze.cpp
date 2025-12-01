@@ -1,6 +1,7 @@
-#include "Carmikaze.h"
-#include "GameConstants.h"
 #include "GameManager.h"
+#include "AudioManager.h"
+#include "GameConstants.h"
+#include "Carmikaze.h"
 #include "Explosion.h"
 
 #pragma region Constructer & Destroyer
@@ -34,7 +35,7 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	}
 
 	// 등장 SFX
-
+	AudioManager::GetInstance().PlayAudio(L"sfx_car.wav");
 }
 
 #pragma endregion

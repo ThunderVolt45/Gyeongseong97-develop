@@ -56,6 +56,7 @@ private:
 
 public:
 	Player player;
+	GameObject background;
 
 	/// <summary>
 	/// GameManager의 유일한 인스턴스에 접근하는 메서드

@@ -17,7 +17,7 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 24, 24);
+	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 12, 36);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
 	this->y = (float)(y - (sprite.sizeY / 2));

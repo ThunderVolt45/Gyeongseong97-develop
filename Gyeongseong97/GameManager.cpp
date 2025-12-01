@@ -24,8 +24,12 @@ GameManager::GameManager()
 	// 스테이지 초기화
 	stage.Initialize();
 
-	// 플레이어 초기화
+	// 플레이어 생성
 	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y, 40, 30, L"image.png");
+
+	// 백그라운드 생성
+	// 배경은 없는 게 성능 상 나은 듯 ㅈㅈ
+	//background = GameObject(GAME_WIDTH * 0.5f, GAME_HEIGHT * 0.5f, GAME_WIDTH, GAME_HEIGHT, L"background.png");
 
 	IsRunning = true;
 }
@@ -60,9 +64,6 @@ void GameManager::Reset()
 	IsGameOver = false;
 	tick = 0;
 }
-
-// 게임 오브젝트 업데이트 및 그리드 등록 (Broad Phase)
-	// ...
 
 void GameManager::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
 {
@@ -322,6 +323,9 @@ ftxui::Element GameManager::Render()
 {
 	// 캔버스 생성
 	auto canvas = ftxui::Canvas(GAME_WIDTH, GAME_HEIGHT);
+
+	// 배경 그리기
+	//DrawObjectSprite(canvas, background);
 
 	// 임계 구역 설정
 	{

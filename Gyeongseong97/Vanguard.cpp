@@ -12,11 +12,13 @@ Vanguard::Vanguard()
 
 Vanguard::Vanguard(int x, int y, int health, float speed, int killScore)
 {
-	cooldown = 60; // 등장하자마자 사격하지 못하게 한다
+	cooldown = 30; // 등장하자마자 사격하지 못하게 한다
 
 	this->health = health;
 	this->speed = speed;
 	this->killScore = killScore;
+
+	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_vanguard.png", 12, 36);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
 	this->y = (float)(y - (sprite.sizeY / 2));
@@ -72,7 +74,7 @@ void Vanguard::Attack()
 	if (cooldown > 0) return;
 
 	// 발사!
-	std::shared_ptr<Bullet> bullet(new Bullet(GetCenterX(), y, 0.0f, 1.5f, false));
+	std::shared_ptr<Bullet> bullet(new Bullet(GetCenterX(), GetCenterY() + 2, 0.0f, -2.0f, false));
 	GameManager::GetInstance().CreateGameObject(bullet);
 
 	cooldown += 60; // 60틱 마다 한번 공격

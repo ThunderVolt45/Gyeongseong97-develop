@@ -13,7 +13,7 @@ Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine)
 
 	if (!isMine)
 	{
-		color = ftxui::Color::HotPink;
+		color = ftxui::Color::Red1;
 	}
 
 	sprite = Sprite(1, 1, { color });

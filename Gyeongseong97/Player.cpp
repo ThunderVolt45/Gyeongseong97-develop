@@ -68,6 +68,9 @@ void Player::OnCollision(GameObject& other)
 			health -= 1;
 		}
 
+		// 총알 파괴
+		GameManager::GetInstance().DestroyGameObject(bullet);
+
 		return;
 	}
 
