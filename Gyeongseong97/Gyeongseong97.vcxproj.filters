@@ -51,6 +51,9 @@
     <ClCompile Include="Vanguard.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Carmikaze.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -87,6 +90,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Vanguard.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Carmikaze.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

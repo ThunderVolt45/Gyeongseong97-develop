@@ -13,7 +13,6 @@ public:
 
 	Enemy();
 	Enemy(int x, int y, int health, float speed, int killScore);
-	Enemy(int x, int y, int w, int h, std::wstring spriteName, int health, float speed, int killScore);
 
 	void Update() override;
 	void OnCollision(GameObject& other) override;

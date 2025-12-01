@@ -5,6 +5,8 @@
 #include "GameConstants.h"
 #include "Utility.h"
 #include "Enemy.h"
+#include "Carmikaze.h"
+
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -15,31 +17,64 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	int spawnX = spawnData.x;
 	int spawnY = spawnData.y;
 
-	// 무작위 값이라면 랜덤 값을 넣어준다
-	if (spawnX == static_cast<int>(SpawnPosition::Random))
+	// x 좌표 값을 할당한다
+	switch (spawnX)
 	{
+	case static_cast<int>(SpawnPosition::Random):
 		spawnX = Utility::GenerateRandomNumber(0, GAME_WIDTH - 1);
-	}
-
-	if (spawnY == static_cast<int>(SpawnPosition::Random))
-	{
-		spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1);
-	}
-
-	// 플레이어의 좌표 값이라면 해당 값을 가져와서 넣어준다
-	if (spawnX == static_cast<int>(SpawnPosition::PlayerPosition))
-	{
+		break;
+	case static_cast<int>(SpawnPosition::PlayerPosition):
 		spawnX = GameManager::GetInstance().player.GetCenterX();
+		break;
+	case static_cast<int>(SpawnPosition::Min):
+		spawnX = 0;
+		break;
+	case static_cast<int>(SpawnPosition::Max):
+		spawnX = GAME_WIDTH;
+		break;
 	}
 
-	if (spawnY == static_cast<int>(SpawnPosition::PlayerPosition))
+	// y 좌표 값을 할당한다
+	switch (spawnY)
 	{
+	case static_cast<int>(SpawnPosition::Random):
+		spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1);
+		break;
+	case static_cast<int>(SpawnPosition::PlayerPosition):
 		spawnY = GameManager::GetInstance().player.GetCenterY();
+		break;
+	case static_cast<int>(SpawnPosition::Min):
+		spawnY = 0;
+		break;
+	case static_cast<int>(SpawnPosition::Max):
+		spawnY = GAME_HEIGHT;
+		break;
 	}
 
 	// 적을 생성한다
-	auto enemy = std::make_shared<Enemy>(spawnX, spawnY, 1.5f, 0.5f, 100);
-	GameManager::GetInstance().CreateGameObject(enemy);
+	switch (spawnData.type)
+	{
+	case EnemyType::Vanguard:
+	{
+		break;
+	}
+	case EnemyType::Carmikaze:
+	{
+		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 10, 1.5f, 1000);
+		GameManager::GetInstance().CreateGameObject(carmikaze);
+		break;
+	}
+	case EnemyType::Narration:
+	{
+		break;
+	}
+	default:
+	{
+		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, 1, 0.5f, 0);
+		GameManager::GetInstance().CreateGameObject(instigated);
+		break;
+	}
+	}
 }
 
 void StageManager::Initialize()

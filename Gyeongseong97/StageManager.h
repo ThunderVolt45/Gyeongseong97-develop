@@ -4,7 +4,9 @@
 enum class SpawnPosition : int
 {
 	Random = -100, // 무작위로 결정
-	PlayerPosition = -101 // 플레이어의 x / y 값을 가져옴
+	PlayerPosition = -101, // 플레이어의 x / y 값을 가져옴
+	Min = -102, // 최소 값
+	Max = -103 // 최대 값
 };
 
 enum class EnemyType : int

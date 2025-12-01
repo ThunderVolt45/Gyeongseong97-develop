@@ -135,3 +135,25 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 	// Sprite 반환
 	return sprite;
 }
+
+Sprite ImageLoader::FlipSpriteX(Sprite spriteToFlip)
+{
+	Sprite newSprite;
+	newSprite.sizeX = spriteToFlip.sizeX;
+	newSprite.sizeY = spriteToFlip.sizeY;
+	newSprite.colors.reserve(spriteToFlip.colors.size()); // Reserve space for efficiency
+
+	// Sprite의 모든 픽셀을 순회
+	for (int y = 0; y < spriteToFlip.sizeY; y++)
+	{
+		for (int x = 0; x < spriteToFlip.sizeX; x++)
+		{
+			// 원본 스프라이트의 (sizeX - 1 - x, y) 위치의 픽셀을 가져와
+			// 새로운 스프라이트의 (x, y) 위치에 넣는다.
+			// 인덱스 계산: x + y * width
+			newSprite.colors.push_back(spriteToFlip.colors[(spriteToFlip.sizeX - 1 - x) + y * spriteToFlip.sizeX]);
+		}
+	}
+
+	return newSprite;
+}

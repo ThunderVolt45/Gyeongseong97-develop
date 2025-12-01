@@ -3,6 +3,8 @@
     {
       "nextWaveDelay": 2.0,
       "enemies": [
+        { "type": 2, "x": -102, "y": 10, "nextEnemyDelay": 1.0 },
+        { "type": 2, "x": -103, "y": 10, "nextEnemyDelay": 1.0 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },
         { "type": 0, "x": -100, "y": 0, "nextEnemyDelay": 0.5 },

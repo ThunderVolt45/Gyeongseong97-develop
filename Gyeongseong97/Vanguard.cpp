@@ -1,5 +1,5 @@
 #include "Vanguard.h"
-#include "Enemy.h"
+#include "GameConstants.h"
 
 Vanguard::Vanguard()
 {
@@ -8,12 +8,13 @@ Vanguard::Vanguard()
 
 Vanguard::Vanguard(int x, int y, int health, float speed, int killScore)
 {
+	this->x = (float)(x - (sprite.sizeX / 2));
+	this->y = (float)(y - (sprite.sizeY / 2));
+	this->health = health;
+	this->speed = speed;
+	this->killScore = killScore;
 
-}
-
-Vanguard::Vanguard(int x, int y, int w, int h, std::wstring spriteName, int health, float speed, int killScore)
-{
-
+	this->direction = x < GAME_WIDTH / 2 ? 1 : -1;
 }
 
 void Vanguard::Update()

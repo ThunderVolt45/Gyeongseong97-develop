@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "GameConstants.h"
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Explosion.h"
@@ -10,25 +11,16 @@ Enemy::Enemy()
 
 }
 
-Enemy::Enemy(int x, int y, int health, float speed, int killScore) : GameObject(x, y)
+Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 {
 	this->health = health;
 	this->speed = speed;
 	this->killScore = killScore;
-
-	using color = ftxui::Color;
 
 	sprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 24, 24);
 
 	this->x = (float)(x - (sprite.sizeX / 2));
 	this->y = (float)(y - (sprite.sizeY / 2));
-}
-
-Enemy::Enemy(int x, int y, int w, int h, std::wstring spriteName, int health = 1, float speed = 0.5f, int killScore = 100) : GameObject(x, y, w, h, spriteName)
-{
-	this->health = health;
-	this->speed = speed;
-	this->killScore = killScore;
 }
 
 #pragma endregion
@@ -62,6 +54,9 @@ void Enemy::OnCollision(GameObject& other)
 		if (bullet->isPlayer)
 		{
 			health -= 1;
+
+			// 히트 당 기본 점수
+			GameManager::GetInstance().score += SCORE_FOR_HIT;
 			
 			// 총알 파괴
 			GameManager::GetInstance().DestroyGameObject(bullet);
