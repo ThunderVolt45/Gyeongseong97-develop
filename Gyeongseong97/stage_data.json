@@ -228,7 +228,7 @@
     {
       "nextWaveDelay" : 0.2,
       "enemies" : [
-        { "type": 2, "x": 270, "y": 10, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.4 },
+        { "type": 2, "x": 270, "y": 25, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 200, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 160, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 120, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.4 },
@@ -239,7 +239,7 @@
     {
       "nextWaveDelay" : 0.2,
       "enemies" : [
-        { "type": 2, "x": -30, "y": 10, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.4 },
+        { "type": 2, "x": -30, "y": 25, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 40, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 80, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 120, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.4 },
@@ -250,8 +250,8 @@
     {
       "nextWaveDelay" : 0.2,
       "enemies" : [
-        { "type": 2, "x": 270, "y": 10, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.0 },
-        { "type": 2, "x": -30, "y": 10, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.4 },
+        { "type": 2, "x": 270, "y": 25, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.0 },
+        { "type": 2, "x": -30, "y": 25, "health": 100, "speed": 2.0, "nextEnemyDelay": 0.4 },
         { "type": 1, "x": 210, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.0 },
         { "type": 1, "x": 30, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.2 },
         { "type": 1, "x": 190, "y": 25, "health": 3, "speed": 0.0, "nextEnemyDelay": 0.0 },
