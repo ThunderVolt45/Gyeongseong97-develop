@@ -65,6 +65,14 @@ void GameManager::Reset()
 		onResetCallback();
 	}
 
+	// 사운드 초기화
+	AudioManager& audioManager = AudioManager::GetInstance();
+	audioManager.StopAudio(BGM_BOSS.data());
+	if (!audioManager.IsPlaying(BGM_MAIN.data()))
+	{
+		audioManager.PlayAudio(BGM_MAIN.data(), BGM_VOULME, true);
+	}
+
 	score = 0;
 	IsGameOver = false;
 	tick = 0;

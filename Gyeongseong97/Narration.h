@@ -28,9 +28,11 @@ protected:
 	void AttackDive();
 	void SpawnVanguard();
 	void SpawnCarmikaze();
+	void EndPattern();
 	void Destroy() override;
 
 private:
+	BossState lastBossState;
 	BossState bossState;
 	long long tick;
 	long long lastStateChangeTick;

@@ -38,7 +38,7 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	hitSprite = ImageLoader::CreateHitSprite(sprite);
 
 	// 등장 SFX
-	AudioManager::GetInstance().PlayAudio(L"sfx_car.wav");
+	AudioManager::GetInstance().PlayAudio(SFX_CAR.data());
 }
 
 #pragma endregion

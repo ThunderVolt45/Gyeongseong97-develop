@@ -2,6 +2,7 @@
 #include <cmath>
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "Utility.h"
 #include "GameConstants.h"
 #include "Narration.h"
@@ -41,8 +42,50 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 
 void Narration::Appeared()
 {
-	// TODO: 등장 연출
+	waitTick++;
 
+	if (waitTick == 1)
+	{
+		// 등장 연출 시작
+		// 먼저 기존 배경음악을 페이드 아웃 시킨다
+		AudioManager::GetInstance().FadeOutAudio(BGM_MAIN.data(), 1000);
+
+		return;
+	}
+	else if (waitTick == 60)
+	{
+		// 보스 배경음악을 재생시킨다
+		AudioManager::GetInstance().PlayAudio(BGM_BOSS.data(), BGM_VOULME, true);
+	}
+	else if (waitTick < 120)
+	{
+		return;
+	}
+
+	// 기본 위치로 이동
+	float diffX = defaultPosX - GetCenterX();
+	float diffY = defaultPosY - GetCenterY();
+	float dist = std::sqrt(diffX * diffX + diffY * diffY);
+
+	if (dist > 0.2f)
+	{
+		x += (diffX / dist) * 0.2f;
+		y += (diffY / dist) * 0.2f;
+	}
+	else
+	{
+		x += diffX;
+		y += diffY;
+	}
+
+	// 화면 중앙에 정렬될 때까지 기다린다
+	if (dist > 1.0f)
+	{
+		return;
+	}
+
+	// 정렬이 끝나면 보스전 시작
+	waitTick = 0;
 	invincible = false;
 	bossState = BossState::Idle;
 }
@@ -79,7 +122,12 @@ void Narration::Idle()
 	}
 
 	// 등장, 대기, 사망을 제외한 임의의 상태로 전이
-	int random = Utility::GenerateRandomNumber(2, 5);
+	int random;
+	do
+	{
+		random = Utility::GenerateRandomNumber(2, 5);
+	} while (random == static_cast<int>(lastBossState));
+
 	bossState = static_cast<BossState>(random);
 }
 
@@ -90,13 +138,7 @@ void Narration::AttackShot()
 	// 3점사 * 8회 = 24번 발사 후
 	if (internalCounter >= 24)
 	{
-		// 카운터 초기화
-		waitTick = 30;
-		internalCounter = 0;
-
-		// 상태 전이
-		bossState = BossState::Idle;
-
+		EndPattern();
 		return;
 	}
 
@@ -180,12 +222,7 @@ void Narration::AttackDive()
 	}
 	else
 	{
-		// 카운터 초기화
-		waitTick = 60;
-		internalCounter = 0;
-
-		// 상태 전이
-		bossState = BossState::Idle;
+		EndPattern();
 	}
 
 }
@@ -194,22 +231,16 @@ void Narration::SpawnVanguard()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	// 전위대를 소환했다면
+	// 전위대를 모두 소환했다면
 	if (internalCounter >= 6)
 	{
-		// 스폰한 전위대가 모두 없어질 때까지 대기
-		if (gameManager.GetEnemyCount() > 1)
+		// 스폰한 전위대가 거의 없어질 때까지 대기
+		if (gameManager.GetEnemyCount() > 2)
 		{
 			return;
 		}
 
-		// 카운터 초기화
-		internalCounter = 0;
-		waitTick = 30;
-
-		// 상태 전이
-		bossState = BossState::Idle;
-
+		EndPattern();
 		return;
 	}
 
@@ -217,8 +248,10 @@ void Narration::SpawnVanguard()
 	if (internalCounter <= 0)
 	{
 		internalCounter = 1;
-		auto carmikaze = std::make_shared<Carmikaze>(GAME_WIDTH, 35, 100, 2.0f, 0);
+		auto carmikaze = std::make_shared<Carmikaze>(GAME_WIDTH, 30, 100, 2.0f, 0);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
+
+		waitTick += 24;
 	}
 
 	// 전위대 소환
@@ -251,13 +284,7 @@ void Narration::SpawnCarmikaze()
 			return;
 		}
 
-		// 카운터 초기화
-		internalCounter = 0;
-		waitTick = 30;
-
-		// 상태 전이
-		bossState = BossState::Idle;
-
+		EndPattern();
 		return;
 	}
 
@@ -277,6 +304,19 @@ void Narration::SpawnCarmikaze()
 	{
 		waitTick--;
 	}
+}
+
+void Narration::EndPattern()
+{
+	// 직전 상태 기록
+	lastBossState = bossState;
+
+	// 카운터 초기화
+	internalCounter = 0;
+	waitTick = 30;
+
+	// 상태 전이
+	bossState = BossState::Idle;
 }
 
 void Narration::Destroy()

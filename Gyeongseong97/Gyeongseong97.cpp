@@ -38,7 +38,7 @@ int main()
 
 	// 오디오 엔진 초기화
 	AudioManager& audioManager = AudioManager::GetInstance();
-	audioManager.PlayAudio(L"bgm_hk97_16bit.mp3", 0.5f, true);
+	audioManager.PlayAudio(BGM_MAIN.data(), BGM_VOULME, true);
 
 	// 화면 정리
 	system("cls");

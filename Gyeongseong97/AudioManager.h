@@ -70,5 +70,12 @@ public:
 	/// </summary>
 	/// <param name="audioPath">오디오 파일의 이름</param>
 	void FadeOutAudio(std::wstring audioPath, float fadeOutTimeInMS);
+
+	/// <summary>
+	/// 해당 이름을 갖는 오디오의 재생 여부
+	/// </summary>
+	/// <param name="audioPath"></param>
+	/// <returns></returns>
+	bool IsPlaying(std::wstring audioPath);
 };
 

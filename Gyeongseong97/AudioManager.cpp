@@ -153,6 +153,21 @@ void AudioManager::FadeOutAudio(std::wstring audioPath, float fadeOutTimeInMS)
 	}
 }
 
+bool AudioManager::IsPlaying(std::wstring audioPath)
+{
+	// activeSounds 리스트를 순회하며 해당 audioPath를 가진 사운드를 찾음
+	for (PlayingSoundInfo* pInfo : activeSounds)
+	{
+		// 해당 오디오 경로를 가진 모든 재생 중인 사운드를 페이드 아웃시킨다.
+		if (pInfo->audioPath == audioPath)
+		{
+			return pInfo->IsPlaying();
+		}
+	}
+
+	return false;
+}
+
 void AudioManager::PlayAudioThread(PlayingSoundInfo* pInfo)
 {
 	pInfo->Play();
