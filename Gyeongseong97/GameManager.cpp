@@ -170,6 +170,21 @@ bool GameManager::IsEnemyAlive()
 	return false;
 }
 
+int GameManager::GetEnemyCount()
+{
+	int count = 0;
+
+	for (const auto& object : gameObjects)
+	{
+		if (dynamic_cast<Enemy*>(object.get()) != nullptr)
+		{
+			count++;
+		}
+	}
+
+	return count;
+}
+
 void GameManager::Update()
 {
 	// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.

@@ -1,0 +1,40 @@
+#pragma once
+#include "GameObject.h"
+#include "Enemy.h"
+
+enum class BossState
+{
+	Initialize, // 등장
+	Idle, // 대기
+	Shot, // 사격 패턴
+	Dive, // 돌진 패턴
+	Vanguard, // 소환 패턴 - 전위대
+	Carmikaze, // 소환 패턴 - 자동차
+	Dead // 시체로 결★정
+};
+
+class Narration : public Enemy
+{
+protected:
+	void Appeared();
+	void Idle();
+	void AttackShot();
+	void AttackDive();
+	void SpawnVanguard();
+	void SpawnCarmikaze();
+	void Destroy() override;
+
+private:
+	BossState bossState;
+	long long tick;
+	long long lastStateChangeTick;
+	long long waitTick;
+	int internalCounter;
+
+public:
+	Narration(int x, int y, int health, float speed, int killScore);
+
+	void Update() override;
+	void OnCollision(GameObject& other) override;
+};
+
