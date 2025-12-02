@@ -274,7 +274,7 @@ void GameLoop(ScreenInteractive& screen)
 				}
 
 				// 게임 진행 시간 계산
-				if (!gameManager.IsGameOver)
+				if (!gameManager.IsGameOver || !gameManager.IsGameClear)
 				{
 					chrono::duration<double> duration = now - startTime;
 					long long durationSecond = static_cast<long long>(duration.count());
