@@ -68,12 +68,14 @@ void GameManager::Reset()
 	// 사운드 초기화
 	AudioManager& audioManager = AudioManager::GetInstance();
 	audioManager.StopAudio(BGM_BOSS.data());
+	audioManager.StopAudio(BGM_WIN.data());
 
 	if (!audioManager.IsPlaying(BGM_MAIN.data()))
 		audioManager.PlayAudio(BGM_MAIN.data(), BGM_VOULME, true);
 
 	score = 0;
 	IsGameOver = false;
+	IsGameClear = false;
 	tick = 0;
 }
 
@@ -374,7 +376,7 @@ void GameManager::Update()
 	}
 
 	// 게임 오버 상태가 되면 여기서 중단
-	if (IsGameOver) return;
+	if (IsGameOver || IsGameClear) return;
 
 	// 스테이지 갱신
 	stage.Update();
@@ -416,6 +418,22 @@ ftxui::Element GameManager::Render()
 				p.background_color = ftxui::Color::Red;
 			});
 		canvas.DrawText(GAME_WIDTH / 2 - (22 * 2) - 2, GAME_HEIGHT / 2, "김두한은 오렌지병이었던 고혈압으로 쓰러졌다.",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::White;
+			});
+		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, "(R키를 눌러 재시작, Q키를 눌러 나가기)",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::White;
+			});
+	}
+	else if (IsGameClear)
+	{
+		canvas.DrawText(GAME_WIDTH / 2 - (4 * 2) - 2, GAME_HEIGHT / 2 - 8, "YOU WIN!",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::Black;
+				p.background_color = ftxui::Color::Green;
+			});
+		canvas.DrawText(GAME_WIDTH / 2 - (25 * 2) - 2, GAME_HEIGHT / 2, "김두한은 사악한 공산당원들을 모조리 다 쓸어버렸다!",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
@@ -471,7 +489,7 @@ bool GameManager::OnEvent(ftxui::Event event)
 	}
 
 	// 재시작 (R)
-	if (IsGameOver)
+	if (IsGameOver || IsGameClear)
 	{
 		if (event == ftxui::Event::Character('r'))
 		{

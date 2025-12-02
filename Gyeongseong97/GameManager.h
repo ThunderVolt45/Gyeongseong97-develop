@@ -68,6 +68,7 @@ public:
 	std::atomic<int> score = 0;
 	std::atomic<bool> IsRunning;
 	std::atomic<bool> IsGameOver = false;
+	std::atomic<bool> IsGameClear = false;
 	std::atomic<int> currentFps = 0;
 	std::atomic<int> currentLps = 0;
 	std::wstring gameTime;

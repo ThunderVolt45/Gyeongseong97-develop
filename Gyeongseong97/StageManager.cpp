@@ -86,6 +86,14 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	}
 }
 
+void StageManager::GameClear()
+{
+	GameManager::GetInstance().IsGameClear = true;
+
+	AudioManager::GetInstance().StopAudio(BGM_BOSS.data());
+	AudioManager::GetInstance().PlayAudio(BGM_WIN.data(), BGM_VOULME, false);
+}
+
 void StageManager::Initialize()
 {
 	// 변수 초기화
@@ -165,13 +173,20 @@ void StageManager::Update()
 	const auto& currentWave = waves[currentWaveIndex];
 	if (currentEnemyIndex >= currentWave.enemies.size())
 	{
-		// 필드에 모든 적이 처치될 때까지 기다리고
+		// 필드에 모든 적이 처치될 때까지 기다린다
 		if (GameManager::GetInstance().IsEnemyAlive())
 		{
 			return;
 		}
 
-		// 다음 Wave로 넘어간다
+		// 모든 적이 처치되었고, 현재 웨이브가 마지막 웨이브라면 게임 승리
+		if (currentWaveIndex >= waves.size() - 1)
+		{
+			GameClear();
+			return;
+		}
+
+		// 아니면 다음 Wave로 넘어간다
 		delayTimer += currentWave.nextWaveDelay;
 
 		// 만약 다음 Wave가 마지막 Wave라면 추가 딜레이를 준다

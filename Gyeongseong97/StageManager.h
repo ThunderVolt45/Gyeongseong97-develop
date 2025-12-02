@@ -50,6 +50,11 @@ private:
 	/// <param name="spawnData">생성할 적의 SpawnData</param>
 	void CreateEnemy(SpawnData spawnData);
 
+	/// <summary>
+	/// 모든 Wave의 모든 적을 처치하는데 성공했을 때 호출할 함수
+	/// </summary>
+	void GameClear();
+
 public:
 	/// <summary>
 	/// StageManager를 초기화시키는 함수

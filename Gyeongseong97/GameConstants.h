@@ -24,6 +24,7 @@ constexpr int GRID_ROWS = (GAME_HEIGHT + CELL_SIZE - 1) / CELL_SIZE; // 120 / 20
 constexpr float BGM_VOULME = 0.5f;
 constexpr wstring_view BGM_MAIN{ L"bgm_hk97_16bit.mp3" };
 constexpr wstring_view BGM_BOSS{ L"bgm_hero.mp3" };
+constexpr wstring_view BGM_WIN{ L"bgm_outro.mp3" };
 constexpr wstring_view SFX_GUNFIRE{ L"sfx_gunfire.wav" };
 constexpr wstring_view SFX_CAR{ L"sfx_car.wav" };
 constexpr wstring_view SFX_EXPLOSION{ L"sfx_explosion.wav" };
