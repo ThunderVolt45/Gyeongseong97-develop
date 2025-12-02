@@ -31,11 +31,11 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 		this->direction = 1;
 	}
 
-	this->x = (float)(x - (sprite.sizeX / 2));
-	this->y = (float)(y - (sprite.sizeY / 2));
-
 	sprite = originalSprite;
 	hitSprite = ImageLoader::CreateHitSprite(sprite);
+
+	this->x = (float)(x - (sprite.sizeX / 2));
+	this->y = (float)(y - (sprite.sizeY / 2));
 
 	// 등장 SFX
 	AudioManager::GetInstance().PlayAudio(SFX_CAR.data());
