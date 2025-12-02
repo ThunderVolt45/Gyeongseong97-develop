@@ -12,6 +12,7 @@ Player::Player() : GameObject()
 	maxHealth = 5;
 	health = 5;
 	cooldown = 0;
+	invincible = false;
 }
 
 Player::Player(int x, int y)
@@ -29,6 +30,7 @@ Player::Player(int x, int y)
 	maxHealth = 5;
 	health = 5;
 	cooldown = 0;
+	invincible = false;
 }
 
 void Player::Destroy()
@@ -45,6 +47,7 @@ void Player::Reset()
 {
 	cooldown = 0;
 	health = maxHealth;
+	invincible = false;
 
 	sprite = defaultSprite;
 }
@@ -82,6 +85,8 @@ void Player::Update()
 
 void Player::OnCollision(GameObject& other)
 {
+	if (invincible) return;
+
 	GameManager& gameManager = GameManager::GetInstance();
 
 	// 만약 Bullet과 충돌했다면

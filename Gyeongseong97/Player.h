@@ -14,6 +14,7 @@ public:
 	float maxHealth;
 	float health;
 	int cooldown;
+	bool invincible;
 
 	Player();
 	Player(int x, int y);

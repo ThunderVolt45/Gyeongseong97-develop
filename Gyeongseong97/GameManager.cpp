@@ -169,6 +169,26 @@ void GameManager::DestroyGameObject(GameObject* gameObject)
 	objectsToDestroy.insert(gameObject);
 }
 
+void GameManager::DestroyAllEnemiesExcept(GameObject* except)
+{
+	std::lock_guard<std::recursive_mutex> lock(gameMutex);
+
+	for (const auto& object : gameObjects)
+	{
+		GameObject* ptr = object.get();
+
+		// 예외 대상이면 스킵
+		if (ptr == except) continue;
+		
+		// Enemy 클래스(또는 파생 클래스)인지 확인
+		auto enemy = dynamic_cast<Enemy*>(ptr);
+		if (enemy != nullptr)
+		{
+			enemy->Destroy();
+		}
+	}
+}
+
 bool GameManager::IsEnemyAlive()
 {
 	for (const auto& object : gameObjects)

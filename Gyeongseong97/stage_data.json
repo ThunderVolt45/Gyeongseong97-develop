@@ -3,7 +3,7 @@
     {
       "nextWaveDelay" : 0.0,
       "enemies" : [
-        { "type": 3, "x": 120, "y": -30, "health": 800, "speed": 1.0, "nextEnemyDelay": 0.0 }
+        { "type": 3, "x": 120, "y": -30, "health": 10, "speed": 1.0, "nextEnemyDelay": 0.0 }
       ] 
     },
     {
@@ -410,26 +410,26 @@
     {
       "nextWaveDelay" : 3.0,
       "enemies" : [
-        { "type": 2, "x": -60, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -100, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": -60, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 },
-        { "type": 2, "x": 240, "y": -101, "health": 5, "speed": 1.4, "nextEnemyDelay": 0.5 }
+        { "type": 2, "x": -60, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -100, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": -60, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 },
+        { "type": 2, "x": 240, "y": -101, "health": 4, "speed": 1.4, "nextEnemyDelay": 0.5 }
       ]
     }
   ]

@@ -28,9 +28,10 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 
 	// 보스 상태 및 타이머 초기화
 	bossState = BossState::Initialize;
+	lastBossState = BossState::Initialize;
 	tick = 0;
 	lastStateChangeTick = 0;
-	waitTick = 0;
+	internalTick = 0;
 
 	// 기타 변수 초기화
 	internalCounter = 0;
@@ -42,9 +43,9 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 
 void Narration::Appeared()
 {
-	waitTick++;
+	internalTick++;
 
-	if (waitTick == 1)
+	if (internalTick == 1)
 	{
 		// 등장 연출 시작
 		// 먼저 기존 배경음악을 페이드 아웃 시킨다
@@ -52,12 +53,12 @@ void Narration::Appeared()
 
 		return;
 	}
-	else if (waitTick == 60)
+	else if (internalTick == 60)
 	{
 		// 보스 배경음악을 재생시킨다
 		AudioManager::GetInstance().PlayAudio(BGM_BOSS.data(), BGM_VOULME, true);
 	}
-	else if (waitTick < 120)
+	else if (internalTick < 120)
 	{
 		return;
 	}
@@ -85,9 +86,8 @@ void Narration::Appeared()
 	}
 
 	// 정렬이 끝나면 보스전 시작
-	waitTick = 0;
 	invincible = false;
-	bossState = BossState::Idle;
+	EndPattern();
 }
 
 void Narration::Idle()
@@ -115,9 +115,9 @@ void Narration::Idle()
 	}
 
 	// 대기 타이머 동안 정지
-	if (waitTick > 0)
+	if (internalTick > 0)
 	{
-		waitTick--;
+		internalTick--;
 		return;
 	}
 
@@ -156,7 +156,7 @@ void Narration::AttackShot()
 	}
 
 	// 사격 개시
-	if (waitTick <= 0)
+	if (internalTick <= 0)
 	{
 		// 총알 발사!!!
 		std::shared_ptr<Bullet> bullet1(new Bullet(GetCenterX() - 15, GetCenterY(), 0.0f, -2.0f, false));
@@ -171,27 +171,27 @@ void Narration::AttackShot()
 		// 3발 쏠 때마다(3점사 완료 시) 긴 딜레이
 		if (internalCounter % 3 == 0)
 		{
-			waitTick = 40;
+			internalTick = 40;
 		}
 		else
 		{
 			// 연사 딜레이
-			waitTick = 10;
+			internalTick = 10;
 		}
 	}
 	else
 	{
-		waitTick--;
+		internalTick--;
 	}
 }
 
 void Narration::AttackDive()
 {
 	GameManager& gameManager = GameManager::GetInstance();
-	waitTick++;
+	internalTick++;
 
 	// 일정 틱 동안 플레이어의 x 축을 추적
-	if (waitTick < 120)
+	if (internalTick < 120)
 	{
 		float diffX = gameManager.player.GetCenterX() - GetCenterX();
 
@@ -251,13 +251,13 @@ void Narration::SpawnVanguard()
 		auto carmikaze = std::make_shared<Carmikaze>(GAME_WIDTH, 30, 100, 2.0f, 0);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
 
-		waitTick += 24;
+		internalTick += 24;
 	}
 
 	// 전위대 소환
-	if (waitTick <= 0)
+	if (internalTick <= 0)
 	{
-		waitTick += 24;
+		internalTick += 24;
 		internalCounter++;
 
 		int spawnX = GAME_WIDTH - 40 * (internalCounter - 1);
@@ -266,7 +266,7 @@ void Narration::SpawnVanguard()
 	}
 	else
 	{
-		waitTick--;
+		internalTick--;
 	}
 	
 }
@@ -289,20 +289,47 @@ void Narration::SpawnCarmikaze()
 	}
 
 	// 차량 소환
-	if (waitTick <= 0)
+	if (internalTick <= 0)
 	{
 		// 30틱 마다 소환
-		waitTick += 30;
+		internalTick += 30;
 		internalCounter++;
 
 		int spawnX = internalCounter % 2 == 0 ? 0 : GAME_WIDTH;
-		int spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1); // 랜덤 생성
-		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 5, 1.4f, 0);
+		int spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 10); // 랜덤 생성
+		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 4, 1.4f, 0);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
 	}
 	else
 	{
-		waitTick--;
+		internalTick--;
+	}
+}
+
+void Narration::Death()
+{
+	GameManager& gameManager = GameManager::GetInstance();
+	gameManager.player.invincible = true;
+
+	internalTick++;
+
+	if (internalTick == 1)
+	{
+		gameManager.DestroyAllEnemiesExcept(this);
+	}
+
+	// 폭★8 연출
+	if (internalTick % 15 == 0)
+	{
+		int x = Utility::GenerateRandomNumber(-40, 40);
+		int y = Utility::GenerateRandomNumber(-30, 30);
+		std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX() + x, GetCenterY() + y));
+		gameManager.CreateGameObject(explosion, false);
+	}
+
+	if (internalTick >= 300)
+	{
+		Destroy();
 	}
 }
 
@@ -313,7 +340,7 @@ void Narration::EndPattern()
 
 	// 카운터 초기화
 	internalCounter = 0;
-	waitTick = 30;
+	internalTick = 30;
 
 	// 상태 전이
 	bossState = BossState::Idle;
@@ -323,14 +350,12 @@ void Narration::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY(), 80, 60));
+	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY(), 120, 90));
 	gameManager.CreateGameObject(explosion, false);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;
 
-	// TODO: 나레이션 격파 연출
-
-	// TODO: 게임 승리 처리
+	gameManager.player.invincible = false;
 }
 
 #pragma endregion
@@ -372,7 +397,7 @@ void Narration::Update()
 		break;
 
 	case BossState::Dead:
-		// 시체로 결★정된 이후로는 FSM 정지
+		Death();
 		break;
 
 	default:
@@ -384,12 +409,49 @@ void Narration::OnCollision(GameObject& other)
 {
 	if (invincible) return;
 
-	Enemy::OnCollision(other);
-	
-	// 체력이 모두 고갈되면 시체로 결★정
-	if (health <= 0)
+	// 만약 Bullet과 충돌했다면
+	Bullet* bullet = dynamic_cast<Bullet*>(&other);
+	if (bullet)
 	{
-		bossState = BossState::Dead;
+		// 플레이어가 쏜 총알에만 반응
+		if (bullet->isPlayer)
+		{
+			health -= 1;
+			hitEffectTick = 2;
+
+			// 히트 당 기본 점수
+			GameManager::GetInstance().score += SCORE_FOR_HIT;
+
+			// 총알 파괴
+			GameManager::GetInstance().DestroyGameObject(bullet);
+
+			// 체력이 다 닳았으면 파괴
+			if (health <= 0)
+			{
+				invincible = true;
+				bossState = BossState::Dead;
+				internalTick = 0;
+			}
+		}
+		return;
+	}
+
+	// 만약 Player와 충돌했다면
+	Player* player = dynamic_cast<Player*>(&other);
+	if (player)
+	{
+		health -= 0.1f;
+		hitEffectTick = 2;
+
+		// 체력이 다 닳았으면 파괴
+		if (health <= 0)
+		{
+			invincible = true;
+			bossState = BossState::Dead;
+			internalTick = 0;
+		}
+
+		return;
 	}
 }
 #pragma endregion

@@ -79,6 +79,7 @@ public:
 
 	void CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack = true);
 	void DestroyGameObject(GameObject* gameObject);
+	void DestroyAllEnemiesExcept(GameObject* except);
 	bool IsEnemyAlive();
 	int GetEnemyCount();
 };

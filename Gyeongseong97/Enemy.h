@@ -10,7 +10,6 @@ protected:
 	Sprite hitSprite;
 
 	void ProcessHitEffect();
-	void Destroy() override;
 
 public:
 	float health = 1;
@@ -22,5 +21,6 @@ public:
 
 	void Update() override;
 	void OnCollision(GameObject& other) override;
+	void Destroy() override;
 };
 
