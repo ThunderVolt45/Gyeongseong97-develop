@@ -1,5 +1,4 @@
 #include <iostream> // For std::cout
-#include <cmath>
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -45,20 +44,7 @@ void Narration::Appeared()
 {
 	internalTick++;
 
-	if (internalTick == 1)
-	{
-		// 등장 연출 시작
-		// 먼저 기존 배경음악을 페이드 아웃 시킨다
-		AudioManager::GetInstance().FadeOutAudio(BGM_MAIN.data(), 1000);
-
-		return;
-	}
-	else if (internalTick == 60)
-	{
-		// 보스 배경음악을 재생시킨다
-		AudioManager::GetInstance().PlayAudio(BGM_BOSS.data(), BGM_VOULME, true);
-	}
-	else if (internalTick < 120)
+	if (internalTick < 120)
 	{
 		return;
 	}
@@ -366,9 +352,6 @@ void Narration::Update()
 {
 	tick++;
 	ProcessHitEffect();
-	
-	// 마지막 상태 전이 이후로 진행된 tick 계산
-	long long tickSinceLastStateChange = tick - lastStateChangeTick;
 
 	switch (bossState)
 	{

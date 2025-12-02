@@ -8,6 +8,7 @@
 #include "Vanguard.h"
 #include "Carmikaze.h"
 #include "Narration.h"
+#include "AudioManager.h"
 
 #include "json.hpp"
 
@@ -172,6 +173,14 @@ void StageManager::Update()
 
 		// 다음 Wave로 넘어간다
 		delayTimer += currentWave.nextWaveDelay;
+
+		// 만약 다음 Wave가 마지막 Wave라면 추가 딜레이를 준다
+		if (currentWaveIndex + 1 == waves.size() - 1)
+		{
+			AudioManager::GetInstance().FadeOutAudio(BGM_MAIN.data(), 3000);
+			delayTimer += 3.0f;
+		}
+
 		currentWaveIndex++;
 		currentEnemyIndex = 0;
 
@@ -183,6 +192,12 @@ void StageManager::Update()
 	{
 		if (currentEnemyIndex > currentWave.enemies.size() - 1)
 			return;
+
+		// 마지막 웨이브의 첫 번째 적이 스폰될 때 BGM 교체
+		if (currentWaveIndex == waves.size() - 1 && currentEnemyIndex == 0)
+		{
+			AudioManager::GetInstance().PlayAudio(BGM_BOSS.data(), BGM_VOULME, true);
+		}
 
 		const auto& spawnData = currentWave.enemies[currentEnemyIndex];
 

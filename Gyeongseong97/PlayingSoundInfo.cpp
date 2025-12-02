@@ -36,20 +36,33 @@ void PlayingSoundInfo::Stop()
 void PlayingSoundInfo::FadeOut(float milliseconds)
 {
 	isFading = true;
+	fadeDuration = milliseconds;
+	fadeStartTime = std::chrono::high_resolution_clock::now();
+
 	// 현재 볼륨에서 시작해서 0까지 페이드 아웃
 	ma_sound_set_fade_in_milliseconds(pSound, -1, 0, milliseconds);
 }
+
+
 
 bool PlayingSoundInfo::IsPlaying()
 {
 	return ma_sound_is_playing(pSound);
 }
 
+
+
 void PlayingSoundInfo::Update()
 {
-	if (isFading && ma_sound_get_volume(pSound) <= 0.01f)
+	if (isFading)
 	{
-		Stop();
+		auto now = std::chrono::high_resolution_clock::now();
+		std::chrono::duration<float, std::milli> elapsed = now - fadeStartTime;
+
+		if (elapsed.count() >= fadeDuration)
+		{
+			Stop();
+		}
 	}
 }
 
