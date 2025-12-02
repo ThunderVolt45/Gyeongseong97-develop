@@ -239,6 +239,10 @@ void GameLoop(ScreenInteractive& screen)
 			// 게임 시작 시간
 			auto startTime = clock::now();
 
+			gameManager.onResetCallback = [&]() {
+				startTime = clock::now();
+			};
+
 			while (gameManager.IsRunning)
 			{
 				auto now = clock::now();

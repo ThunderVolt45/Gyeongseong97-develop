@@ -60,6 +60,11 @@ void GameManager::Reset()
 	// 스테이지 초기화
 	stage.Reset();
 
+	if (onResetCallback)
+	{
+		onResetCallback();
+	}
+
 	score = 0;
 	IsGameOver = false;
 	tick = 0;

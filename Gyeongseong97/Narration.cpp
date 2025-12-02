@@ -1,4 +1,5 @@
 #include <iostream> // For std::cout
+#include <cmath>
 
 #include "GameManager.h"
 #include "Utility.h"
@@ -16,7 +17,7 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_Narration.png", 80, 60);
+	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_narration.png", 80, 60);
 	sprite = originalSprite;
 
 	hitSprite = ImageLoader::CreateHitSprite(sprite);
@@ -40,13 +41,30 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 
 void Narration::Appeared()
 {
-
+	// TODO: 등장 연출
+	bossState = BossState::Idle;
 }
 
 void Narration::Idle()
 {
-	// 화면 중앙으로 이동
-	
+	// 화면 중앙 상단으로 이동
+	float targetX = GAME_WIDTH / 2;
+	float targetY = 40;
+
+	float diffX = targetX - GetCenterX();
+	float diffY = targetY - GetCenterY();
+	float dist = std::sqrt(diffX * diffX + diffY * diffY);
+
+	if (dist > speed)
+	{
+		x += (diffX / dist) * speed;
+		y += (diffY / dist) * speed;
+	}
+	else
+	{
+		x += diffX;
+		y += diffY;
+	}
 
 	// 대기 타이머 동안 정지
 	if (waitTick > 0)
@@ -62,12 +80,40 @@ void Narration::Idle()
 
 void Narration::AttackShot()
 {
-	// TODO: 패턴 만들기
-	bossState = BossState::Idle;
+	GameManager& gameManager = GameManager::GetInstance();
+
+	// 8번 사격했다면 중단
+	if (internalCounter >= 8 * 3)
+	{
+		// 카운터 초기화
+		waitTick = 60;
+		internalCounter = 0;
+
+		// 상태 전이
+		bossState = BossState::Idle;
+
+		return;
+	}
 
 	// 플레이어의 x 축을 추적
+	float diffX = gameManager.player.GetCenterX() - GetCenterX();
+	x += diffX > speed ? diffX  * speed : diffX;
 
-	// 총알 발사!!!
+	// 사격 개시
+	if (waitTick <= 0)
+	{
+		waitTick += 30;
+
+		// 총알 발사!!!
+		std::shared_ptr<Bullet> bullet1(new Bullet(GetCenterX() - 15, GetCenterY(), 0.0f, -2.0f, false));
+		std::shared_ptr<Bullet> bullet2(new Bullet(GetCenterX(), GetCenterY(), 0.0f, -2.0f, false));
+		std::shared_ptr<Bullet> bullet3(new Bullet(GetCenterX() + 15, GetCenterY(), 0.0f, -2.0f, false));
+		GameManager::GetInstance().CreateGameObject(bullet1);
+		GameManager::GetInstance().CreateGameObject(bullet2);
+		GameManager::GetInstance().CreateGameObject(bullet3);
+	}
+
+	waitTick--;
 }
 
 void Narration::AttackDive()
@@ -117,8 +163,8 @@ void Narration::SpawnVanguard()
 		waitTick += 24;
 		internalCounter++;
 
-		int spawnX = GAME_WIDTH - 40 * internalCounter;
-		auto vanguard = std::make_shared<Vanguard>(spawnX, 10, 3, 0.6f, 500);
+		int spawnX = GAME_WIDTH - 40 * (internalCounter - 1);
+		auto vanguard = std::make_shared<Vanguard>(spawnX, 15, 3, 0.6f, 0);
 		GameManager::GetInstance().CreateGameObject(vanguard);
 	}
 	else
@@ -154,12 +200,12 @@ void Narration::SpawnCarmikaze()
 	// 차량 소환
 	if (waitTick <= 0)
 	{
-		// 15틱 마다 소환
-		waitTick += 15;
+		// 30틱 마다 소환
+		waitTick += 30;
 		internalCounter++;
 
 		int spawnX = internalCounter % 2 == 0 ? 0 : GAME_WIDTH;
-		int spawnY = gameManager.player.GetCenterY(); // 플레이어 추적
+		int spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1); // 랜덤 생성
 		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 5, 1.4f, 0);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
 	}

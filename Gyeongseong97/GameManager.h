@@ -4,6 +4,7 @@
 #include <set>
 #include <mutex>
 #include <string>
+#include <functional>
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -70,6 +71,7 @@ public:
 	std::atomic<int> currentFps = 0;
 	std::atomic<int> currentLps = 0;
 	std::wstring gameTime;
+	std::function<void()> onResetCallback;
 
 	void Update();
 	ftxui::Element Render();

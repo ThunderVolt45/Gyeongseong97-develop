@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "Vanguard.h"
 #include "Carmikaze.h"
+#include "Narration.h"
 
 #include "json.hpp"
 
@@ -14,6 +15,8 @@ using json = nlohmann::json;
 
 void StageManager::CreateEnemy(SpawnData spawnData)
 {
+	GameManager& gameManager = GameManager::GetInstance();
+
 	// 적을 생성할 좌표 값을 구한다
 	int spawnX = spawnData.x;
 	int spawnY = spawnData.y;
@@ -25,7 +28,7 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 		spawnX = Utility::GenerateRandomNumber(0, GAME_WIDTH - 1);
 		break;
 	case static_cast<int>(SpawnPosition::PlayerPosition):
-		spawnX = GameManager::GetInstance().player.GetCenterX();
+		spawnX = gameManager.player.GetCenterX();
 		break;
 	case static_cast<int>(SpawnPosition::Min):
 		spawnX = 0;
@@ -42,7 +45,7 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 		spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1);
 		break;
 	case static_cast<int>(SpawnPosition::PlayerPosition):
-		spawnY = GameManager::GetInstance().player.GetCenterY();
+		spawnY = gameManager.player.GetCenterY();
 		break;
 	case static_cast<int>(SpawnPosition::Min):
 		spawnY = 0;
@@ -58,23 +61,25 @@ void StageManager::CreateEnemy(SpawnData spawnData)
 	case EnemyType::Vanguard:
 	{
 		auto vanguard = std::make_shared<Vanguard>(spawnX, spawnY, spawnData.health, spawnData.speed, 500);
-		GameManager::GetInstance().CreateGameObject(vanguard);
+		gameManager.CreateGameObject(vanguard);
 		break;
 	}
 	case EnemyType::Carmikaze:
 	{
 		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, spawnData.health, spawnData.speed, 1000);
-		GameManager::GetInstance().CreateGameObject(carmikaze);
+		gameManager.CreateGameObject(carmikaze);
 		break;
 	}
 	case EnemyType::Narration:
 	{
+		auto narration = std::make_shared<Narration>(spawnX, spawnY, spawnData.health, spawnData.speed, 1000);
+		gameManager.CreateGameObject(narration);
 		break;
 	}
 	default:
 	{
 		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, spawnData.health, spawnData.speed, 0);
-		GameManager::GetInstance().CreateGameObject(instigated);
+		gameManager.CreateGameObject(instigated);
 		break;
 	}
 	}
