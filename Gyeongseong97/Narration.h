@@ -17,6 +17,7 @@ enum class BossState
 class Narration : public Enemy
 {
 private:
+	bool invincible = true;
 	int defaultPosX = GAME_WIDTH / 2;
 	int defaultPosY = 40;
 

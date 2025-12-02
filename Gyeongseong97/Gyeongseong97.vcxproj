@@ -150,6 +150,7 @@
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="Narration.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayingSoundInfo.cpp" />
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Vanguard.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Narration.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayingSoundInfo.h" />
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vanguard.h" />

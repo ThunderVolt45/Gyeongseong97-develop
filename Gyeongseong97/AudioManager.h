@@ -1,5 +1,6 @@
 #pragma once
 #include "miniaudio.h"
+#include "PlayingSoundInfo.h"
 
 #include <iostream>
 #include <string>
@@ -9,14 +10,8 @@
 class AudioManager
 {
 	ma_engine audioEngine;
-	
-	struct PlayingSoundInfo {
-		ma_sound* pSound;
-		std::wstring audioPath; // For identifying which sound to stop
-		bool isLooping;       // To track if it's a looping sound
-	};
-	std::list<PlayingSoundInfo*> activeSounds; // List of currently playing sounds
 
+	std::list<PlayingSoundInfo*> activeSounds; // 현재 재생중인 사운드 list
 	std::mutex soundMutex; // Mutex for activeSounds list
 
 	/// <summary>
@@ -68,5 +63,12 @@ public:
 	/// </summary>
 	/// <param name="audioPath">오디오 파일의 이름</param>
 	void StopAudio(std::wstring audioPath);
+
+	/// <summary>
+	/// 현재 재생 중인 오디오 파일의 재생을 중단합니다.
+	/// 반복 재생 중인 오디오만 중단이 가능합니다.
+	/// </summary>
+	/// <param name="audioPath">오디오 파일의 이름</param>
+	void FadeOutAudio(std::wstring audioPath, float fadeOutTimeInMS);
 };
 

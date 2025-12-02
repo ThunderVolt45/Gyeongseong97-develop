@@ -42,6 +42,8 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 void Narration::Appeared()
 {
 	// TODO: 등장 연출
+
+	invincible = false;
 	bossState = BossState::Idle;
 }
 
@@ -340,6 +342,8 @@ void Narration::Update()
 }
 void Narration::OnCollision(GameObject& other)
 {
+	if (invincible) return;
+
 	Enemy::OnCollision(other);
 	
 	// 체력이 모두 고갈되면 시체로 결★정
