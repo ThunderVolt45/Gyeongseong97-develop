@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "GameConstants.h"
 #include "Enemy.h"
 
 enum class BossState
@@ -15,6 +16,10 @@ enum class BossState
 
 class Narration : public Enemy
 {
+private:
+	int defaultPosX = GAME_WIDTH / 2;
+	int defaultPosY = 40;
+
 protected:
 	void Appeared();
 	void Idle();

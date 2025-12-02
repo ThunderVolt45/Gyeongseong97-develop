@@ -47,12 +47,9 @@ void Narration::Appeared()
 
 void Narration::Idle()
 {
-	// 화면 중앙 상단으로 이동
-	float targetX = GAME_WIDTH / 2;
-	float targetY = 40;
-
-	float diffX = targetX - GetCenterX();
-	float diffY = targetY - GetCenterY();
+	// 기본 위치로 이동
+	float diffX = defaultPosX - GetCenterX();
+	float diffY = defaultPosY - GetCenterY();
 	float dist = std::sqrt(diffX * diffX + diffY * diffY);
 
 	if (dist > speed)
@@ -64,6 +61,12 @@ void Narration::Idle()
 	{
 		x += diffX;
 		y += diffY;
+	}
+
+	// 화면 중앙에 정렬될 때까지 기다린다
+	if (dist > 1.0f)
+	{
+		return;
 	}
 
 	// 대기 타이머 동안 정지
@@ -82,11 +85,11 @@ void Narration::AttackShot()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	// 8번 사격했다면 중단
-	if (internalCounter >= 8 * 3)
+	// 3점사 * 8회 = 24번 발사 후
+	if (internalCounter >= 24)
 	{
 		// 카운터 초기화
-		waitTick = 60;
+		waitTick = 30;
 		internalCounter = 0;
 
 		// 상태 전이
@@ -95,35 +98,94 @@ void Narration::AttackShot()
 		return;
 	}
 
-	// 플레이어의 x 축을 추적
+	// 플레이어의 x축을 추적
 	float diffX = gameManager.player.GetCenterX() - GetCenterX();
-	x += diffX > speed ? diffX  * speed : diffX;
+	
+	// 이동 속도 제한
+	if (std::abs(diffX) > speed * 1.2f)
+	{
+		x += (diffX > 0 ? speed * 1.2f : -speed * 1.2f);
+	}
+	else
+	{
+		x += diffX;
+	}
 
 	// 사격 개시
 	if (waitTick <= 0)
 	{
-		waitTick += 30;
-
 		// 총알 발사!!!
 		std::shared_ptr<Bullet> bullet1(new Bullet(GetCenterX() - 15, GetCenterY(), 0.0f, -2.0f, false));
 		std::shared_ptr<Bullet> bullet2(new Bullet(GetCenterX(), GetCenterY(), 0.0f, -2.0f, false));
 		std::shared_ptr<Bullet> bullet3(new Bullet(GetCenterX() + 15, GetCenterY(), 0.0f, -2.0f, false));
-		GameManager::GetInstance().CreateGameObject(bullet1);
-		GameManager::GetInstance().CreateGameObject(bullet2);
-		GameManager::GetInstance().CreateGameObject(bullet3);
-	}
+		gameManager.CreateGameObject(bullet1);
+		gameManager.CreateGameObject(bullet2);
+		gameManager.CreateGameObject(bullet3);
 
-	waitTick--;
+		internalCounter++;
+
+		// 3발 쏠 때마다(3점사 완료 시) 긴 딜레이
+		if (internalCounter % 3 == 0)
+		{
+			waitTick = 40;
+		}
+		else
+		{
+			// 연사 딜레이
+			waitTick = 10;
+		}
+	}
+	else
+	{
+		waitTick--;
+	}
 }
 
 void Narration::AttackDive()
 {
-	// TODO: 패턴 만들기
-	bossState = BossState::Idle;
+	GameManager& gameManager = GameManager::GetInstance();
+	waitTick++;
 
 	// 일정 틱 동안 플레이어의 x 축을 추적
+	if (waitTick < 120)
+	{
+		float diffX = gameManager.player.GetCenterX() - GetCenterX();
 
+		// 이동 속도 제한
+		if (std::abs(diffX) > speed * 2)
+		{
+			x += (diffX > 0 ? speed * 2 : -speed * 2);
+		}
+		else
+		{
+			x += diffX;
+		}
+	}
 	// 빠르게 y축으로 이동
+	else if (y < GAME_HEIGHT - sprite.sizeY / 2 - 1)
+	{
+		float diffY = GAME_HEIGHT - sprite.sizeY / 2;
+		
+		// 이동 속도 제한
+		if (std::abs(diffY) > speed * 3)
+		{
+			y += (diffY > 0 ? speed * 3 : -speed * 3);
+		}
+		else
+		{
+			y += diffY;
+		}
+	}
+	else
+	{
+		// 카운터 초기화
+		waitTick = 60;
+		internalCounter = 0;
+
+		// 상태 전이
+		bossState = BossState::Idle;
+	}
+
 }
 
 void Narration::SpawnVanguard()
@@ -141,7 +203,7 @@ void Narration::SpawnVanguard()
 
 		// 카운터 초기화
 		internalCounter = 0;
-		waitTick = 60;
+		waitTick = 30;
 
 		// 상태 전이
 		bossState = BossState::Idle;
@@ -153,7 +215,7 @@ void Narration::SpawnVanguard()
 	if (internalCounter <= 0)
 	{
 		internalCounter = 1;
-		auto carmikaze = std::make_shared<Carmikaze>(GAME_WIDTH, 10, 100, 2.0f, 0);
+		auto carmikaze = std::make_shared<Carmikaze>(GAME_WIDTH, 35, 100, 2.0f, 0);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
 	}
 
@@ -164,7 +226,7 @@ void Narration::SpawnVanguard()
 		internalCounter++;
 
 		int spawnX = GAME_WIDTH - 40 * (internalCounter - 1);
-		auto vanguard = std::make_shared<Vanguard>(spawnX, 15, 3, 0.6f, 0);
+		auto vanguard = std::make_shared<Vanguard>(spawnX, 40, 3, 0.6f, 0);
 		GameManager::GetInstance().CreateGameObject(vanguard);
 	}
 	else
@@ -189,7 +251,7 @@ void Narration::SpawnCarmikaze()
 
 		// 카운터 초기화
 		internalCounter = 0;
-		waitTick = 60;
+		waitTick = 30;
 
 		// 상태 전이
 		bossState = BossState::Idle;
