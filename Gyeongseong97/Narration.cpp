@@ -7,8 +7,8 @@
 #include "Narration.h"
 #include "Carmikaze.h"
 #include "Vanguard.h"
-#include "Explosion.h"
 #include "BulletPool.h"
+#include "ExplosionPool.h"
 
 #pragma region Constructer & Destroyer
 
@@ -18,7 +18,7 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_narration.png", 80, 60);
+	originalSprite = ImageLoader::CreateSpriteFromImage(SPR_NARRATION.data(), 80, 60);
 	sprite = originalSprite;
 
 	hitSprite = ImageLoader::CreateHitSprite(sprite);
@@ -310,7 +310,7 @@ void Narration::Death()
 	{
 		int x = Utility::GenerateRandomNumber(-40, 40);
 		int y = Utility::GenerateRandomNumber(-30, 30);
-		std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX() + x, GetCenterY() + y));
+		std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX() + x, GetCenterY() + y);
 		gameManager.CreateGameObject(explosion, false);
 	}
 
@@ -337,7 +337,7 @@ void Narration::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY(), 120, 90));
+	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 120, 90);
 	gameManager.CreateGameObject(explosion, false);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;

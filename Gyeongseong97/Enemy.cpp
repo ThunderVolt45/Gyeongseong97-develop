@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Explosion.h"
+#include "ExplosionPool.h"
 
 #pragma region Constructer & Destroyer
 
@@ -17,7 +18,7 @@ Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_Instigated.png", 18, 36);
+	originalSprite = ImageLoader::CreateSpriteFromImage(SPR_INSTIGATED.data(), 18, 36);
 	sprite = originalSprite;
 
 	hitSprite = ImageLoader::CreateHitSprite(sprite);
@@ -50,7 +51,7 @@ void Enemy::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY()));
+	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY());
 	gameManager.CreateGameObject(explosion, false);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;

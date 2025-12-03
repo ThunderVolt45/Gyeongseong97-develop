@@ -7,7 +7,7 @@ class BulletPool
 {
 private:
 	std::vector<std::shared_ptr<Bullet>> pool;
-	BulletPool() {}
+	BulletPool();
 
 public:
 	static BulletPool& GetInstance();

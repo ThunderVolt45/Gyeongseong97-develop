@@ -20,7 +20,11 @@ constexpr int CELL_SIZE = 20; // 격자 크기 (20x20)
 constexpr int GRID_COLS = (GAME_WIDTH + CELL_SIZE - 1) / CELL_SIZE; // 160 / 20 = 8
 constexpr int GRID_ROWS = (GAME_HEIGHT + CELL_SIZE - 1) / CELL_SIZE; // 120 / 20 = 6
 
-// 사운드 이름 상수
+// 폭☆8 효과 상수
+constexpr int EXPLOSION_DEFAULT_SIZE_X = 40;
+constexpr int EXPLOSION_DEFAULT_SIZE_Y = 30;
+
+// 사운드 리소스 상수
 constexpr float BGM_VOULME = 0.5f;
 constexpr wstring_view BGM_MAIN{ L"bgm_hk97_16bit.mp3" };
 constexpr wstring_view BGM_BOSS{ L"bgm_hero.mp3" };
@@ -28,3 +32,15 @@ constexpr wstring_view BGM_WIN{ L"bgm_outro.mp3" };
 constexpr wstring_view SFX_GUNFIRE{ L"sfx_gunfire.wav" };
 constexpr wstring_view SFX_CAR{ L"sfx_car.wav" };
 constexpr wstring_view SFX_EXPLOSION{ L"sfx_explosion.wav" };
+
+// 이미지 리소스 상수
+constexpr wstring_view SPR_PLAYER{ L"player.png" };
+constexpr wstring_view SPR_PLAYER_DEATH{ L"player_death.png" };
+constexpr wstring_view SPR_INSTIGATED{ L"enemy_Instigated.png" };
+constexpr wstring_view SPR_VANGUARD{ L"enemy_vanguard.png" };
+constexpr wstring_view SPR_CARMIKAZE{ L"enemy_Carmikaze.png" };
+constexpr wstring_view SPR_NARRATION{ L"enemy_narration.png" };
+
+// 기타 문자열 상수
+constexpr wstring_view SPR_EXPLOSION_PREFIX{ L"폭8\\폭8_" };
+constexpr wstring_view POSTFIX_PNG{ L".png" };

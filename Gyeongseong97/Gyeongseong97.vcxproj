@@ -145,6 +145,7 @@
     <ClCompile Include="Carmikaze.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Explosion.cpp" />
+    <ClCompile Include="ExplosionPool.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gyeongseong97.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Carmikaze.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Explosion.h" />
+    <ClInclude Include="ExplosionPool.h" />
     <ClInclude Include="GameConstants.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />

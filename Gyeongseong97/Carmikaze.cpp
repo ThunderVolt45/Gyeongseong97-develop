@@ -3,6 +3,7 @@
 #include "GameConstants.h"
 #include "Carmikaze.h"
 #include "Explosion.h"
+#include "ExplosionPool.h"
 
 #pragma region Constructer & Destroyer
 
@@ -18,7 +19,7 @@ Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 	this->killScore = killScore;
 	
 	// 스프라이트 로드
-	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_Carmikaze.png", 60, 30);
+	originalSprite = ImageLoader::CreateSpriteFromImage(SPR_CARMIKAZE.data(), 60, 30);
 
 	// 만약 오른쪽에서 생성된다면 sprite를 뒤집어준다
 	if (x > GAME_WIDTH / 2)
@@ -49,7 +50,7 @@ void Carmikaze::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY(), 60, 45));
+	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 60, 45);
 	gameManager.CreateGameObject(explosion, false);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;

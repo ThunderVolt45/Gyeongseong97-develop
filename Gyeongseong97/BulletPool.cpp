@@ -1,4 +1,10 @@
 #include "BulletPool.h"
+#include "ExplosionPool.h"
+
+BulletPool::BulletPool()
+{
+
+}
 
 BulletPool& BulletPool::GetInstance()
 {

@@ -19,7 +19,7 @@ Vanguard::Vanguard(int x, int y, int health, float speed, int killScore)
 	this->speed = speed;
 	this->killScore = killScore;
 
-	originalSprite = ImageLoader::CreateSpriteFromImage(L"enemy_vanguard.png", 18, 36);
+	originalSprite = ImageLoader::CreateSpriteFromImage(SPR_VANGUARD.data(), 18, 36);
 	sprite = originalSprite;
 
 	hitSprite = ImageLoader::CreateHitSprite(sprite);

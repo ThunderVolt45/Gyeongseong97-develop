@@ -7,6 +7,7 @@
 #include "Bullet.h"
 #include "BulletPool.h"
 #include "Explosion.h"
+#include "ExplosionPool.h"
 
 Player::Player() : GameObject()
 {
@@ -24,8 +25,8 @@ Player::Player(int x, int y)
 	this->x = (float)(x - (w / 2));
 	this->y = (float)(y - (h / 2));
 
-	defaultSprite = ImageLoader::CreateSpriteFromImage(L"player.png", w, h);
-	deathSprite = ImageLoader::CreateSpriteFromImage(L"player_death.png", 40, 30);
+	defaultSprite = ImageLoader::CreateSpriteFromImage(SPR_PLAYER.data(), w, h);
+	deathSprite = ImageLoader::CreateSpriteFromImage(SPR_PLAYER_DEATH.data(), 40, 30);
 	sprite = defaultSprite;
 
 	maxHealth = 5;
@@ -38,7 +39,7 @@ void Player::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion(new Explosion(GetCenterX(), GetCenterY()));
+	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY());
 	gameManager.CreateGameObject(explosion, false);
 
 	sprite = deathSprite;

@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "GameConstants.h"
 
 class Explosion : public GameObject
 {
@@ -12,10 +13,12 @@ private:
 	int animationIndex;
 	bool isCommonSize;
 
-public:
-	Explosion(int x, int y);
-	Explosion(int x, int y, int w, int h);
+	void SetSprites(int w, int h);
 
+public:
+	Explosion(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y);
+
+	void Reset(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y);
 	void Update() override;
 
 	static void LoadSprites(std::vector<Sprite>& sprites, int w, int h);

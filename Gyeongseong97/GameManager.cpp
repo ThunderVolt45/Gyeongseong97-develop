@@ -3,8 +3,10 @@
 #include "AudioManager.h"
 #include "StageManager.h"
 #include "GameConstants.h"
-#include "BulletPool.h"
 #include "Bullet.h"
+#include "BulletPool.h"
+#include "Explosion.h"
+#include "ExplosionPool.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
 #define NODRAWTEXT
@@ -265,6 +267,12 @@ void GameManager::Update()
 			if (auto bullet = std::dynamic_pointer_cast<Bullet>(obj))
 			{
 				BulletPool::GetInstance().ReturnBullet(bullet);
+			}
+
+			// Explosion 역시 파괴하지 않고 반환한다
+			if (auto explosion = std::dynamic_pointer_cast<Explosion>(obj))
+			{
+				ExplosionPool::GetInstance().ReturnExplosion(explosion);
 			}
 
 			iter = gameObjects.erase(iter);
