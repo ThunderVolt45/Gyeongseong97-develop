@@ -51,27 +51,43 @@ int main()
 
 	// 인트로 컷신 출력
 	DrawCutscene(screen,
+		L"intro_sy.png",
 		L"",
-		L"1972년이 다가왔다. X같이 못생긴 빨갱이들이 밀려들어온다!",
-		L"",
-		L"",
+		L"1949년이 다가왔다.",
+		L"X같이 못생긴 심영이 학생과 시민들을 빨갱이로 만들기 시작했다!",
 		L""
 		);
 
 	DrawCutscene(screen,
+		L"intro_reds.png",
 		L"",
-		L"1972년이 다가왔다. X같이 못생긴 빨갱이들이 밀려들어온다!",
+		L"경성이 빨갱이로 가득차버렸다! 경성은 엉망이 되었다!",
+		L"그리하여 비밀 결사 백의사에서는 백색 테러리스트 김두한을 불렀다.",
+		L""
+	);
+
+	DrawCutscene(screen,
+		L"intro_kdh.png",
 		L"",
+		L"김두한은 조선의 주먹 황제이자 백색 테러주의자다.",
+		L"1972억 공산당 빨갱이들을 모조리 시체로 결☆정 시킬 것이다!",
+		L""
+	);
+
+	DrawCutscene(screen,
+		L"intro_narration.png",
 		L"",
+		L"그러나 공산당에서는 이미 비밀 연구를 진행했었으니,",
+		L"나레이션 양반을 김두한을 1972년으로 보낼 최종 병기로 개조하는 것이었다!",
 		L""
 	);
 
 	DrawCutscene(screen,
 		L"intro.png",
-		L"시작하기에 앞서...",
-		L"<------------- \'스페이스바를 눌러 계속\' 문자가 보일 때까지 터미널 크기를 키워주세요 ------------->",
-		L"<---------------- 그리고 좌우 화살표의 끝이 보일 때까지 터미널 크기를 키워주세요 ---------------->",
-		L"(안하면 체력바 안 보입니다!)"
+		L"조 작 법",
+		L"방향키 : 플레이어 상하좌우 이동",
+		L"Space : 사격 (연사)",
+		L""
 		);
 
 	// 게임 시작
@@ -290,7 +306,7 @@ void GameLoop(ScreenInteractive& screen)
 				}
 
 				// 게임 진행 시간 계산
-				if (!gameManager.IsGameOver || !gameManager.IsGameClear)
+				if (!gameManager.IsGameOver && !gameManager.IsGameClear)
 				{
 					chrono::duration<double> duration = now - startTime;
 					long long durationSecond = static_cast<long long>(duration.count());

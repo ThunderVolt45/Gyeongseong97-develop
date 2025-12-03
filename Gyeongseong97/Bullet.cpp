@@ -20,7 +20,7 @@ Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine)
 	sprite = Sprite(1, 1, { color });
 
 	// 총 소리 출력
-	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.15f);
+	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.1f);
 }
 
 void Bullet::Update()

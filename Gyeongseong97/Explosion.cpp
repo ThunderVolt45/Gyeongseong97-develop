@@ -48,7 +48,7 @@ Explosion::Explosion(int x, int y, int w, int h)
 	isCommonSize = false;
 
 	// 폭8 효과음 재생
-	AudioManager::GetInstance().PlayAudio(SFX_EXPLOSION.data(), 0.25f, false);
+	AudioManager::GetInstance().PlayAudio(SFX_EXPLOSION.data(), 0.2f, false);
 
 	// 고유 크기를 갖는 자체 폭8 Sprite 생성
 	LoadCustomSizeSprites(w, h);

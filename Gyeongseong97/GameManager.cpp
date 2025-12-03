@@ -29,7 +29,7 @@ GameManager::GameManager()
 
 	// 백그라운드 생성
 	// 배경은 없는 게 성능 상 나은 듯 ㅈㅈ
-	//background = GameObject(GAME_WIDTH * 0.5f, GAME_HEIGHT * 0.5f, GAME_WIDTH, GAME_HEIGHT, L"background.png");
+	background = GameObject(GAME_WIDTH * 0.5f, GAME_HEIGHT * 0.5f, GAME_WIDTH, GAME_HEIGHT, L"background.png");
 
 	IsRunning = true;
 }
@@ -389,6 +389,7 @@ ftxui::Element GameManager::Render()
 
 	// 배경 그리기
 	//DrawObjectSprite(canvas, background);
+	
 
 	// 임계 구역 설정
 	{
@@ -445,7 +446,6 @@ ftxui::Element GameManager::Render()
 
 	// 캔버스를 박스로 감싸준다
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
-
 
 	// 체력 바 그리기
 	auto healthBar = ftxui::vbox({

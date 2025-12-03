@@ -17,13 +17,13 @@ Player::Player() : GameObject()
 
 Player::Player(int x, int y)
 {
-	int w = 40;
-	int h = 30;
+	int w = 20;
+	int h = 40;
 
 	this->x = (float)(x - (w / 2));
 	this->y = (float)(y - (h / 2));
 
-	defaultSprite = ImageLoader::CreateSpriteFromImage(L"image.png", w, h);
+	defaultSprite = ImageLoader::CreateSpriteFromImage(L"player.png", w, h);
 	deathSprite = ImageLoader::CreateSpriteFromImage(L"player_death.png", 40, 30);
 	sprite = defaultSprite;
 
@@ -41,6 +41,8 @@ void Player::Destroy()
 	gameManager.CreateGameObject(explosion, false);
 
 	sprite = deathSprite;
+	x -= 4;
+	y += 2;
 }
 
 void Player::Reset()

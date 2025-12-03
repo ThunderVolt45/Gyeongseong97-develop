@@ -282,7 +282,7 @@ void Narration::SpawnCarmikaze()
 		internalCounter++;
 
 		int spawnX = internalCounter % 2 == 0 ? -30 : GAME_WIDTH + 30;
-		int spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 10); // 랜덤 생성
+		int spawnY = Utility::GenerateRandomNumber(10, GAME_HEIGHT - 10); // 랜덤 생성
 		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 4, 1.4f, 0);
 		GameManager::GetInstance().CreateGameObject(carmikaze);
 	}
