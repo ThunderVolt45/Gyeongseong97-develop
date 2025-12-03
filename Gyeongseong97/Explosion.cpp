@@ -22,6 +22,7 @@ void Explosion::Reset(int x, int y, int w, int h)
 	lifeTimeTick = 120;
 	animationIndex = 0;
 	isCommonSize = (w == EXPLOSION_DEFAULT_SIZE_X && h == EXPLOSION_DEFAULT_SIZE_Y) ? true : false;
+	customSprites.clear();
 
 	// 폭8 효과음 재생
 	AudioManager::GetInstance().PlayAudio(SFX_EXPLOSION.data(), 0.2f, false);

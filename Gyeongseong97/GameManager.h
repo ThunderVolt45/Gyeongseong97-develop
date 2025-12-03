@@ -37,23 +37,16 @@ private:
 	// 스테이지 매니저
 	StageManager stageManager;
 
-	// 게임 내에 생성된 모든 GameObject를 담을 list
-	std::list<std::shared_ptr<GameObject>> gameObjects;
-
 	// 삭제할 오브젝트들을 모아둘 set
 	std::set<GameObject*> objectsToDestroy;
 
 	// 새로 생성할 오브젝트들을 모아둘 vector
 	std::vector<std::shared_ptr<GameObject>> objectsToCreate;
-
-	// 스레드 동기화를 위한 뮤텍스
-	std::recursive_mutex gameMutex;
 	
 	// 게임 틱
 	long long tick = 0;
 
 	void Reset();
-	void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);
 
 public:
 	Player player;
@@ -65,6 +58,12 @@ public:
 	/// <returns>GameManager 객체의 참조값</returns>
 	static GameManager& GetInstance();
 
+	// 스레드 동기화를 위한 뮤텍스
+	std::recursive_mutex gameMutex;
+
+	// 게임 내에 생성된 모든 GameObject를 담을 list
+	std::list<std::shared_ptr<GameObject>> gameObjects;
+
 	std::atomic<int> score = 0;
 	std::atomic<bool> IsRunning;
 	std::atomic<bool> IsGameOver = false;
@@ -75,7 +74,6 @@ public:
 	std::function<void()> onResetCallback;
 
 	void Update();
-	ftxui::Element Render();
 	bool OnEvent(ftxui::Event event);
 
 	void CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack = true);

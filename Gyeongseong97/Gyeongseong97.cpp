@@ -17,6 +17,7 @@
 #include <ftxui/component/component.hpp>
 
 #include "GameManager.h"
+#include "RenderSystem.h"
 #include "GameConstants.h"
 #include "Utility.h"
 #include "AudioManager.h"
@@ -235,7 +236,7 @@ void GameLoop(ScreenInteractive& screen)
 	// Renderer: 화면을 그리는 역할
 	auto renderer = Renderer(
 		[&] {
-			return gameManager.Render();
+			return RenderSystem::Render();
 		}
 	);
 
