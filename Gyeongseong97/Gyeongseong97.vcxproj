@@ -143,7 +143,9 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="Carmikaze.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="ExplosionPool.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -162,7 +164,9 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletPool.h" />
     <ClInclude Include="Carmikaze.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="ExplosionPool.h" />
     <ClInclude Include="GameConstants.h" />
