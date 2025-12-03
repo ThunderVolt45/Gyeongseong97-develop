@@ -155,9 +155,6 @@ void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool 
 {
 	std::lock_guard<std::recursive_mutex> lock(gameMutex);
 
-	// 반복문 도중 벡터 수정으로 인한 충돌을 막기 위해 대기열에 넣음
-	// objectsToCreate.push_back(gameObject);
-
 	if (pushToBack)
 	{
 		gameObjects.push_back(gameObject);
@@ -231,13 +228,6 @@ void GameManager::Update()
 
 	// 틱
 	tick++;
-
-	// 대기열에 있는 오브젝트들을 실제 게임 오브젝트 리스트에 추가
-	/*if (!objectsToCreate.empty())
-	{
-		gameObjects.insert(gameObjects.end(), objectsToCreate.begin(), objectsToCreate.end());
-		objectsToCreate.clear();
-	}*/
 	
 	// 플레이어 업데이트
 	player.Update();
@@ -270,7 +260,7 @@ void GameManager::Update()
 			}
 
 			// Explosion 역시 파괴하지 않고 반환한다
-			if (auto explosion = std::dynamic_pointer_cast<Explosion>(obj))
+			else if (auto explosion = std::dynamic_pointer_cast<Explosion>(obj))
 			{
 				ExplosionPool::GetInstance().ReturnExplosion(explosion);
 			}
@@ -385,17 +375,27 @@ void GameManager::Update()
 				[&](const std::shared_ptr<GameObject>& ptr) {
 					if (objectsToDestroy.count(ptr.get()) > 0)
 					{
+						// Bullet 오브젝트는 제거하지 않고 오브젝트 풀로 반환
 						if (auto bullet = std::dynamic_pointer_cast<Bullet>(ptr))
 						{
 							BulletPool::GetInstance().ReturnBullet(bullet);
 						}
+
+						// Explosion 오브젝트 역시 제거하지 않고 오브젝트 풀로 반환
+						else if (auto explosion = std::dynamic_pointer_cast<Explosion>(ptr))
+						{
+							ExplosionPool::GetInstance().ReturnExplosion(explosion);
+						}
+
 						return true;
 					}
+
 					return false;
 				}
 			),
 			gameObjects.end()
 		);
+
 		objectsToDestroy.clear();
 	}
 
