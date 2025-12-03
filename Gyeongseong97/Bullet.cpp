@@ -1,6 +1,7 @@
 #include "Bullet.h"
 #include "AudioManager.h"
 #include "GameConstants.h"
+#include "BulletPool.h"
 
 Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine)
 {
@@ -32,4 +33,12 @@ void Bullet::Update()
 {
 	x -= speedX;
 	y -= speedY;
+}
+
+void Bullet::OnDestroy(std::shared_ptr<GameObject> self)
+{
+	if (auto bullet = std::dynamic_pointer_cast<Bullet>(self))
+	{
+		BulletPool::GetInstance().ReturnBullet(bullet);
+	}
 }

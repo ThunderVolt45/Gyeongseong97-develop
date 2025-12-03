@@ -182,17 +182,8 @@ void GameManager::Update()
 		// 화면 밖으로 나갔다면 즉시 제거 목록에 추가하고 업데이트 중단
 		if (obj->IsOutOfScreen())
 		{
-			// Bullet은 파괴하지 않고 반환한다
-			if (auto bullet = std::dynamic_pointer_cast<Bullet>(obj))
-			{
-				BulletPool::GetInstance().ReturnBullet(bullet);
-			}
-
-			// Explosion 역시 파괴하지 않고 반환한다
-			else if (auto explosion = std::dynamic_pointer_cast<Explosion>(obj))
-			{
-				ExplosionPool::GetInstance().ReturnExplosion(explosion);
-			}
+			// 객체 파괴시 객체 스스로 수행해야 할 로직이 있다면 실행한다
+			obj->OnDestroy(obj);
 
 			iter = gameObjects.erase(iter);
 			continue;

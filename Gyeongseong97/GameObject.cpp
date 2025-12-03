@@ -41,6 +41,11 @@ void GameObject::Update()
 
 }
 
+void GameObject::OnDestroy(std::shared_ptr<GameObject> self)
+{
+	// 기본적으로는 아무것도 하지 않는다.
+}
+
 bool GameObject::IsOutOfScreen()
 {
 	bool isOutofScreen = false;

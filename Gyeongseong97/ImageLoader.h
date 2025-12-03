@@ -5,14 +5,6 @@
 #include <map>
 #include <ftxui/screen/color.hpp>
 
-struct RawImage
-{
-	int width;
-	int height;
-	int n_channels;
-	unsigned char* data;
-};
-
 struct Sprite
 {
 	int sizeX = 0;
@@ -23,11 +15,10 @@ struct Sprite
 class ImageLoader
 {
 private:
-	static std::map<std::string, RawImage> cacheImages;
+	static std::map<std::string, Sprite> spriteCache;
 
 public:
 	static Sprite CreateSpriteFromImage(std::wstring fileName, int sizeX, int sizeY);
 	static Sprite FlipSpriteX(Sprite spriteToFilp);
 	static Sprite CreateHitSprite(Sprite originalSprite);
 };
-

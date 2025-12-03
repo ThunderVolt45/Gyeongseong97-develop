@@ -1,5 +1,6 @@
 #pragma once
 #include "ImageLoader.h"
+#include <memory>
 
 class GameObject
 {
@@ -35,6 +36,12 @@ public:
 	/// 매 Logic Frame 마다 호출되는 메서드
 	/// </summary>
 	virtual void Update();
+
+	/// <summary>
+	/// 객체가 파괴될 때 호출되는 메서드
+	/// </summary>
+	/// <param name="self">자기 자신의 shared_ptr</param>
+	virtual void OnDestroy(std::shared_ptr<GameObject> self);
 
 	/// <summary>
 	/// 자기 자신이 Screen 바깥으로 나갔는 지 검사하는 메소드

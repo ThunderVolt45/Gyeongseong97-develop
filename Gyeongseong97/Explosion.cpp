@@ -3,6 +3,7 @@
 #include "AudioManager.h"
 #include "ImageLoader.h"
 #include "GameConstants.h"
+#include "ExplosionPool.h"
 
 // 플라이웨이트 패턴
 // 기본 크기 폭8 오브젝트는 다 같은 Sprite를 돌려쓰므로 그냥 static으로 하나만 저장하면 된다.
@@ -95,5 +96,13 @@ void Explosion::Update()
 		{
 			sprite = customSprites[++animationIndex];
 		}
+	}
+}
+
+void Explosion::OnDestroy(std::shared_ptr<GameObject> self)
+{
+	if (auto explosion = std::dynamic_pointer_cast<Explosion>(self))
+	{
+		ExplosionPool::GetInstance().ReturnExplosion(explosion);
 	}
 }

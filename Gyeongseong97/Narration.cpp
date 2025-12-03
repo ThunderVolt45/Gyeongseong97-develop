@@ -299,7 +299,7 @@ void Narration::SpawnCarmikaze()
 
 		int spawnX = internalCounter % 2 == 0 ? -30 : GAME_WIDTH + 30;
 		int spawnY = Utility::GenerateRandomNumber(10, GAME_HEIGHT - 10); // 랜덤 생성
-		EnemyInfo enemy(EnemyType::Carmikaze, spawnX, spawnY, 4, 1.4f, 0);
+		EnemyInfo enemy(EnemyType::Carmikaze, spawnX, spawnY, 5, 1.4f, 0);
 		EnemyFactory::CreateEnemy(enemy);
 	}
 	else

@@ -2,26 +2,32 @@
 
 #include "ImageLoader.h"
 #include "Utility.h"
+#include "GameConstants.h"
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <map>
-
 #include <windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_WINDOWS_UTF8
-
 #include <stb_image.h>
 
-const static std::wstring IMAGE_PATH = L"\\Sprites\\";
-
 // 정적 멤버 변수 정의
-std::map<std::string, RawImage> ImageLoader::cacheImages;
+std::map<std::string, Sprite> ImageLoader::spriteCache;
 
 Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int sizeY)
 {
+	// 캐시 키 생성 (파일이름_너비_높이)
+	std::string cacheKey = Utility::ConvertWideToUtf8(fileName.c_str()) + "_" + std::to_string(sizeX) + "_" + std::to_string(sizeY);
+
+	// 캐시에 있으면 반환
+	if (spriteCache.contains(cacheKey))
+	{
+		return spriteCache[cacheKey];
+	}
+
 	Sprite sprite;
 
 	// 이미지 경로 계산
@@ -38,35 +44,17 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 		std::wcerr << L"Warning: 이미지 경로가 너무 깁니다. 더 큰 버퍼가 필요합니다." << std::endl;
 	}
 
-	auto strFilePath = Utility::ConvertWideToUtf8(pathBuffer.data()) + Utility::ConvertWideToUtf8((IMAGE_PATH + fileName).c_str());
+	auto strFilePath = Utility::ConvertWideToUtf8(pathBuffer.data()) + Utility::ConvertWideToUtf8((IMAGE_PATH.data() + fileName).c_str());
 	const char* filePath = strFilePath.c_str();
 
 	int width, height, n_channels;
-	unsigned char* data;
-
-	// 이미지가 캐싱되어 있는 지 검사한다.
-	if (cacheImages.contains(filePath))
-	{
-		// 캐싱된 이미지를 가져온다.
-		RawImage raw = cacheImages[filePath];
-		width = raw.width;
-		height = raw.height;
-		n_channels = raw.n_channels;
-		data = raw.data;
-	}
-	else
-	{
-		// 이미지 파일의 픽셀 데이터를 메모리로 로드한다.
-		data = stbi_load(filePath, &width, &height, &n_channels, 4);
-
-		// 로드된 픽셀 데이터를 캐싱한다.
-		RawImage raw = RawImage(width, height, n_channels, data);
-		cacheImages.insert(std::pair<std::string, RawImage>(filePath, raw));
-	}
+	unsigned char* data = stbi_load(filePath, &width, &height, &n_channels, 4);
 
 	// 이미지 로딩에 실패했다면 핑크색으로 채워서 보낸다
 	if (!data)
 	{
+		sprite.sizeX = sizeX;
+		sprite.sizeY = sizeY;
 		for (int y = 0; y < sizeY; y++)
 		{
 			for (int x = 0; x < sizeX; x++)
@@ -74,13 +62,16 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 				sprite.colors.push_back(ftxui::Color::Pink1);
 			}
 		}
-
+		// 실패한 경우 캐시하지 않거나, 빈 스프라이트를 캐시할 수도 있음. 
+		// 여기서는 매번 재시도하도록 캐시하지 않음.
 		return sprite;
 	}
 
 	// Sprite 생성 준비
 	sprite.sizeX = sizeX;
 	sprite.sizeY = sizeY;
+	// 미리 메모리 예약
+	sprite.colors.reserve(sizeX * sizeY);
 
 	// Sprite의 모든 픽셀을 순회
 	for (int y = 0; y < sizeY; y++)
@@ -129,8 +120,10 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 	}
 
 	// 메모리 해제
-	// 이미지 데이터를 캐싱해서 사용할 것이므로 메모리 해제는 C++ 런타임이 직접 수행하게 해야 한다.
-	// stbi_image_free(data);
+	stbi_image_free(data);
+
+	// 생성된 스프라이트를 캐시에 저장
+	spriteCache[cacheKey] = sprite;
 
 	// Sprite 반환
 	return sprite;
