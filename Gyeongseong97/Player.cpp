@@ -42,8 +42,8 @@ void Player::Destroy()
 	gameManager.CreateGameObject(explosion, false);
 
 	sprite = deathSprite;
-	x -= 4;
-	y += 2;
+	x -= 10;
+	y += 5;
 }
 
 void Player::Reset()

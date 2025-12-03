@@ -18,7 +18,6 @@ public:
 
 	void Update() override;
 
-	static void LoadSprites();
-	void LoadCustomSizeSprites(int w, int h);
+	static void LoadSprites(std::vector<Sprite>& sprites, int w, int h);
 };
 

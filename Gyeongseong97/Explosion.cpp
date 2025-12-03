@@ -27,7 +27,7 @@ Explosion::Explosion(int x, int y)
 	// 에셋이 로드되지 않았다면 로드 (Lazy Loading)
 	if (commonSprites.empty())
 	{
-		LoadSprites();
+		LoadSprites(commonSprites, SIZE_X, SIZE_Y);
 	}
 	
 	// 기본 Sprite 설정
@@ -51,26 +51,13 @@ Explosion::Explosion(int x, int y, int w, int h)
 	AudioManager::GetInstance().PlayAudio(SFX_EXPLOSION.data(), 0.2f, false);
 
 	// 고유 크기를 갖는 자체 폭8 Sprite 생성
-	LoadCustomSizeSprites(w, h);
+	LoadSprites(customSprites, w, h);
 
 	// 기본 Sprite 설정
 	sprite = customSprites[0];
 }
 
-void Explosion::LoadSprites()
-{
-	// Sprites 초기화
-	for (int i = 1; i <= 37; i++)
-	{
-		std::wstringstream ss;
-		ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
-
-		Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), SIZE_X, SIZE_Y);
-		commonSprites.push_back(sprite);
-	}
-}
-
-void Explosion::LoadCustomSizeSprites(int w, int h)
+void Explosion::LoadSprites(std::vector<Sprite>& sprites, int w = 40, int h = 30)
 {
 	// Sprites 초기화
 	for (int i = 1; i <= 37; i++)
@@ -79,10 +66,9 @@ void Explosion::LoadCustomSizeSprites(int w, int h)
 		ss << L"폭8\\폭8_" << std::setw(4) << std::setfill(L'0') << i << ".png";
 
 		Sprite sprite = ImageLoader::CreateSpriteFromImage(ss.str(), w, h);
-		customSprites.push_back(sprite);
+		sprites.push_back(sprite);
 	}
 }
-
 void Explosion::Update()
 {
 	tick += 1;
