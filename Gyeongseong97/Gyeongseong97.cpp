@@ -32,6 +32,12 @@ void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine
 void GameLoop(ScreenInteractive& screen);
 #pragma endregion
 
+void ClearScreen()
+{
+	cout << "\033[2J\033[H";
+	cout.flush();
+}
+
 int main()
 {
 	// 유니코드 및 콘솔 출력 설정 (UTF-8)
@@ -42,7 +48,7 @@ int main()
 	audioManager.PlayAudio(BGM_MAIN.data(), BGM_VOULME, true);
 
 	// 화면 정리
-	system("cls");
+	ClearScreen();
 
 	// FTXUI Screen 생성
 	auto screen = ScreenInteractive::FitComponent();
@@ -168,7 +174,7 @@ void TitleScreen(ScreenInteractive& screen)
 	screen.Loop(titleScreenRenderer);
 
 	// 화면 정리
-	system("cls");
+	ClearScreen();
 }
 
 void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4)
@@ -224,7 +230,7 @@ void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine
 	screen.Loop(introScreenComponent);
 	
 	// 화면 정리
-	system("cls");
+	ClearScreen();
 }
 
 void GameLoop(ScreenInteractive& screen)

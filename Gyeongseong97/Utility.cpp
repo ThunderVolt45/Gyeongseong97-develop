@@ -42,7 +42,7 @@ static void append_unicode_codepoint_to_utf8(std::string& out, uint32_t c) {
 }
 
 /// <summary>
-/// 대체 무슨 원리로 동작하는 건지도 모를 괴 코드의 힘을 빌려
+/// 대체 무슨 원리로 동작하는 건지도 모를 괴코드의 힘을 빌려
 /// wchar_t를 적절하게 utf-8 string으로 변환해주는 메소드
 /// </summary>
 /// <param name="wideStr">변환하고 싶은 wchar_t</param>
