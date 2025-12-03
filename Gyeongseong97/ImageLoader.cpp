@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <map>
-#include <windows.h>
+#include <filesystem>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_WINDOWS_UTF8
@@ -27,28 +27,19 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 	{
 		return spriteCache[cacheKey];
 	}
+	
+	// 이미지 경로를 구한다
+	filesystem::path currentPath = filesystem::current_path();
 
-	Sprite sprite;
-
-	// 이미지 경로 계산
-	std::vector<wchar_t> pathBuffer(MAX_PATH);
-	DWORD ret = GetCurrentDirectoryW(MAX_PATH, pathBuffer.data());
-
-	if (ret == 0)
-	{
-		std::wcerr << L"Error: 이미지 경로를 가져오는데 실패했습니다." << std::endl;
-		return sprite;
-	}
-	else if (ret == pathBuffer.size())
-	{
-		std::wcerr << L"Warning: 이미지 경로가 너무 깁니다. 더 큰 버퍼가 필요합니다." << std::endl;
-	}
-
-	auto strFilePath = Utility::ConvertWideToUtf8(pathBuffer.data()) + Utility::ConvertWideToUtf8((IMAGE_PATH.data() + fileName).c_str());
+	auto strFilePath = Utility::ConvertWideToUtf8(currentPath.c_str()) + Utility::ConvertWideToUtf8((IMAGE_PATH.data() + fileName).c_str());
 	const char* filePath = strFilePath.c_str();
 
+	// 이미지 로드!
 	int width, height, n_channels;
 	unsigned char* data = stbi_load(filePath, &width, &height, &n_channels, 4);
+
+	// Sprite 생성
+	Sprite sprite;
 
 	// 이미지 로딩에 실패했다면 핑크색으로 채워서 보낸다
 	if (!data)

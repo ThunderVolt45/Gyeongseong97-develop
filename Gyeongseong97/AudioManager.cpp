@@ -5,14 +5,13 @@
 
 #include "AudioManager.h"
 #include "Utility.h"
+#include "GameConstants.h"
 
 #include <iostream>
 #include <vector>
 #include <thread>
-#include <windows.h>
 #include <chrono>
-
-const static std::wstring AUDIO_PATH = L"\\Sounds\\";
+#include <filesystem>
 
 #pragma region Constructer & Destroyer
 
@@ -66,27 +65,16 @@ AudioManager& AudioManager::GetInstance()
 
 void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 {
-	// 파일 경로 정의
-	std::vector<wchar_t> pathBuffer(MAX_PATH);
-	DWORD ret = GetCurrentDirectoryW(MAX_PATH, pathBuffer.data());
+	// 오디오 경로를 구한다
+	std::filesystem::path currentPath = std::filesystem::current_path();
 
-	if (ret == 0)
-	{
-		std::cerr << "Error: 파일 경로를 가져오는데 실패했습니다." << std::endl;
-		return;
-	}
-	else if (ret == pathBuffer.size())
-	{
-		std::cerr << "Warning: 파일 경로가 너무 깁니다.더 큰 길이 버퍼가 필요합니다." << std::endl;
-	}
-
-	auto strFilePath = pathBuffer.data() + AUDIO_PATH + audioPath;
-	auto filePath = Utility::ConvertWideToUtf8(strFilePath.c_str());
+	auto strFilePath = Utility::ConvertWideToUtf8(currentPath.c_str()) + Utility::ConvertWideToUtf8((AUDIO_PATH.data() + audioPath).c_str());
+	auto filePath = strFilePath.c_str();
 
 	// ma_sound 객체를 생성
 	ma_sound* pSound = new ma_sound;
 
-	ma_result result = ma_sound_init_from_file(&audioEngine, filePath.c_str(), 0, NULL, NULL, pSound);
+	ma_result result = ma_sound_init_from_file(&audioEngine, filePath, 0, NULL, NULL, pSound);
 
 	if (result != MA_SUCCESS)
 	{

@@ -26,6 +26,7 @@ constexpr int EXPLOSION_DEFAULT_SIZE_Y = 30;
 
 // 리소스 경로
 constexpr wstring_view IMAGE_PATH{ L"\\Sprites\\" };
+constexpr wstring_view AUDIO_PATH{ L"\\Sounds\\" };
 
 // 사운드 리소스
 constexpr float BGM_VOULME = 0.5f;
