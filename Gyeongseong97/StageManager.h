@@ -45,12 +45,6 @@ private:
 	float delayTimer = 0.0f;
 
 	/// <summary>
-	/// SpawnData를 받아와 적을 생성하는 함수
-	/// </summary>
-	/// <param name="spawnData">생성할 적의 SpawnData</param>
-	void CreateEnemy(SpawnData spawnData);
-
-	/// <summary>
 	/// 모든 Wave의 모든 적을 처치하는데 성공했을 때 호출할 함수
 	/// </summary>
 	void GameClear();

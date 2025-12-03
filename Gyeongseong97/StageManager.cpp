@@ -2,89 +2,18 @@
 
 #include "StageManager.h"
 #include "GameManager.h"
-#include "GameConstants.h"
+#include "AudioManager.h"
+#include "EnemyFactory.h"
 #include "Utility.h"
 #include "Enemy.h"
 #include "Vanguard.h"
 #include "Carmikaze.h"
 #include "Narration.h"
-#include "AudioManager.h"
+#include "GameConstants.h"
 
 #include "json.hpp"
 
 using json = nlohmann::json;
-
-void StageManager::CreateEnemy(SpawnData spawnData)
-{
-	GameManager& gameManager = GameManager::GetInstance();
-
-	// 적을 생성할 좌표 값을 구한다
-	int spawnX = spawnData.x;
-	int spawnY = spawnData.y;
-
-	// x 좌표 값을 할당한다
-	switch (spawnX)
-	{
-	case static_cast<int>(SpawnPosition::Random):
-		spawnX = Utility::GenerateRandomNumber(0, GAME_WIDTH - 1);
-		break;
-	case static_cast<int>(SpawnPosition::PlayerPosition):
-		spawnX = gameManager.player.GetCenterX();
-		break;
-	case static_cast<int>(SpawnPosition::Min):
-		spawnX = 0;
-		break;
-	case static_cast<int>(SpawnPosition::Max):
-		spawnX = GAME_WIDTH;
-		break;
-	}
-
-	// y 좌표 값을 할당한다
-	switch (spawnY)
-	{
-	case static_cast<int>(SpawnPosition::Random):
-		spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1);
-		break;
-	case static_cast<int>(SpawnPosition::PlayerPosition):
-		spawnY = gameManager.player.GetCenterY();
-		break;
-	case static_cast<int>(SpawnPosition::Min):
-		spawnY = 0;
-		break;
-	case static_cast<int>(SpawnPosition::Max):
-		spawnY = GAME_HEIGHT;
-		break;
-	}
-
-	// 적을 생성한다
-	switch (spawnData.type)
-	{
-	case EnemyType::Vanguard:
-	{
-		auto vanguard = std::make_shared<Vanguard>(spawnX, spawnY, spawnData.health, spawnData.speed, 500);
-		gameManager.CreateGameObject(vanguard);
-		break;
-	}
-	case EnemyType::Carmikaze:
-	{
-		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, spawnData.health, spawnData.speed, 1000);
-		gameManager.CreateGameObject(carmikaze);
-		break;
-	}
-	case EnemyType::Narration:
-	{
-		auto narration = std::make_shared<Narration>(spawnX, spawnY, spawnData.health, spawnData.speed, 1000);
-		gameManager.CreateGameObject(narration);
-		break;
-	}
-	default:
-	{
-		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, spawnData.health, spawnData.speed, 0);
-		gameManager.CreateGameObject(instigated);
-		break;
-	}
-	}
-}
 
 void StageManager::GameClear()
 {
@@ -220,6 +149,14 @@ void StageManager::Update()
 		delayTimer += spawnData.nextEnemyDelay;
 		currentEnemyIndex++;
 
-		CreateEnemy(spawnData);
+		EnemyInfo enemy;
+		enemy.type = spawnData.type;
+		enemy.x = spawnData.x;
+		enemy.y = spawnData.y;
+		enemy.health = spawnData.health;
+		enemy.speed = spawnData.speed;
+		enemy.killScore = -1;
+
+		EnemyFactory::CreateEnemy(enemy);
 	}
 }

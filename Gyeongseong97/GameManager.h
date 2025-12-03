@@ -35,7 +35,7 @@ private:
 	GameManager& operator=(const GameManager&) = delete;
 
 	// 스테이지 매니저
-	StageManager stage;
+	StageManager stageManager;
 
 	// 게임 내에 생성된 모든 GameObject를 담을 list
 	std::list<std::shared_ptr<GameObject>> gameObjects;

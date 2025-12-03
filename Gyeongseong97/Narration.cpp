@@ -2,6 +2,7 @@
 
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "EnemyFactory.h"
 #include "Utility.h"
 #include "GameConstants.h"
 #include "Narration.h"
@@ -235,8 +236,16 @@ void Narration::SpawnVanguard()
 	if (internalCounter <= 0)
 	{
 		internalCounter = 1;
-		auto carmikaze = std::make_shared<Carmikaze>(GAME_WIDTH, 30, 100, 2.0f, 0);
-		GameManager::GetInstance().CreateGameObject(carmikaze);
+
+		EnemyInfo enemy;
+		enemy.type = EnemyType::Carmikaze;
+		enemy.x = GAME_WIDTH;
+		enemy.y = 30;
+		enemy.health = 100;
+		enemy.speed = 2.0f;
+		enemy.killScore = 0;
+
+		EnemyFactory::CreateEnemy(enemy);
 
 		internalTick += 24;
 	}
@@ -247,9 +256,15 @@ void Narration::SpawnVanguard()
 		internalTick += 24;
 		internalCounter++;
 
-		int spawnX = GAME_WIDTH - 40 * (internalCounter - 1);
-		auto vanguard = std::make_shared<Vanguard>(spawnX, 40, 3, 0.6f, 0);
-		GameManager::GetInstance().CreateGameObject(vanguard);
+		EnemyInfo enemy;
+		enemy.type = EnemyType::Vanguard;
+		enemy.x = GAME_WIDTH - 40 * (internalCounter - 1);
+		enemy.y = 40;
+		enemy.health = 3;
+		enemy.speed = 0.6f;
+		enemy.killScore = 0;
+
+		EnemyFactory::CreateEnemy(enemy);
 	}
 	else
 	{
@@ -284,8 +299,8 @@ void Narration::SpawnCarmikaze()
 
 		int spawnX = internalCounter % 2 == 0 ? -30 : GAME_WIDTH + 30;
 		int spawnY = Utility::GenerateRandomNumber(10, GAME_HEIGHT - 10); // 랜덤 생성
-		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, 4, 1.4f, 0);
-		GameManager::GetInstance().CreateGameObject(carmikaze);
+		EnemyInfo enemy(EnemyType::Carmikaze, spawnX, spawnY, 4, 1.4f, 0);
+		EnemyFactory::CreateEnemy(enemy);
 	}
 	else
 	{

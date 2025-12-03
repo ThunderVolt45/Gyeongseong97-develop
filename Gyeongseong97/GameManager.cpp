@@ -27,7 +27,7 @@
 GameManager::GameManager()
 {
 	// 스테이지 초기화
-	stage.Initialize();
+	stageManager.Initialize();
 
 	// 플레이어 생성
 	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y);
@@ -63,7 +63,7 @@ void GameManager::Reset()
 	objectsToCreate.clear();
 
 	// 스테이지 초기화
-	stage.Reset();
+	stageManager.Reset();
 
 	if (onResetCallback)
 	{
@@ -308,7 +308,7 @@ void GameManager::Update()
 	if (IsGameOver || IsGameClear) return;
 
 	// 스테이지 갱신
-	stage.Update();
+	stageManager.Update();
 }
 
 ftxui::Element GameManager::Render()

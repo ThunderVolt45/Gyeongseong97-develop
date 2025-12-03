@@ -45,11 +45,6 @@ void Explosion::SetSprites(int w, int h)
 		{
 			sprite = commonSprites[0];
 		}
-		// 고유 크기를 갖는 자체 폭8 Sprite 생성
-		LoadSprites(customSprites, w, h);
-
-		// 기본 Sprite 설정
-		sprite = customSprites[0];
 	}
 	else
 	{
