@@ -3,6 +3,8 @@
 #include "AudioManager.h"
 #include "StageManager.h"
 #include "GameConstants.h"
+#include "BulletPool.h"
+#include "Bullet.h"
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
 #define NODRAWTEXT
@@ -259,6 +261,12 @@ void GameManager::Update()
 		// 화면 밖으로 나갔다면 즉시 제거 목록에 추가하고 업데이트 중단
 		if (obj->IsOutOfScreen())
 		{
+			// Bullet은 파괴하지 않고 반환한다
+			if (auto bullet = std::dynamic_pointer_cast<Bullet>(obj))
+			{
+				BulletPool::GetInstance().ReturnBullet(bullet);
+			}
+
 			iter = gameObjects.erase(iter);
 			continue;
 		}
@@ -367,7 +375,15 @@ void GameManager::Update()
 		gameObjects.erase(
 			std::remove_if(gameObjects.begin(), gameObjects.end(),
 				[&](const std::shared_ptr<GameObject>& ptr) {
-					return objectsToDestroy.count(ptr.get()) > 0;
+					if (objectsToDestroy.count(ptr.get()) > 0)
+					{
+						if (auto bullet = std::dynamic_pointer_cast<Bullet>(ptr))
+						{
+							BulletPool::GetInstance().ReturnBullet(bullet);
+						}
+						return true;
+					}
+					return false;
 				}
 			),
 			gameObjects.end()

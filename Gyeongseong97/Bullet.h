@@ -12,6 +12,8 @@ public:
 
 	Bullet(int x, int y, float speedX, float speedY, bool isMine);
 
+	void Reset(int x, int y, float speedX, float speedY, bool isMine);
+
 	void Update() override;
 };
 

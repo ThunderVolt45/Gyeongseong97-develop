@@ -8,6 +8,7 @@
 #include "Carmikaze.h"
 #include "Vanguard.h"
 #include "Explosion.h"
+#include "BulletPool.h"
 
 #pragma region Constructer & Destroyer
 
@@ -145,9 +146,9 @@ void Narration::AttackShot()
 	if (internalTick <= 0)
 	{
 		// 총알 발사!!!
-		std::shared_ptr<Bullet> bullet1(new Bullet(GetCenterX() - 15, GetCenterY(), 0.0f, -2.0f, false));
-		std::shared_ptr<Bullet> bullet2(new Bullet(GetCenterX(), GetCenterY(), 0.0f, -2.0f, false));
-		std::shared_ptr<Bullet> bullet3(new Bullet(GetCenterX() + 15, GetCenterY(), 0.0f, -2.0f, false));
+		std::shared_ptr<Bullet> bullet1 = BulletPool::GetInstance().GetBullet(GetCenterX() - 15, GetCenterY(), 0.0f, -2.0f, false);
+		std::shared_ptr<Bullet> bullet2 = BulletPool::GetInstance().GetBullet(GetCenterX(), GetCenterY(), 0.0f, -2.0f, false);
+		std::shared_ptr<Bullet> bullet3 = BulletPool::GetInstance().GetBullet(GetCenterX() + 15, GetCenterY(), 0.0f, -2.0f, false);
 		gameManager.CreateGameObject(bullet1);
 		gameManager.CreateGameObject(bullet2);
 		gameManager.CreateGameObject(bullet3);

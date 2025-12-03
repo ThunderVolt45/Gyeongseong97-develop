@@ -5,6 +5,7 @@
 #include "GameConstants.h"
 #include "Player.h"
 #include "Bullet.h"
+#include "BulletPool.h"
 #include "Explosion.h"
 
 Player::Player() : GameObject()
@@ -74,7 +75,7 @@ void Player::Update()
 	// 발사 (Space 키)
 	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && cooldown <= 0)
 	{
-		std::shared_ptr<Bullet> bullet(new Bullet(GetCenterX(), y, 0.0f, 6.0f, true));
+		std::shared_ptr<Bullet> bullet = BulletPool::GetInstance().GetBullet(GetCenterX(), y, 0.0f, 6.0f, true);
 		GameManager::GetInstance().CreateGameObject(bullet);
 
 		cooldown = 6; // 6틱(약 100ms) 쿨다운
