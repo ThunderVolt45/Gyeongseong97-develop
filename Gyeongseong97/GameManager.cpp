@@ -9,10 +9,6 @@
 #include "ExplosionPool.h"
 #include "CollisionManager.h"
 
-#define NOMINMAX // Prevent min/max macro conflicts with windows.h
-#define NODRAWTEXT
-#include <windows.h>
-
 #include <set>
 #include <algorithm>
 
