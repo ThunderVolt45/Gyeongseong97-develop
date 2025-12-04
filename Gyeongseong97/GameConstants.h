@@ -37,6 +37,7 @@ constexpr wstring_view SFX_GUNFIRE{ L"sfx_gunfire.wav" };
 constexpr wstring_view SFX_CAR{ L"sfx_car.wav" };
 constexpr wstring_view SFX_EXPLOSION{ L"sfx_explosion.wav" };
 constexpr wstring_view SFX_GETWEAPON{ L"sfx_get.wav" };
+constexpr wstring_view SFX_GRENADE{ L"sfx_grenade.wav" };
 
 // 이미지 리소스
 constexpr wstring_view SPR_PLAYER{ L"player.png" };

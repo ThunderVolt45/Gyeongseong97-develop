@@ -26,6 +26,8 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 	this->damage = damage;
 	this->isExplosive = isExplosive;
 
+	AudioManager& audioManager = AudioManager::GetInstance();
+
 	if (isExplosive)
 	{
 		ftxui::Color c = ftxui::Color::DarkRed;
@@ -42,6 +44,9 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 				c, c, c, c,
 				c, c, c, c,
 			});
+
+		// 총 소리 출력
+		audioManager.PlayAudio(SFX_GRENADE.data(), 0.1f);
 	}
 	else
 	{
@@ -54,8 +59,8 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 
 		sprite = Sprite(1, 1, { color });
 
-		// 총 소리 출력 (일반 총알만?)
-		AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.1f);
+		// 총 소리 출력
+		audioManager.PlayAudio(SFX_GUNFIRE.data(), 0.1f);
 	}
 }
 
@@ -77,7 +82,7 @@ void Bullet::Destroy()
 		GameManager& gameManager = GameManager::GetInstance();
 
 		// 폭발 효과 생성
-		std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 50, 50);
+		std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 40, 30);
 		gameManager.CreateGameObject(explosion, false);
 	}
 

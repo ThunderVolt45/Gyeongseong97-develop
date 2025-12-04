@@ -91,7 +91,7 @@ void WeaponGrenade::Shoot(Player* owner)
 			owner->GetCenterX(),
 			owner->y,
 			0.0f,
-			4.0f,
+			5.0f,
 			true,
 			damage,
 			true
