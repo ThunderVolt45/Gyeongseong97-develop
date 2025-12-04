@@ -27,7 +27,7 @@ void BossStateSpawnVanguard::Update(Narration& boss)
 		boss.internalCounter = 1;
 
 		EnemyInfo enemy;
-		enemy.type = EnemyType::Carmikaze;
+		enemy.type = SpawnType::Carmikaze;
 		enemy.x = GAME_WIDTH;
 		enemy.y = 30;
 		enemy.health = 100;
@@ -46,7 +46,7 @@ void BossStateSpawnVanguard::Update(Narration& boss)
 		boss.internalCounter++;
 
 		EnemyInfo enemy;
-		enemy.type = EnemyType::Vanguard;
+		enemy.type = SpawnType::Vanguard;
 		enemy.x = GAME_WIDTH - 40 * (boss.internalCounter - 1);
 		enemy.y = 40;
 		enemy.health = 3;

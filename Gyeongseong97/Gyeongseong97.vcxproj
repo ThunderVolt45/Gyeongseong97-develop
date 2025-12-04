@@ -160,6 +160,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gyeongseong97.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
+    <ClCompile Include="ItemFactory.cpp" />
     <ClCompile Include="Narration.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayingSoundInfo.cpp" />
@@ -167,6 +168,8 @@
     <ClCompile Include="StageManager.cpp" />
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Vanguard.cpp" />
+    <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ImageLoader.h" />
+    <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="Narration.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayingSoundInfo.h" />
@@ -197,6 +201,33 @@
     <ClInclude Include="StageManager.h" />
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vanguard.h" />
+    <ClInclude Include="Weapon.h" />
+    <ClInclude Include="WeaponItem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\bgm_hero.mp3" />
+    <Media Include="Sounds\bgm_hk97_16bit.mp3" />
+    <Media Include="Sounds\bgm_outro.mp3" />
+    <Media Include="Sounds\sfx_car.wav" />
+    <Media Include="Sounds\sfx_explosion.wav" />
+    <Media Include="Sounds\sfx_gunfire.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sprites\background.png" />
+    <Image Include="Sprites\enemy_Carmikaze.png" />
+    <Image Include="Sprites\enemy_Instigated.png" />
+    <Image Include="Sprites\enemy_narration.png" />
+    <Image Include="Sprites\enemy_vanguard.png" />
+    <Image Include="Sprites\intro_kdh.png" />
+    <Image Include="Sprites\intro_narration.png" />
+    <Image Include="Sprites\intro_reds.png" />
+    <Image Include="Sprites\intro_sy.png" />
+    <Image Include="Sprites\item_bomb.png" />
+    <Image Include="Sprites\item_bomb_get.png" />
+    <Image Include="Sprites\item_bullet.png" />
+    <Image Include="Sprites\item_bullet_get.png" />
+    <Image Include="Sprites\player.png" />
+    <Image Include="Sprites\player_death.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

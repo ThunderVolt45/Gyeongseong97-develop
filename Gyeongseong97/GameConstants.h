@@ -36,6 +36,7 @@ constexpr wstring_view BGM_WIN{ L"bgm_outro.mp3" };
 constexpr wstring_view SFX_GUNFIRE{ L"sfx_gunfire.wav" };
 constexpr wstring_view SFX_CAR{ L"sfx_car.wav" };
 constexpr wstring_view SFX_EXPLOSION{ L"sfx_explosion.wav" };
+constexpr wstring_view SFX_GETWEAPON{ L"sfx_get.wav" };
 
 // 이미지 리소스
 constexpr wstring_view SPR_PLAYER{ L"player.png" };
@@ -44,6 +45,8 @@ constexpr wstring_view SPR_INSTIGATED{ L"enemy_Instigated.png" };
 constexpr wstring_view SPR_VANGUARD{ L"enemy_vanguard.png" };
 constexpr wstring_view SPR_CARMIKAZE{ L"enemy_Carmikaze.png" };
 constexpr wstring_view SPR_NARRATION{ L"enemy_narration.png" };
+constexpr wstring_view SPR_BULLET{ L"item_bullet.png" };
+constexpr wstring_view SPR_BOMB{ L"item_bomb.png" };
 
 // 기타 문자열 상수
 constexpr wstring_view SPR_EXPLOSION_PREFIX{ L"폭8\\폭8_" };

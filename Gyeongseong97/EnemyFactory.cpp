@@ -1,4 +1,6 @@
 #include "EnemyFactory.h"
+#include "GameManager.h"
+#include "GameConstants.h"
 #include "Utility.h"
 #include "Enemy.h"
 #include "Vanguard.h"
@@ -17,7 +19,7 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 	switch (spawnX)
 	{
 	case static_cast<int>(SpawnPosition::Random):
-		spawnX = Utility::GenerateRandomNumber(0, GAME_WIDTH - 1);
+		spawnX = Utility::GenerateRandomNumber(10, GAME_WIDTH - 10);
 		break;
 	case static_cast<int>(SpawnPosition::PlayerPosition):
 		spawnX = gameManager.player.GetCenterX();
@@ -34,7 +36,7 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 	switch (spawnY)
 	{
 	case static_cast<int>(SpawnPosition::Random):
-		spawnY = Utility::GenerateRandomNumber(0, GAME_HEIGHT - 1);
+		spawnY = Utility::GenerateRandomNumber(10, GAME_HEIGHT - 10);
 		break;
 	case static_cast<int>(SpawnPosition::PlayerPosition):
 		spawnY = gameManager.player.GetCenterY();
@@ -50,7 +52,7 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 	// 적을 생성한다
 	switch (enemy.type)
 	{
-	case EnemyType::Vanguard:
+	case SpawnType::Vanguard:
 	{
 		auto vanguard = std::make_shared<Vanguard>(spawnX, spawnY, enemy.health, enemy.speed, 
 			enemy.killScore == - 1 ? 500 : enemy.killScore);
@@ -58,7 +60,7 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 		gameManager.CreateGameObject(vanguard);
 		break;
 	}
-	case EnemyType::Carmikaze:
+	case SpawnType::Carmikaze:
 	{
 		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, enemy.health, enemy.speed, 
 			enemy.killScore == -1 ? 1000 : enemy.killScore);
@@ -66,7 +68,7 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 		gameManager.CreateGameObject(carmikaze);
 		break;
 	}
-	case EnemyType::Narration:
+	case SpawnType::Narration:
 	{
 		auto narration = std::make_shared<Narration>(spawnX, spawnY, enemy.health, enemy.speed, 
 			enemy.killScore == -1 ? 10000 : enemy.killScore);
@@ -74,7 +76,7 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 		gameManager.CreateGameObject(narration);
 		break;
 	}
-	default:
+	case SpawnType::Instigated:
 	{
 		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, enemy.health, enemy.speed, 
 			enemy.killScore == -1 ? 0 : enemy.killScore);

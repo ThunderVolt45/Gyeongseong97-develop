@@ -1,12 +1,10 @@
-#define NOMINMAX // Prevent min/max macro conflicts with windows.h
+#define NOMINMAX 
 #include <windows.h>
 
 #include "GameManager.h"
 #include "GameConstants.h"
 #include "Player.h"
-#include "Bullet.h"
 #include "BulletPool.h"
-#include "Explosion.h"
 #include "ExplosionPool.h"
 
 Player::Player() : GameObject()
@@ -15,6 +13,10 @@ Player::Player() : GameObject()
 	health = 5;
 	cooldown = 0;
 	invincible = false;
+	
+	// 기본 무기 초기화
+	defaultWeapon = std::make_shared<WeaponDefault>();
+	currentWeapon = defaultWeapon;
 }
 
 Player::Player(int x, int y)
@@ -33,6 +35,15 @@ Player::Player(int x, int y)
 	health = 5;
 	cooldown = 0;
 	invincible = false;
+
+	// 기본 무기 초기화
+	defaultWeapon = std::make_shared<WeaponDefault>();
+	currentWeapon = defaultWeapon;
+}
+
+Player::~Player()
+{
+	
 }
 
 void Player::Destroy()
@@ -54,6 +65,9 @@ void Player::Reset()
 	invincible = false;
 
 	sprite = defaultSprite;
+
+	// 무기 초기화 (기본 무기로 복귀)
+	currentWeapon = defaultWeapon;
 }
 
 void Player::Update()
@@ -73,18 +87,43 @@ void Player::Update()
 	if ((GetAsyncKeyState(VK_UP) & 0x8000) && y > 2 - sprite.sizeY / 2) y -= 2;
 	if ((GetAsyncKeyState(VK_DOWN) & 0x8000) && y < GAME_HEIGHT - 2 - sprite.sizeY / 2) y += 2;
 
-	// 발사 (Space 키)
+	// 발사 (Space 키) -> Shoot() 함수 호출로 변경
 	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && cooldown <= 0)
 	{
-		std::shared_ptr<Bullet> bullet = BulletPool::GetInstance().GetBullet(GetCenterX(), y, 0.0f, 6.0f, true);
-		GameManager::GetInstance().CreateGameObject(bullet);
-
-		cooldown = 6; // 6틱(약 100ms) 쿨다운
+		Shoot();
 	}
 
 	// 체력 회복 (초당 0.2)
 	health += 0.2f / 60;
 	if (health > maxHealth) health = maxHealth;
+}
+
+void Player::Shoot()
+{
+	// 사격 쿨다운 검사
+	if (cooldown > 0)
+	{
+		return;
+	}
+
+	if (currentWeapon)
+	{
+		currentWeapon->Shoot(this);
+		cooldown = currentWeapon->cooldownTick;
+
+		// 총알이 다 떨어졌는지 확인 (기본 무기는 무한이라 IsEmpty()가 항상 false)
+		if (currentWeapon->IsEmpty())
+		{
+			// 기본 무기로 교체
+			currentWeapon = defaultWeapon;
+		}
+	}
+}
+
+void Player::EquipWeapon(std::shared_ptr<Weapon> newWeapon)
+{
+	// 새 무기 장착
+	currentWeapon = newWeapon;
 }
 
 void Player::OnCollision(GameObject& other)

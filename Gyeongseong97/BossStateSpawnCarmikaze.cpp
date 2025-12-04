@@ -31,7 +31,7 @@ void BossStateSpawnCarmikaze::Update(Narration& boss)
 
 		int spawnX = boss.internalCounter % 2 == 0 ? -30 : GAME_WIDTH + 30;
 		int spawnY = Utility::GenerateRandomNumber(10, GAME_HEIGHT - 10); // 랜덤 생성
-		EnemyInfo enemy(EnemyType::Carmikaze, spawnX, spawnY, 5, 1.4f, 0);
+		EnemyInfo enemy(SpawnType::Carmikaze, spawnX, spawnY, 5, 1.4f, 0);
 		EnemyFactory::CreateEnemy(enemy);
 	}
 	else

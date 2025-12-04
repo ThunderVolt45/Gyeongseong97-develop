@@ -9,17 +9,19 @@ enum class SpawnPosition : int
 	Max = -103 // 최대 값
 };
 
-enum class EnemyType : int
+enum class SpawnType : int
 {
 	Instigated,
 	Vanguard,
 	Carmikaze,
-	Narration
+	Narration,
+	ItemHMG = -1,
+	ItemGrade = -2
 };
 
 struct SpawnData
 {
-	EnemyType type;
+	SpawnType type;
 	int x = static_cast<int>(SpawnPosition::Random);
 	int y = 0;
 	int health = 1;

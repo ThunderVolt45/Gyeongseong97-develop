@@ -4,6 +4,7 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "EnemyFactory.h"
+#include "ItemFactory.h"
 #include "Utility.h"
 #include "Enemy.h"
 #include "Vanguard.h"
@@ -53,7 +54,7 @@ void StageManager::Initialize()
 			for (const auto& enemyData : waveData["enemies"])
 			{
 				SpawnData spawn;
-				spawn.type = static_cast<EnemyType>(enemyData["type"]);
+				spawn.type = static_cast<SpawnType>(enemyData["type"]);
 				spawn.x = enemyData["x"];
 				spawn.y = enemyData["y"];
 				spawn.health = enemyData["health"];
@@ -149,14 +150,28 @@ void StageManager::Update()
 		delayTimer += spawnData.nextEnemyDelay;
 		currentEnemyIndex++;
 
-		EnemyInfo enemy;
-		enemy.type = spawnData.type;
-		enemy.x = spawnData.x;
-		enemy.y = spawnData.y;
-		enemy.health = spawnData.health;
-		enemy.speed = spawnData.speed;
-		enemy.killScore = -1;
+		// 적, 아이템 생성
+		if (static_cast<int>(spawnData.type) >= 0) // 적
+		{
+			EnemyInfo enemy;
+			enemy.type = spawnData.type;
+			enemy.x = spawnData.x;
+			enemy.y = spawnData.y;
+			enemy.health = spawnData.health;
+			enemy.speed = spawnData.speed;
+			enemy.killScore = -1;
 
-		EnemyFactory::CreateEnemy(enemy);
+			EnemyFactory::CreateEnemy(enemy);
+		}
+		else
+		{
+			ItemInfo item;
+			item.type = spawnData.type;
+			item.x = spawnData.x;
+			item.y = spawnData.y;
+			item.speed = spawnData.speed;
+
+			ItemFactory::CreateItem(item);
+		}
 	}
 }

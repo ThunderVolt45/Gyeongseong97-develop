@@ -1,11 +1,9 @@
 #pragma once
-#include "GameManager.h"
-#include "GameConstants.h"
 #include "StageManager.h"
 
 struct EnemyInfo
 {
-	EnemyType type;
+	SpawnType type;
 	int x;
 	int y;
 	int health = 1;

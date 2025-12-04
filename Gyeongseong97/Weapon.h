@@ -1,0 +1,56 @@
+#pragma once
+#include "GameObject.h"
+
+class Player; // Forward declaration
+
+enum class WeaponType
+{
+	Default,
+	HMG,
+	Grenade
+};
+
+class Weapon
+{
+public:
+	WeaponType type;
+	int maxBullet;
+	int remainBullet;
+	bool isInfinite;
+	
+	int cooldownTick;
+
+	Weapon(WeaponType type, int maxBullet, int cooldownTick, bool isInfinite)
+		: type(type), maxBullet(maxBullet), cooldownTick(cooldownTick), remainBullet(maxBullet), isInfinite(isInfinite) {}
+
+	virtual ~Weapon() = default;
+
+	// 순수 가상 함수: 각 무기마다 발사 로직이 다름
+	virtual void Shoot(Player* owner) = 0;
+
+	bool IsEmpty() const
+	{
+		return !isInfinite && remainBullet <= 0;
+	}
+};
+
+class WeaponDefault : public Weapon
+{
+public:
+	WeaponDefault();
+	void Shoot(Player* owner) override;
+};
+
+class WeaponHMG : public Weapon
+{
+public:
+	WeaponHMG();
+	void Shoot(Player* owner) override;
+};
+
+class WeaponGrenade : public Weapon
+{
+public:
+	WeaponGrenade();
+	void Shoot(Player* owner) override;
+};

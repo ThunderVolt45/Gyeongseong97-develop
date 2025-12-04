@@ -4,10 +4,10 @@
 class Enemy : public GameObject
 {
 protected:
-	int hitEffectTick = 0;
-
 	Sprite originalSprite;
 	Sprite hitSprite;
+
+	int hitEffectTick = 0;
 
 	void ProcessHitEffect();
 

@@ -134,9 +134,13 @@ ftxui::Element RenderSystem::Render()
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
 	// 무기 바 그리기
+	auto currentWeapon = gameManager.player.currentWeapon.get();
+	std::wstring remainBullet = currentWeapon->isInfinite ? 
+		L"Infinite" : std::to_wstring(currentWeapon->remainBullet) + L" / " + std::to_wstring(currentWeapon->maxBullet);
+
 	auto powerBar = ftxui::vbox({
-			ftxui::text(L"Power : "),
-			ftxui::gauge(0.5f) | color(ftxui::Color::Yellow) | bgcolor(ftxui::Color::GrayDark)
+			ftxui::text(L"Bullet : "),
+			ftxui::text(remainBullet) | color(ftxui::Color::Yellow)
 		});
 
 	// 체력 바 그리기

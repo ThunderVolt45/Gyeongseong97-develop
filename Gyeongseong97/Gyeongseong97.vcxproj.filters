@@ -105,6 +105,12 @@
     <ClCompile Include="BossStateSpawnVanguard.cpp">
       <Filter>소스 파일\BossState</Filter>
     </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponItem.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -190,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="BossStateSpawnVanguard.h">
       <Filter>헤더 파일\BossState</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponItem.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
