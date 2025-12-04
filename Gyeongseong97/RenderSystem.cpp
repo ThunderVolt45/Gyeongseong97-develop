@@ -133,6 +133,12 @@ ftxui::Element RenderSystem::Render()
 	// 캔버스를 박스로 감싸준다
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
+	// 무기 바 그리기
+	auto powerBar = ftxui::vbox({
+			ftxui::text(L"Power : "),
+			ftxui::gauge(0.5f) | color(ftxui::Color::Yellow) | bgcolor(ftxui::Color::GrayDark)
+		});
+
 	// 체력 바 그리기
 	auto healthBar = ftxui::vbox({
 			ftxui::text(L"Health : "),
@@ -152,6 +158,7 @@ ftxui::Element RenderSystem::Render()
 					ftxui::text(textTime) | ftxui::border | ftxui::bold,
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
 					ftxui::filler(),
+					powerBar | ftxui::border,
 					healthBar | ftxui::border
 				}
 			) | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, 20)

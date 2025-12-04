@@ -140,6 +140,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="BossState.cpp" />
+    <ClCompile Include="BossStateAppeared.cpp" />
+    <ClCompile Include="BossStateAttackDive.cpp" />
+    <ClCompile Include="BossStateAttackShot.cpp" />
+    <ClCompile Include="BossStateDeath.cpp" />
+    <ClCompile Include="BossStateIdle.cpp" />
+    <ClCompile Include="BossStateSpawnCarmikaze.cpp" />
+    <ClCompile Include="BossStateSpawnVanguard.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="Carmikaze.cpp" />
@@ -162,6 +170,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="BossState.h" />
+    <ClInclude Include="BossStateAppeared.h" />
+    <ClInclude Include="BossStateAttackDive.h" />
+    <ClInclude Include="BossStateAttackShot.h" />
+    <ClInclude Include="BossStateDeath.h" />
+    <ClInclude Include="BossStateIdle.h" />
+    <ClInclude Include="BossStateSpawnCarmikaze.h" />
+    <ClInclude Include="BossStateSpawnVanguard.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletPool.h" />
     <ClInclude Include="Carmikaze.h" />
