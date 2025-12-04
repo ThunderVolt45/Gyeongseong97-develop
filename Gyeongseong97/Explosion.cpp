@@ -4,21 +4,24 @@
 #include "ImageLoader.h"
 #include "GameConstants.h"
 #include "ExplosionPool.h"
+#include "Player.h"
+#include "Enemy.h"
 
 // 플라이웨이트 패턴
 // 기본 크기 폭8 오브젝트는 다 같은 Sprite를 돌려쓰므로 그냥 static으로 하나만 저장하면 된다.
 std::vector<Sprite> Explosion::commonSprites;
 
-Explosion::Explosion(int x, int y, int w, int h)
+Explosion::Explosion(int x, int y, int w, int h, int damage)
 {
-	Reset(x, y, w, h);
+	Reset(x, y, w, h, damage);
 }
 
-void Explosion::Reset(int x, int y, int w, int h)
+void Explosion::Reset(int x, int y, int w, int h, int damage)
 {
 	this->x = (float)(x - w / 2);
 	this->y = (float)(y - h / 2);
 
+	this->damage = damage;
 	tick = 0;
 	lifeTimeTick = 120;
 	animationIndex = 0;
@@ -95,6 +98,37 @@ void Explosion::Update()
 		if (tick % 4 == 0 && !customSprites.empty() && animationIndex < customSprites.size() - 1)
 		{
 			sprite = customSprites[++animationIndex];
+		}
+	}
+}
+
+void Explosion::OnCollision(GameObject& other)
+{
+	// 데미지가 없거나, 첫 프레임(틱)이 지났다면 충돌 처리를 하지 않는다.
+	// (폭발 애니메이션이 재생되는 내내 데미지를 주는 것을 방지)
+	if (damage <= 0 || tick > 1) return;
+
+	// Player 충돌 처리
+	if (auto player = dynamic_cast<Player*>(&other))
+	{
+		// 플레이어에게는 약간의 데미지만 입힘 (1칸)
+		// 혹은 폭발 데미지를 그대로 적용하고 싶다면 player->health -= damage;
+		player->health -= 1;
+		
+		if (player->health <= 0 && !GameManager::GetInstance().IsGameOver)
+		{
+			player->Destroy();
+		}
+	}
+	// Enemy 충돌 처리
+	else if (auto enemy = dynamic_cast<Enemy*>(&other))
+	{
+		enemy->health -= damage;
+		GameManager::GetInstance().score += 100;
+
+		if (enemy->health <= 0)
+		{
+			enemy->Destroy();
 		}
 	}
 }

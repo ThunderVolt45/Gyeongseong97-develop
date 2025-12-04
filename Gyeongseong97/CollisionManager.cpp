@@ -2,12 +2,17 @@
 #include "GameConstants.h"
 #include <cmath>
 #include <algorithm>
+#include <set>
+#include <utility>
 
 void CollisionManager::ProcessCollisions(std::list<std::shared_ptr<GameObject>>& gameObjects, Player& player, std::set<GameObject*>& objectsToDestroy)
 {
 	// Grid 초기화
 	// 각 셀은 해당 영역에 있는 오브젝트들의 포인터 목록을 갖는다
 	std::vector<GameObject*> grid[GRID_ROWS][GRID_COLS];
+
+	// 중복 충돌 처리를 방지하기 위한 집합
+	std::set<std::pair<GameObject*, GameObject*>> processedPairs;
 
 	// Grid 등록
 	// 모든 게임 오브젝트를 순회하며 그리드에 등록한다.
@@ -73,8 +78,14 @@ void CollisionManager::ProcessCollisions(std::list<std::shared_ptr<GameObject>>&
 				// 이미 죽은 객체는 무시
 				if (objectsToDestroy.count(other)) continue;
 
+				// 중복 체크
+				GameObject* pPtr = &player;
+				auto key = std::make_pair(std::min(pPtr, other), std::max(pPtr, other));
+				if (processedPairs.count(key)) continue;
+
 				if (player.IsColliding(*other))
 				{
+					processedPairs.insert(key);
 					player.OnCollision(*other);
 					other->OnCollision(player);
 				}
@@ -100,9 +111,14 @@ void CollisionManager::ProcessCollisions(std::list<std::shared_ptr<GameObject>>&
 					// 둘 중 하나라도 이미 죽은 상태면 건너뜀
 					if (objectsToDestroy.count(objA) || objectsToDestroy.count(objB)) continue;
 
+					// 중복 체크
+					auto key = std::make_pair(std::min(objA, objB), std::max(objA, objB));
+					if (processedPairs.count(key)) continue;
+
 					// 충돌 검사
 					if (objA->IsColliding(*objB))
 					{
+						processedPairs.insert(key);
 						objA->OnCollision(*objB);
 						objB->OnCollision(*objA);
 					}

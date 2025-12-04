@@ -3,6 +3,7 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "EnemyFactory.h"
+#include "ItemFactory.h"
 #include "Utility.h"
 #include "GameConstants.h"
 #include "Narration.h"

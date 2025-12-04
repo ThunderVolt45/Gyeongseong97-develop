@@ -72,9 +72,9 @@ void WeaponHMG::Shoot(Player* owner)
 // WeaponGrenade 이것은 수류탄이여!
 // ==========================
 WeaponGrenade::WeaponGrenade()
-	: Weapon(WeaponType::Grenade, 10, 30, 30, false)
+	: Weapon(WeaponType::Grenade, 5, 30, 30, false)
 {
-	// 0.5초 간격으로 나가는 강력한 폭★탄 발사기
+	// 0.5초 간격으로 나가는 강력한 유★탄발사기
 }
 
 void WeaponGrenade::Shoot(Player* owner)

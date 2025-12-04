@@ -11,7 +11,6 @@ private:
 
 public:
 	static ExplosionPool& GetInstance();
-	std::shared_ptr<Explosion> GetExplosion(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y);
+	std::shared_ptr<Explosion> GetExplosion(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y, int damage = 0);
 	void ReturnExplosion(std::shared_ptr<Explosion> explosion);
 };
-

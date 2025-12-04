@@ -80,9 +80,32 @@ void Bullet::Destroy()
 	if (isExplosive)
 	{
 		GameManager& gameManager = GameManager::GetInstance();
+		BulletPool& pool = BulletPool::GetInstance();
 
-		// 폭발 효과 생성
-		std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 40, 30);
+		// 파편 효과 생성 (총알)
+		// 8방향으로 총알 발사
+		for (int x = -1; x <= 1; x++)
+		{
+			for (int y = -1; y <= 1; y++)
+			{
+				if (x == 0 && y == 0) continue;
+
+				std::shared_ptr<Bullet> bullet = pool.GetBullet(
+					GetCenterX(),
+					GetCenterY(),
+					6.0f * x,
+					6.0f * y,
+					isPlayer
+				);
+
+				gameManager.CreateGameObject(bullet);
+			}
+		}
+
+		// 폭발 효과 생성 (데미지 전달)
+		std::shared_ptr<Explosion> explosion = 
+			ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 60, 45, damage);
+
 		gameManager.CreateGameObject(explosion, false);
 	}
 

@@ -36,7 +36,6 @@ std::shared_ptr<Bullet> BulletPool::GetBullet(int x, int y, float speedX, float 
 		pool.pop_back();
 
 		bullet->Reset(x, y, speedX, speedY, isMine, damage, isExplosive);
-
 		return bullet;
 	}
 }
