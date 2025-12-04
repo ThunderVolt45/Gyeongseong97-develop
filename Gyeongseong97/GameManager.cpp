@@ -28,10 +28,6 @@ GameManager::GameManager()
 	// 플레이어 생성
 	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y);
 
-	// 백그라운드 생성
-	// 배경은 없는 게 성능 상 나은 듯 ㅈㅈ
-	background = GameObject(GAME_WIDTH * 0.5f, GAME_HEIGHT * 0.5f, GAME_WIDTH, GAME_HEIGHT, L"background.png");
-
 	IsRunning = true;
 }
 

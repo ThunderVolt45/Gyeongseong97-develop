@@ -3,17 +3,20 @@
 
 class Bullet : public GameObject
 {
-private:
+protected:
+	int damage;
 	float speedX;
 	float speedY;
 
 public:
 	bool isPlayer;
 
-	Bullet(int x, int y, float speedX, float speedY, bool isMine);
+	Bullet();
+	Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage = 1);
 
-	void Reset(int x, int y, float speedX, float speedY, bool isMine);
+	virtual void Reset(int x, int y, float speedX, float speedY, bool isMine, int damage = 1);
 	void Update() override;
+	int GetDamage();
 	void OnDestroy(std::shared_ptr<GameObject> self) override;
 };
 

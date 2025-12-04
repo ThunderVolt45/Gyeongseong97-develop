@@ -48,7 +48,7 @@ void BossStateSpawnVanguard::Update(Narration& boss)
 		EnemyInfo enemy;
 		enemy.type = SpawnType::Vanguard;
 		enemy.x = GAME_WIDTH - 40 * (boss.internalCounter - 1);
-		enemy.y = 40;
+		enemy.y = 30;
 		enemy.health = 3;
 		enemy.speed = 0.6f;
 		enemy.killScore = 0;

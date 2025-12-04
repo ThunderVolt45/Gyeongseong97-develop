@@ -5,10 +5,7 @@
 class GameObject
 {
 private:
-	/// <summary>
-	/// 폭★8
-	/// </summary>
-	virtual void Destroy();
+	bool active = true; // 활성화/비활성화 상태
 
 public:
 	float x = 0;
@@ -60,5 +57,15 @@ public:
 	/// </summary>
 	/// <param name="other">다른 GameObject</param>
 	virtual void OnCollision(GameObject& other);
+
+	// 활성화 상태 관련 메서드
+	bool IsActive() const { return active; }
+	void SetActive(bool value) { active = value; }
+
+	/// <summary>
+	/// GameObject의 파괴를 알리는 메서드 (풀링 시스템에서 재활용을 위해 사용)
+	/// </summary>
+	virtual void Destroy(); // public으로 변경 및 virtual 유지
 };
+
 

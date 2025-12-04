@@ -14,14 +14,16 @@ class Weapon
 {
 public:
 	WeaponType type;
+	int damage;
 	int maxBullet;
 	int remainBullet;
 	bool isInfinite;
 	
 	int cooldownTick;
 
-	Weapon(WeaponType type, int maxBullet, int cooldownTick, bool isInfinite)
-		: type(type), maxBullet(maxBullet), cooldownTick(cooldownTick), remainBullet(maxBullet), isInfinite(isInfinite) {}
+	Weapon(WeaponType type, int damage, int maxBullet, int cooldownTick, bool isInfinite)
+		: type(type), damage(damage), maxBullet(maxBullet), cooldownTick(cooldownTick), 
+			remainBullet(maxBullet), isInfinite(isInfinite) {}
 
 	virtual ~Weapon() = default;
 

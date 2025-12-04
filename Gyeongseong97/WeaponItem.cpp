@@ -24,7 +24,7 @@ WeaponItem::WeaponItem(float x, float y, float speed, WeaponType type) :
 		break;
 	}
 
-	sprite = ImageLoader::CreateSpriteFromImage(spriteName, 20, 20); 
+	sprite = ImageLoader::CreateSpriteFromImage(spriteName, 24, 22); 
 
 	this->x = x - sprite.sizeX;
 	this->y = y - sprite.sizeY;

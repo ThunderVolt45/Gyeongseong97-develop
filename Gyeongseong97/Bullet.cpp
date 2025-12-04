@@ -3,18 +3,24 @@
 #include "GameConstants.h"
 #include "BulletPool.h"
 
-Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine)
+Bullet::Bullet()
 {
-	Reset(x, y, speedX, speedY, isMine);
+
 }
 
-void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine)
+Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage)
+{
+	Reset(x, y, speedX, speedY, isMine, damage);
+}
+
+void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int damage)
 {
 	this->x = x;
 	this->y = y;
 	this->speedX = speedX;
 	this->speedY = speedY;
 	this->isPlayer = isMine;
+	this->damage = damage;
 
 	ftxui::Color color = ftxui::Color::Yellow;
 
@@ -33,6 +39,11 @@ void Bullet::Update()
 {
 	x -= speedX;
 	y -= speedY;
+}
+
+int Bullet::GetDamage()
+{
+	return damage;
 }
 
 void Bullet::OnDestroy(std::shared_ptr<GameObject> self)

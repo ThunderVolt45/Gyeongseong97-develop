@@ -94,37 +94,45 @@ ftxui::Element RenderSystem::Render()
 	}
 
 	// FPS 표시
-	canvas.DrawText(0, 0, "FPS : " + std::to_string(gameManager.currentFps) + ", Logic : " + std::to_string(gameManager.currentLps));
+	canvas.DrawText(0, 0, 
+		"FPS : " + std::to_string(gameManager.currentFps) 
+		+ ", Logic : " + std::to_string(gameManager.currentLps));
 
 	// 게임 오버 시 게임 오버 메시지 표시
 	if (gameManager.IsGameOver)
 	{
-		canvas.DrawText(GAME_WIDTH / 2 - (5 * 2) - 2, GAME_HEIGHT / 2 - 8, "GAME OVER!",
+		canvas.DrawText(GAME_WIDTH / 2 - (5 * 2) - 2, GAME_HEIGHT / 2 - 8, 
+			"GAME OVER!",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::Black;
 				p.background_color = ftxui::Color::Red;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (22 * 2) - 2, GAME_HEIGHT / 2, "김두한은 오렌지병이었던 고혈압으로 쓰러졌다.",
+		canvas.DrawText(GAME_WIDTH / 2 - (22 * 2) - 2, GAME_HEIGHT / 2, 
+			"김두한은 오렌지병이었던 고혈압으로 쓰러졌다.",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, "(R키를 눌러 재시작, Q키를 눌러 나가기)",
+		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, 
+			"(R키를 눌러 재시작, Q키를 눌러 나가기)",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
 	}
 	else if (gameManager.IsGameClear)
 	{
-		canvas.DrawText(GAME_WIDTH / 2 - (4 * 2) - 2, GAME_HEIGHT / 2 - 8, "YOU WIN!",
+		canvas.DrawText(GAME_WIDTH / 2 - (4 * 2) - 2, GAME_HEIGHT / 2 - 8, 
+			"YOU WIN!",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::Black;
 				p.background_color = ftxui::Color::Green;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (25 * 2) - 2, GAME_HEIGHT / 2, "김두한은 사악한 공산당원들을 모조리 다 쓸어버렸다!",
+		canvas.DrawText(GAME_WIDTH / 2 - (25 * 2) - 2, GAME_HEIGHT / 2, 
+			"김두한은 사악한 공산당원들을 모조리 다 쓸어버렸다!",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, "(R키를 눌러 재시작, Q키를 눌러 나가기)",
+		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, 
+			"(R키를 눌러 재시작, Q키를 눌러 나가기)",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
@@ -136,7 +144,8 @@ ftxui::Element RenderSystem::Render()
 	// 무기 바 그리기
 	auto currentWeapon = gameManager.player.currentWeapon.get();
 	std::wstring remainBullet = currentWeapon->isInfinite ? 
-		L"Infinite" : std::to_wstring(currentWeapon->remainBullet) + L" / " + std::to_wstring(currentWeapon->maxBullet);
+		L"Infinite" : std::to_wstring(currentWeapon->remainBullet) 
+						+ L" / " + std::to_wstring(currentWeapon->maxBullet);
 
 	auto powerBar = ftxui::vbox({
 			ftxui::text(L"Bullet : "),
@@ -146,7 +155,8 @@ ftxui::Element RenderSystem::Render()
 	// 체력 바 그리기
 	auto healthBar = ftxui::vbox({
 			ftxui::text(L"Health : "),
-			ftxui::gauge(gameManager.player.health / gameManager.player.maxHealth) | color(ftxui::Color::Red) | bgcolor(ftxui::Color::GrayDark)
+			ftxui::gauge(gameManager.player.health / gameManager.player.maxHealth)
+				| color(ftxui::Color::Red) | bgcolor(ftxui::Color::GrayDark)
 		});
 
 	// 기타 UI

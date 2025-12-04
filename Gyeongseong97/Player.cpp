@@ -138,7 +138,7 @@ void Player::OnCollision(GameObject& other)
 	{
 		if (!bullet->isPlayer)
 		{
-			health -= 1;
+			health -= bullet->GetDamage();
 		}
 
 		// 체력이 다 닳았으면 파괴

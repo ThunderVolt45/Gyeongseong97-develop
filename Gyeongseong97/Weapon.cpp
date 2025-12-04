@@ -10,8 +10,9 @@
 // WeaponDefault 기본 무기
 // ==========================
 WeaponDefault::WeaponDefault() 
-	: Weapon(WeaponType::Default, 9999, 12, true) // 무한 탄창
+	: Weapon(WeaponType::Default, 1, 9999, 8, true)
 {
+	// 450RPM의 무난무난한 기본 무기
 }
 
 void WeaponDefault::Shoot(Player* owner)
@@ -25,19 +26,20 @@ void WeaponDefault::Shoot(Player* owner)
 		owner->y, 
 		0.0f, 
 		6.0f, 
-		true
+		true,
+		damage
 	);
 
 	gameManager.CreateGameObject(bullet);
 }
 
 // ==========================
-// WeaponHMG 헤비머신건
+// WeaponHMG
 // ==========================
 WeaponHMG::WeaponHMG()
-	: Weapon(WeaponType::HMG, 200, 5, false)
+	: Weapon(WeaponType::HMG, 1, 300, 4, false)
 {
-	// 200발을 720RPM으로 화끈하게 때려붓는 헤비머신건!
+	// 총알 300발을 900RPM으로 화끈하게 때려붓는 중기관총!
 }
 
 void WeaponHMG::Shoot(Player* owner)
@@ -51,14 +53,15 @@ void WeaponHMG::Shoot(Player* owner)
 		BulletPool& bulletPool = BulletPool::GetInstance();
 
 		// Bullet의 X축 속도를 랜덤하게 부여하고 발사
-		float speedX = (float)Utility::GenerateRandomNumber(-5, 5) / 10;
+		float speedX = (float)Utility::GenerateRandomNumber(-6, 6) / 10;
 
 		std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
 			owner->GetCenterX(),
 			owner->y,
 			speedX,
 			6.0f,
-			true
+			true,
+			damage
 		);
 
 		gameManager.CreateGameObject(bullet);
@@ -69,19 +72,31 @@ void WeaponHMG::Shoot(Player* owner)
 // WeaponGrenade 이것은 수류탄이여!
 // ==========================
 WeaponGrenade::WeaponGrenade()
-	: Weapon(WeaponType::Grenade, 20, 30, false) // 20발
+	: Weapon(WeaponType::Grenade, 10, 30, 30, false) // 20발
 {
 	// 0.5초 간격으로 나가는 강력한 폭★8물
 }
 
 void WeaponGrenade::Shoot(Player* owner)
 {
-	// 추후 구현
 	if (remainBullet > 0)
 	{
 		remainBullet--;
 
-		// TODO: Grenade 발사 로직 구현
-		std::cout << "Grenade Shot! Remain: " << remainBullet << std::endl;
+		// 발사 로직
+		GameManager& gameManager = GameManager::GetInstance();
+		BulletPool& bulletPool = BulletPool::GetInstance();
+
+		std::shared_ptr<BulletExplosive> bullet = bulletPool.GetBullet(
+			owner->GetCenterX(),
+			owner->y,
+			0.0f,
+			4.0f,
+			true,
+			damage,
+			true
+		);
+
+		gameManager.CreateGameObject(bullet);
 	}
 }

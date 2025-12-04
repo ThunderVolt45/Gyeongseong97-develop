@@ -77,7 +77,7 @@ void Enemy::OnCollision(GameObject& other)
 		// 플레이어가 쏜 총알에만 반응
 		if (bullet->isPlayer)
 		{
-			health -= 1;
+			health -= bullet->GetDamage();
 			hitEffectTick = 2;
 
 			// 히트 당 기본 점수
