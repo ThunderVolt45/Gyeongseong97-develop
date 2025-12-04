@@ -123,13 +123,8 @@ void Explosion::OnCollision(GameObject& other)
 	// Enemy 충돌 처리
 	else if (auto enemy = dynamic_cast<Enemy*>(&other))
 	{
-		enemy->health -= damage;
+		enemy->TakeDamage(damage);
 		GameManager::GetInstance().score += 100;
-
-		if (enemy->health <= 0)
-		{
-			enemy->Destroy();
-		}
 	}
 }
 

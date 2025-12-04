@@ -52,6 +52,23 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 
 #pragma region Public
 
+void Narration::TakeDamage(int damage)
+{
+	if (invincible) return;
+
+	health -= damage;
+	hitEffectTick = 2;
+
+	// 체력이 다 닳았으면 파괴 (상태 전이)
+	if (health <= 0)
+	{
+		invincible = true;
+		bossState = BossStateEnum::Dead;
+		state = &BossState::death;
+		internalTick = 0;
+	}
+}
+
 void Narration::ChangePattern()
 {
 	// 직전 상태 기록
@@ -98,23 +115,14 @@ void Narration::OnCollision(GameObject& other)
 		// 플레이어가 쏜 총알에만 반응
 		if (bullet->isPlayer)
 		{
-			health -= bullet->GetDamage();
-			hitEffectTick = 2;
+			// 데미지 처리 위임
+			TakeDamage(bullet->GetDamage());
 
 			// 히트 당 기본 점수
 			GameManager::GetInstance().score += SCORE_FOR_HIT;
 
 			// 총알 파괴
 			bullet->Destroy();
-
-			// 체력이 다 닳았으면 파괴
-			if (health <= 0)
-			{
-				invincible = true;
-				bossState = BossStateEnum::Dead;
-				state = &BossState::death;
-				internalTick = 0;
-			}
 		}
 		return;
 	}
@@ -123,17 +131,9 @@ void Narration::OnCollision(GameObject& other)
 	Player* player = dynamic_cast<Player*>(&other);
 	if (player)
 	{
-		health -= 0.1f;
-		hitEffectTick = 2;
-
-		// 체력이 다 닳았으면 파괴
-		if (health <= 0)
-		{
-			invincible = true;
-			bossState = BossStateEnum::Dead;
-			state = &BossState::death;
-			internalTick = 0;
-		}
+		// 데미지 처리 위임 (0.1f 데미지지만 int 형변환으로 0이 될 수 있음. 최소 1로 처리하거나 float 데미지 지원 필요)
+		// 현재 시스템상 int 데미지이므로 1로 처리
+		TakeDamage(1);
 
 		return;
 	}

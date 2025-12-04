@@ -61,6 +61,17 @@ void Enemy::Destroy()
 
 #pragma region Public
 
+void Enemy::TakeDamage(int damage)
+{
+	health -= damage;
+	hitEffectTick = 2;
+
+	if (health <= 0)
+	{
+		Destroy();
+	}
+}
+
 void Enemy::Update()
 {
 	ProcessHitEffect();
@@ -77,20 +88,13 @@ void Enemy::OnCollision(GameObject& other)
 		// 플레이어가 쏜 총알에만 반응
 		if (bullet->isPlayer)
 		{
-			health -= bullet->GetDamage();
-			hitEffectTick = 2;
+			TakeDamage(bullet->GetDamage());
 
 			// 히트 당 기본 점수
 			GameManager::GetInstance().score += SCORE_FOR_HIT;
 			
 			// 총알 파괴
 			bullet->Destroy();
-
-			// 체력이 다 닳았으면 파괴
-			if (health <= 0)
-			{
-				Destroy();
-			}
 		}
 		return;
 	}
@@ -99,14 +103,7 @@ void Enemy::OnCollision(GameObject& other)
 	Player* player = dynamic_cast<Player*>(&other);
 	if (player)
 	{
-		health -= 0.1f;
-		hitEffectTick = 2;
-
-		// 체력이 다 닳았으면 파괴
-		if (health <= 0)
-		{
-			Destroy();
-		}
+		TakeDamage(1); // Player 충돌 시 데미지 처리 (0.1f를 1로 근사)
 
 		return;
 	}

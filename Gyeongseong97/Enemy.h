@@ -19,6 +19,7 @@ public:
 	Enemy();
 	Enemy(int x, int y, int health, float speed, int killScore);
 
+	virtual void TakeDamage(int damage);
 	void Update() override;
 	void OnCollision(GameObject& other) override;
 	void Destroy() override;
