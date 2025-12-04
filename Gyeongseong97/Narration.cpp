@@ -1,8 +1,6 @@
 #include <iostream> // For std::cout
 
 #include "GameManager.h"
-#include "AudioManager.h"
-#include "EnemyFactory.h"
 #include "ItemFactory.h"
 #include "Utility.h"
 #include "GameConstants.h"
@@ -62,6 +60,18 @@ void Narration::ChangePattern()
 	// 카운터 초기화
 	internalCounter = 0;
 	internalTick = 30;
+
+	// 낮은 확률 (25% 정도) 로 아이템 생성
+	int random = Utility::GenerateRandomNumber(0, 99);
+	if (random < 25)
+	{
+		ItemInfo item;
+		item.x = Utility::GenerateRandomNumber(10, GAME_WIDTH - 10);
+		item.y = 0;
+		item.speed = 0.5f;
+		item.type = random < 15 ? SpawnType::ItemHMG : SpawnType::ItemGranade;
+		ItemFactory::CreateItem(item);
+	}
 
 	// 상태 전이 -> Idle로 복귀
 	bossState = BossStateEnum::Idle;

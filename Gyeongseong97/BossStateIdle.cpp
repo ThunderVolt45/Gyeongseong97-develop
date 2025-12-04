@@ -1,6 +1,7 @@
 #include "BossStateIdle.h"
 #include "Narration.h"
 #include "Utility.h"
+#include "ItemFactory.h"
 #include <cmath>
 
 // Include headers for state transitions
