@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "ImageLoader.h"
 #include "GameConstants.h"
+#include "GameManager.h"
 
 GameObject::GameObject()
 {
@@ -90,5 +91,5 @@ void GameObject::OnCollision(GameObject& other)
 
 void GameObject::Destroy()
 {
-	
+	GameManager::GetInstance().DestroyGameObject(this);
 }

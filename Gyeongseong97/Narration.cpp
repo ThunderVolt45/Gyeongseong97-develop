@@ -94,7 +94,7 @@ void Narration::OnCollision(GameObject& other)
 			GameManager::GetInstance().score += SCORE_FOR_HIT;
 
 			// 총알 파괴
-			GameManager::GetInstance().DestroyGameObject(bullet);
+			bullet->Destroy();
 
 			// 체력이 다 닳았으면 파괴
 			if (health <= 0)

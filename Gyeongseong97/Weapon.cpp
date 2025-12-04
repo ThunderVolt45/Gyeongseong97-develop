@@ -72,9 +72,9 @@ void WeaponHMG::Shoot(Player* owner)
 // WeaponGrenade 이것은 수류탄이여!
 // ==========================
 WeaponGrenade::WeaponGrenade()
-	: Weapon(WeaponType::Grenade, 10, 30, 30, false) // 20발
+	: Weapon(WeaponType::Grenade, 10, 30, 30, false)
 {
-	// 0.5초 간격으로 나가는 강력한 폭★8물
+	// 0.5초 간격으로 나가는 강력한 폭★탄 발사기
 }
 
 void WeaponGrenade::Shoot(Player* owner)
@@ -87,7 +87,7 @@ void WeaponGrenade::Shoot(Player* owner)
 		GameManager& gameManager = GameManager::GetInstance();
 		BulletPool& bulletPool = BulletPool::GetInstance();
 
-		std::shared_ptr<BulletExplosive> bullet = bulletPool.GetBullet(
+		std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
 			owner->GetCenterX(),
 			owner->y,
 			0.0f,

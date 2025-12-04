@@ -136,6 +136,9 @@ void Player::OnCollision(GameObject& other)
 	Bullet* bullet = dynamic_cast<Bullet*>(&other);
 	if (bullet)
 	{
+		// 자신의 총알이면 무시
+		if (bullet->isPlayer) return;
+
 		if (!bullet->isPlayer)
 		{
 			health -= bullet->GetDamage();
@@ -148,7 +151,7 @@ void Player::OnCollision(GameObject& other)
 		}
 
 		// 총알 파괴
-		gameManager.DestroyGameObject(bullet);
+		bullet->Destroy();
 
 		return;
 	}

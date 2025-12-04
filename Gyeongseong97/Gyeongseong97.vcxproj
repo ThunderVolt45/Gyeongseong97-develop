@@ -149,7 +149,6 @@
     <ClCompile Include="BossStateSpawnCarmikaze.cpp" />
     <ClCompile Include="BossStateSpawnVanguard.cpp" />
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="BulletExplosive.cpp" />
     <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="Carmikaze.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
@@ -183,7 +182,6 @@
     <ClInclude Include="BossStateSpawnCarmikaze.h" />
     <ClInclude Include="BossStateSpawnVanguard.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="BulletExplosive.h" />
     <ClInclude Include="BulletPool.h" />
     <ClInclude Include="Carmikaze.h" />
     <ClInclude Include="CollisionManager.h" />

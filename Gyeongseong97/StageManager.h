@@ -16,7 +16,7 @@ enum class SpawnType : int
 	Carmikaze,
 	Narration,
 	ItemHMG = -1,
-	ItemGrade = -2
+	ItemGranade = -2
 };
 
 struct SpawnData
