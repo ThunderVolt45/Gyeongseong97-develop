@@ -15,6 +15,9 @@ Player::Player() : GameObject()
 	// 기본 무기 초기화
 	defaultWeapon = std::make_shared<WeaponDefault>();
 	currentWeapon = defaultWeapon;
+
+	// 수류탄 초기화
+	grenadeWeapon = std::make_shared<WeaponGrenade>();
 }
 
 Player::Player(int x, int y)
@@ -37,6 +40,9 @@ Player::Player(int x, int y)
 	// 기본 무기 초기화
 	defaultWeapon = std::make_shared<WeaponDefault>();
 	currentWeapon = defaultWeapon;
+
+	// 수류탄 초기화
+	grenadeWeapon = std::make_shared<WeaponGrenade>();
 }
 
 Player::~Player()
@@ -66,6 +72,9 @@ void Player::Reset()
 
 	// 무기 초기화 (기본 무기로 복귀)
 	currentWeapon = defaultWeapon;
+
+	// 수류탄 초기화
+	grenadeWeapon = std::make_shared<WeaponGrenade>();
 }
 
 void Player::Update()
@@ -91,6 +100,12 @@ void Player::Update()
 	if (inputManager.IsKeyDown(KEYCODE_SPACE) && cooldown <= 0)
 	{
 		Shoot();
+	}
+
+	// 수류탄 (Z 키) 연사 X
+	if (inputManager.IsKeyPressed(KEYCODE_Z))
+	{
+		Grenade();
 	}
 
 	// 체력 회복 (초당 0.2)
@@ -120,8 +135,23 @@ void Player::Shoot()
 	}
 }
 
+void Player::Grenade()
+{
+	if (grenadeWeapon)
+	{
+		grenadeWeapon->Shoot(this);
+	}
+}
+
 void Player::EquipWeapon(std::shared_ptr<Weapon> newWeapon)
 {
+	auto grenade = dynamic_cast<WeaponGrenade*>(newWeapon.get());
+	if (grenade)
+	{
+		grenadeWeapon.get()->AddAmmo(newWeapon.get()->remainBullet);
+		return;
+	}
+
 	// 새 무기 장착
 	currentWeapon = newWeapon;
 }

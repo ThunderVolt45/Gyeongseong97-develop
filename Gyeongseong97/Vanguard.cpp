@@ -1,4 +1,5 @@
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "GameConstants.h"
 #include "Vanguard.h"
 #include "Bullet.h"
@@ -82,6 +83,7 @@ void Vanguard::Attack()
 	// 발사!
 	std::shared_ptr<Bullet> bullet = BulletPool::GetInstance().GetBullet(GetCenterX(), GetCenterY(), 0.0f, -1.5f, false);
 	GameManager::GetInstance().CreateGameObject(bullet);
+	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.2f);
 
 	cooldown += 90; // 90틱 마다 한번 공격
 	stunTime += 30; // 사격 후 30틱 간 대기

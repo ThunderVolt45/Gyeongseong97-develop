@@ -1,6 +1,15 @@
 {
   "waves": [
     {
+      "nextWaveDelay" : 0.0,
+      "enemies" : [
+        { "type": -1, "x": 62, "y": 0, "health": 0, "speed": 0.5, "nextEnemyDelay": 0.0 },
+        { "type": -2, "x": 132, "y": 0, "health": 0, "speed": 0.5, "nextEnemyDelay": 0.0 },
+        { "type": -3, "x": 202, "y": 0, "health": 0, "speed": 0.5, "nextEnemyDelay": 4.0 },
+        { "type": 3, "x": 120, "y": -30, "health": 1000, "speed": 1.0, "nextEnemyDelay": 0.0 }
+      ] 
+    },
+    {
       "nextWaveDelay": 2.0,
       "enemies": [
         { "type": 0, "x": -100, "y": -16, "health": 1, "speed": 0.8, "nextEnemyDelay": 0.5 },

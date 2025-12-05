@@ -31,6 +31,12 @@ void WeaponDefault::Shoot(Player* owner)
 	);
 
 	gameManager.CreateGameObject(bullet);
+	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.15f);
+}
+
+void Weapon::AddAmmo(int amount)
+{
+	remainBullet += amount;
 }
 
 // ==========================
@@ -65,13 +71,14 @@ void WeaponHMG::Shoot(Player* owner)
 	);
 
 	gameManager.CreateGameObject(bullet);
+	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.15f);
 }
 
 // ==========================
 // WeaponGrenade 이것은 수류탄이여!
 // ==========================
 WeaponGrenade::WeaponGrenade()
-	: Weapon(WeaponType::Grenade, 5, 30, 30, false)
+	: Weapon(WeaponType::Grenade, 5, 10, 30, false)
 {
 	// 0.5초 간격으로 나가는 강력한 유★탄발사기
 }
@@ -90,13 +97,14 @@ void WeaponGrenade::Shoot(Player* owner)
 		owner->GetCenterX(),
 		owner->y,
 		0.0f,
-		5.0f,
+		4.5f,
 		true,
 		damage,
 		true
 	);
 
 	gameManager.CreateGameObject(bullet);
+	AudioManager::GetInstance().PlayAudio(SFX_GRENADE.data(), 0.2f);
 }
 
 // ==========================
@@ -133,4 +141,6 @@ void WeaponShotgun::Shoot(Player* owner)
 
 		gameManager.CreateGameObject(bullet);
 	}
+
+	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.4f);
 }

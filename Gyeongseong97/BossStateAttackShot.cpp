@@ -1,6 +1,7 @@
 #include "BossStateAttackShot.h"
 #include "Narration.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "BulletPool.h"
 #include <cmath>
 
@@ -38,6 +39,9 @@ void BossStateAttackShot::Update(Narration& boss)
 		gameManager.CreateGameObject(bullet1);
 		gameManager.CreateGameObject(bullet2);
 		gameManager.CreateGameObject(bullet3);
+
+		// 사격음 출력
+		AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.3f);
 
 		boss.internalCounter++;
 

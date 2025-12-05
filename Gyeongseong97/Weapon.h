@@ -31,6 +31,8 @@ public:
 	// 순수 가상 함수: 각 무기마다 발사 로직이 다름
 	virtual void Shoot(Player* owner) = 0;
 
+	void AddAmmo(int bullet);
+
 	bool IsEmpty() const
 	{
 		return !isInfinite && remainBullet <= 0;

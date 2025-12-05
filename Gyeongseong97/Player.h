@@ -9,6 +9,7 @@ class Player : public GameObject
 public:
 	std::shared_ptr<Weapon> currentWeapon;
 	std::shared_ptr<Weapon> defaultWeapon;
+	std::shared_ptr<Weapon> grenadeWeapon;
 
 	Sprite defaultSprite;
 	Sprite deathSprite;
@@ -32,5 +33,6 @@ public:
 
 	// 무기 시스템 메서드
 	void Shoot();
+	void Grenade();
 	void EquipWeapon(std::shared_ptr<Weapon> newWeapon);
 };

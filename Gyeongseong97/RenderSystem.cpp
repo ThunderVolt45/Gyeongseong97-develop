@@ -173,19 +173,29 @@ ftxui::Element RenderSystem::Render()
 	// 캔버스를 박스로 감싸준다
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
-	// 무기 바 그리기
+	// 무기 UI 그리기
 	auto currentWeapon = gameManager.player.currentWeapon.get();
 	std::wstring remainBullet = currentWeapon->isInfinite ? 
 		L"Infinite" : std::to_wstring(currentWeapon->remainBullet) 
 						+ L" / " + std::to_wstring(currentWeapon->maxBullet);
 
-	auto powerBar = ftxui::vbox({
+	auto weaponUI = ftxui::vbox({
 			ftxui::text(L"Bullet : "),
 			ftxui::text(remainBullet) | color(ftxui::Color::Yellow)
 		});
 
+	// 수류탄 UI 그리기
+	auto grenadeWeapon = gameManager.player.grenadeWeapon.get();
+	std::wstring remainGrenade = grenadeWeapon->isInfinite ?
+		L"Infinite" : std::to_wstring(grenadeWeapon->remainBullet);
+
+	auto grenadeUI = ftxui::vbox({
+			ftxui::text(L"Grenade : "),
+			ftxui::text(remainGrenade) | color(ftxui::Color::Yellow)
+		});
+
 	// 체력 바 그리기
-	auto healthBar = ftxui::vbox({
+	auto healthUI = ftxui::vbox({
 			ftxui::text(L"Health : "),
 			ftxui::gauge(gameManager.player.health / gameManager.player.maxHealth)
 				| color(ftxui::Color::Red) | bgcolor(ftxui::Color::GrayDark)
@@ -204,8 +214,9 @@ ftxui::Element RenderSystem::Render()
 					ftxui::text(textTime) | ftxui::border | ftxui::bold,
 					ftxui::text(textScore) | ftxui::border | ftxui::bold,
 					ftxui::filler(),
-					powerBar | ftxui::border,
-					healthBar | ftxui::border
+					weaponUI | ftxui::border,
+					grenadeUI | ftxui::border,
+					healthUI | ftxui::border
 				}
 			) | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, 20)
 		}

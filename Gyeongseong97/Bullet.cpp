@@ -44,9 +44,6 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 				c, c, c, c,
 				c, c, c, c,
 			});
-
-		// 총 소리 출력
-		audioManager.PlayAudio(SFX_GRENADE.data(), 0.1f);
 	}
 	else
 	{
@@ -58,9 +55,6 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 		}
 
 		sprite = Sprite(1, 1, { color });
-
-		// 총 소리 출력
-		audioManager.PlayAudio(SFX_GUNFIRE.data(), 0.1f);
 	}
 }
 
