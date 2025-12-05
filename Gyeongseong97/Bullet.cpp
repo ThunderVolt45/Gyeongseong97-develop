@@ -11,12 +11,12 @@ Bullet::Bullet()
 
 }
 
-Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage)
+Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage, int lifeTick)
 {
-	Reset(x, y, speedX, speedY, isMine, damage);
+	Reset(x, y, speedX, speedY, isMine, damage, lifeTick);
 }
 
-void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int damage)
+void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int damage, int lifeTick)
 {
 	this->x = x;
 	this->y = y;
@@ -24,9 +24,9 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 	this->speedY = speedY;
 	this->isPlayer = isMine;
 	this->damage = damage;
-	this->isExplosive = isExplosive;
+	this->lifeTick = lifeTick;
 
-	// Clear custom behaviors
+	// 콜백 함수는 비워둔다
 	onUpdate = nullptr;
 	onDestroy = nullptr;
 
@@ -51,6 +51,18 @@ void Bullet::SetCustomBehavior(Sprite sprite, std::function<void(Bullet*)> onUpd
 
 void Bullet::Update()
 {
+	// 수명 처리
+	if (lifeTick > 0)
+	{
+		lifeTick--;
+
+		if (lifeTick == 0)
+		{
+			Destroy();
+		}
+	}
+
+	// 로직 실행
 	if (onUpdate)
 	{
 		onUpdate(this);
@@ -79,6 +91,7 @@ void Bullet::Destroy()
 
 void Bullet::OnDestroy(std::shared_ptr<GameObject> self)
 {
+	// 오브젝트 풀에 반환
 	if (auto bullet = std::dynamic_pointer_cast<Bullet>(self))
 	{
 		BulletPool::GetInstance().ReturnBullet(bullet);

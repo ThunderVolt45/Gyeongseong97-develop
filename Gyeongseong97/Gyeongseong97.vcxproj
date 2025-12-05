@@ -142,6 +142,7 @@
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BossState.cpp" />
     <ClCompile Include="BossStateAppeared.cpp" />
+    <ClCompile Include="BossStateAttackBomb.cpp" />
     <ClCompile Include="BossStateAttackDive.cpp" />
     <ClCompile Include="BossStateAttackShot.cpp" />
     <ClCompile Include="BossStateDeath.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BossState.h" />
     <ClInclude Include="BossStateAppeared.h" />
+    <ClInclude Include="BossStateAttackBomb.h" />
     <ClInclude Include="BossStateAttackDive.h" />
     <ClInclude Include="BossStateAttackShot.h" />
     <ClInclude Include="BossStateDeath.h" />

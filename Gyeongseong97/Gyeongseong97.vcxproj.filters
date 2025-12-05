@@ -243,6 +243,9 @@
     <ClCompile Include="WeaponShotgun.cpp">
       <Filter>GameObjects\Weapons &amp; Items</Filter>
     </ClCompile>
+    <ClCompile Include="BossStateAttackBomb.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\bgm_hero.mp3">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="WeaponShotgun.h">
       <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateAttackBomb.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

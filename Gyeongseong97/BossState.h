@@ -3,6 +3,7 @@
 // 전방 선언 (순환 참조 방지)
 class Narration;
 class BossStateAppeared;
+class BossStateAttackBomb;
 class BossStateAttackDive;
 class BossStateAttackShot;
 class BossStateDeath;
@@ -15,6 +16,7 @@ class BossState
 public:
 	// 상태 전환을 위한 정적 인스턴스들 (싱글톤처럼 사용)
 	static BossStateAppeared appeared;
+	static BossStateAttackBomb bomb;
 	static BossStateAttackDive dive;
 	static BossStateAttackShot shot;
 	static BossStateDeath death;

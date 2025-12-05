@@ -4,23 +4,21 @@
 
 class Bullet : public GameObject
 {
-public: // Protected -> Public for flexibility in callbacks
+public:
 	int damage;
+	int lifeTick; // 총알의 수명
 	float speedX;
 	float speedY;
-
-public:
 	bool isPlayer;
-	bool isExplosive;
 
-	// Custom behavior callbacks
+	// Bullet에 특수한 동작을 부여하기 위한 콜백 함수
 	std::function<void(Bullet*)> onUpdate;
 	std::function<void(Bullet*)> onDestroy;
 
 	Bullet();
-	Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage = 1);
+	Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage = 1, int lifeTick = -1);
 
-	virtual void Reset(int x, int y, float speedX, float speedY, bool isMine, int damage = 1);
+	virtual void Reset(int x, int y, float speedX, float speedY, bool isMine, int damage = 1, int lifeTick = -1);
 	
 	// New method to set custom behavior
 	void SetCustomBehavior(Sprite sprite, std::function<void(Bullet*)> onUpdate, std::function<void(Bullet*)> onDestroy);

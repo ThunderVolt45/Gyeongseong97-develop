@@ -19,6 +19,7 @@ enum class BossStateEnum
 	Idle, // 대기
 	Shot, // 사격 패턴
 	Dive, // 돌진 패턴
+	Bomb, // 폭탄 패턴
 	Vanguard, // 소환 패턴 - 전위대
 	Carmikaze, // 소환 패턴 - 자동차
 	Dead // 시체로 결★정

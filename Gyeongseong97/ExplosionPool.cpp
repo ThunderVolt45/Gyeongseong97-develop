@@ -31,5 +31,6 @@ std::shared_ptr<Explosion> ExplosionPool::GetExplosion(int x, int y, int w, int 
 
 void ExplosionPool::ReturnExplosion(std::shared_ptr<Explosion> explosion)
 {
+	// 오브젝트 풀에 반환
 	pool.push_back(explosion);
 }

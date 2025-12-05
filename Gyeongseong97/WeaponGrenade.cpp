@@ -69,6 +69,7 @@ void WeaponGrenade::Shoot(Player* owner)
 		4.5f,
 		true,
 		damage,
+		-1,
 		sprite,
 		nullptr,
 		explosion

@@ -11,6 +11,7 @@
 // 상태 패턴 헤더
 #include "BossState.h"
 #include "BossStateAppeared.h"
+#include "BossStateAttackBomb.h"
 #include "BossStateAttackDive.h"
 #include "BossStateAttackShot.h"
 #include "BossStateDeath.h"
