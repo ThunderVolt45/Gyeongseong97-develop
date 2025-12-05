@@ -1,167 +1,225 @@
 @startuml
-' PlantUML Class Diagram for Visual Studio Gyeongseong 97
-' Generated based on current source code analysis
-
 skinparam classAttributeIconSize 0
 skinparam linetype ortho
+left to right direction
 
-' --- Structs & Enums ---
+package "Core" {
+    class GameObject {
+        - bool active
+        + float x
+        + float y
+        + Sprite sprite
+        + GameObject()
+        + virtual ~GameObject()
+        + virtual void Update()
+        + virtual void OnDestroy(std::shared_ptr<GameObject> self)
+        + bool IsColliding(const GameObject& other)
+        + virtual void OnCollision(GameObject& other)
+        + virtual void Destroy()
+    }
 
-enum EnemyType {
-    Instigated
-    Vanguard
-    Carmikaze
-    Narration
-}
+    class Player {
+        + std::shared_ptr<Weapon> currentWeapon
+        + std::shared_ptr<Weapon> defaultWeapon
+        + std::shared_ptr<Weapon> grenadeWeapon
+        + float maxHealth
+        + float health
+        + void Update() override
+        + void OnCollision(GameObject& other) override
+        + void Shoot()
+        + void Grenade()
+        + void EquipWeapon(std::shared_ptr<Weapon> newWeapon)
+    }
 
-enum SpawnPosition {
-    Random
-    PlayerPosition
-}
+    class Enemy {
+        + float health
+        + float speed
+        + int killScore
+        + void Update() override
+        + void OnCollision(GameObject& other) override
+        + virtual void TakeDamage(float damage)
+    }
 
-struct SpawnData {
-    + EnemyType type
-    + int x
-    + int y
-    + float nextEnemyDelay
-}
+    class Bullet {
+        + int damage
+        + float speedX
+        + float speedY
+        + bool isPlayer
+        + void Update() override
+    }
 
-struct Wave {
-    + std::vector<SpawnData> enemies
-    + float nextWaveDelay
-}
+    class Explosion {
+        + int damage
+        + void Update() override
+        + void OnCollision(GameObject& other) override
+    }
 
-struct Sprite {
-    + int sizeX
-    + int sizeY
-    + std::vector<ftxui::Color> colors
-}
-
-' --- Core Classes ---
-
-class GameObject {
-    + float x
-    + float y
-    + Sprite sprite
-    + GameObject()
-    + GameObject(int x, int y)
-    + virtual ~GameObject()
-    + float GetCenterX()
-    + float GetCenterY()
-    + virtual void Update()
-    + bool IsOutOfScreen()
-    + bool IsColliding(const GameObject& other)
-    + virtual void OnCollision(GameObject& other)
-    - virtual void Destroy()
-}
-
-class Player {
-    + float maxHealth
-    + float health
-    + int cooldown
-    + Player()
-    + void Reset()
-    + void Update() override
-    + void OnCollision(GameObject& other) override
-}
-
-class Enemy {
-    + float health
-    + float speed
-    + int killScore
-    + Enemy()
-    + void Update() override
-    + void OnCollision(GameObject& other) override
-    - void Destroy() override
+    class WeaponItem {
+        + float speed
+        + WeaponType weaponType
+        + void Update() override
+        + void OnCollision(GameObject& other) override
+    }
 }
 
-class Vanguard {
-    + Vanguard()
-    + void Update() override
+package "Managers" {
+    class GameManager <<Singleton>> {
+        - StageManager stageManager
+        - std::list<std::shared_ptr<GameObject>> gameObjects
+        + {static} GameManager& GetInstance()
+        + Player player
+        + void Update()
+        + void CreateGameObject(std::shared_ptr<GameObject> gameObject)
+        + void DestroyGameObject(GameObject* gameObject)
+    }
+
+    class StageManager {
+        - std::vector<Wave> waves
+        + void Initialize()
+        + void Update()
+        + void Reset()
+    }
+
+    class AudioManager <<Singleton>> {
+        + {static} AudioManager& GetInstance()
+        + void PlayAudio(std::wstring audioPath, float volume, bool loop)
+    }
+
+    class InputManager <<Singleton>> {
+        + {static} InputManager& GetInstance()
+        + void Update()
+        + bool IsKeyDown(int key_code)
+        + bool IsKeyPressed(int key_code)
+    }
+
+    class RenderSystem {
+        + {static} ftxui::Element Render()
+        + {static} void ShowErrorMessage(const std::string& message)
+    }
+
+    class CollisionManager {
+        + {static} void ProcessCollisions(...)
+    }
+
+    class ImageLoader {
+        + {static} Sprite CreateSpriteFromImage(...)
+    }
+
+    class BulletPool <<Singleton>> {
+        + {static} BulletPool& GetInstance()
+        + std::shared_ptr<Bullet> GetBullet(...)
+        + void ReturnBullet(std::shared_ptr<Bullet> bullet)
+    }
+
+    class ExplosionPool <<Singleton>> {
+        + {static} ExplosionPool& GetInstance()
+        + std::shared_ptr<Explosion> GetExplosion(...)
+        + void ReturnExplosion(std::shared_ptr<Explosion> explosion)
+    }
+    
+    class EnemyFactory {
+        + {static} void CreateEnemy(EnemyInfo enemy)
+    }
+
+    class ItemFactory {
+        + {static} void CreateItem(ItemInfo item)
+    }
 }
 
-class Bullet {
-    - float speedX
-    - float speedY
-    + bool isPlayer
-    + Bullet(int x, int y, float speedX, float speedY, bool isMine)
-    + void Update() override
+package "Enemies" {
+    class Vanguard {
+        + void Update() override
+    }
+
+    class Carmikaze {
+        + void Update() override
+    }
+
+    class Narration {
+        + BossState* state
+        + void Update() override
+        + void ChangePattern()
+    }
 }
 
-' --- Managers ---
+package "Weapons" {
+    abstract class Weapon {
+        + WeaponType type
+        + int damage
+        + int maxBullet
+        + int remainBullet
+        + virtual void Shoot(Player* owner)
+    }
 
-class GameManager <<Singleton>> {
-    - {static} GameManager* instance
-    - StageManager stage
-    - std::list<std::shared_ptr<GameObject>> gameObjects
-    - std::set<GameObject*> objectsToDestroy
-    - std::vector<std::shared_ptr<GameObject>> objectsToCreate
-    - std::recursive_mutex gameMutex
-    - long long tick
-    - int shootCooldown
-    + {static} GameManager& GetInstance()
-    + Player player
-    + std::atomic<int> score
-    + std::atomic<bool> IsRunning
-    + std::atomic<bool> IsGameOver
-    + void Update()
-    + ftxui::Element Render()
-    + bool OnEvent(ftxui::Event event)
-    + void CreateGameObject(std::shared_ptr<GameObject> gameObject)
-    + void DestroyGameObject(GameObject* gameObject)
-    - void Reset()
-    - void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
+    class WeaponDefault {
+        + void Shoot(Player* owner) override
+    }
+
+    class WeaponHMG {
+        + void Shoot(Player* owner) override
+    }
+
+    class WeaponShotgun {
+        + void Shoot(Player* owner) override
+    }
+
+    class WeaponGrenade {
+        + void Shoot(Player* owner) override
+    }
 }
-   
-class StageManager {
-    - std::vector<Wave> waves
-    - size_t currentWaveIndex
-    - size_t currentEnemyIndex
-    - float delayTimer
-    + void Initialize()
-    + void Reset()
-    + void Update()
-    - void CreateEnemy(SpawnData spawnData)
+
+package "BossStates" {
+    abstract class BossState {
+        + virtual void Update(Narration& boss)
+    }
+
+    class BossStateAppeared
+    class BossStateIdle
+    class BossStateAttackShot
+    class BossStateAttackDive
+    class BossStateAttackBomb
+    class BossStateSpawnVanguard
+    class BossStateSpawnCarmikaze
+    class BossStateDeath
 }
-   
-class ImageLoader {
-    + {static} Sprite CreateSpriteFromImage(std::wstring fileName, int sizeX, int sizeY)
-}
-   
-class AudioManager {
-    ' (Based on file existence and typical usage)
-    + void PlayAudio(std::wstring audioPath, bool loop)
-}
-   
-class Utility {
-    + {static} std::string ConvertWideToUtf8(const wchar_t* wideStr)
-}
-   
-' --- Relationships ---
-' Inheritance
+
+' Inheritance Relationships
 GameObject <|-- Player
 GameObject <|-- Enemy
 GameObject <|-- Bullet
+GameObject <|-- Explosion
+GameObject <|-- WeaponItem
+
 Enemy <|-- Vanguard
-   
-' Composition / Association
-GameManager "1" *-- "1" StageManager : manages
-GameManager "1" o-- "*" GameObject : manages
-GameManager "1" *-- "1" Player : owns
-   
-StageManager ..> Wave : uses
-StageManager ..> SpawnData : uses
-StageManager ..> EnemyType : uses
-Wave *-- "*" SpawnData
-   
-GameObject *-- Sprite
-ImageLoader ..> Sprite : creates
-   
-' Dependencies
-Bullet ..> GameObject : collision logic
-Player ..> Bullet : creates
-StageManager ..> Enemy : creates
-GameManager ..> ImageLoader : uses
-GameManager ..> AudioManager : uses
-   
+Enemy <|-- Carmikaze
+Enemy <|-- Narration
+
+Weapon <|-- WeaponDefault
+Weapon <|-- WeaponHMG
+Weapon <|-- WeaponShotgun
+Weapon <|-- WeaponGrenade
+
+BossState <|-- BossStateAppeared
+BossState <|-- BossStateIdle
+BossState <|-- BossStateAttackShot
+BossState <|-- BossStateAttackDive
+BossState <|-- BossStateAttackBomb
+BossState <|-- BossStateSpawnVanguard
+BossState <|-- BossStateSpawnCarmikaze
+BossState <|-- BossStateDeath
+
+' Association & Composition
+GameManager o-- GameObject
+GameManager *-- StageManager
+GameManager *-- Player
+
+Player o-- Weapon
+Narration o-- BossState
+
+BulletPool ..> Bullet : manages
+ExplosionPool ..> Explosion : manages
+
+EnemyFactory ..> Enemy : creates
+ItemFactory ..> WeaponItem : creates
+
 @enduml

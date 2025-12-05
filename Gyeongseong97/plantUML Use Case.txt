@@ -1,40 +1,63 @@
 @startuml
-' 유스케이스 다이어그램 초안, 추후 변동 가능성이 있음
-
-' 다이어그램 방향 설정
 left to right direction
+actor "User" as user
 
-' 플레이어는 게임을 플레이하는 유일한 행위자
-actor "Player" as player
+rectangle "Gyeongseong 97" {
 
-rectangle "Gyeongseong97" {
-    usecase "게임 시작" as StartGame
-    usecase "캐릭터 조작" as Control
-    usecase "이동" as Move
-    usecase "사격" as Shoot
-    usecase "적 처치" as KillEnemy
-    usecase "점수 획득" as Score
-    usecase "게임 오버" as GameOver
-    usecase "게임 나가기" as Exit
-    usecase "오디오 출력" as Audio
+    package "Title Screen" {
+        usecase "Start Game" as UC_Start
+        usecase "View Credits" as UC_Credits
+        usecase "Exit Application" as UC_Exit
+    }
 
-    player -- StartGame
-    player -- Control
-    player -- Exit
+    package "Gameplay" {
+        usecase "Control Player" as UC_Control
+        usecase "Move (Arrow Keys)" as UC_Move
+        usecase "Attack (Spacebar)" as UC_Attack
+        usecase "Use Skill/Grenade" as UC_Skill
+        usecase "Acquire Item" as UC_Item
+        
+        usecase "Defeat Enemies" as UC_Combat
+        usecase "Fight Boss" as UC_BossBattle
+        
+        usecase "Game Over" as UC_GameOver
+        usecase "Game Clear" as UC_GameClear
+    }
 
-    ' 제어(Control)는 이동과 공격을 포함합니다.
-    Control <.. Move : <<extend>>
-    Control <.. Shoot : <<extend>>
-
-    ' 게임 플레이 중 발생하는 사건들
-    Shoot ..> KillEnemy : triggers
-    KillEnemy ..> Score : triggers
-
-    ' 플레이어의 생존 여부와 관련된 흐름
-    Control ..> GameOver : leads to (on collision/damage)
-
-    ' 오디오는 게임 실행 전반에 걸쳐 발생
-    StartGame ..> Audio : include
-    Shoot ..> Audio : include
+    package "Game System" {
+        usecase "Spawn Enemy Waves" as UC_Spawn
+        usecase "Update Score" as UC_Score
+        usecase "Play Sound/BGM" as UC_Sound
+        usecase "Render TUI" as UC_Render
+    }
 }
+
+' User interactions
+user --> UC_Start
+user --> UC_Credits
+user --> UC_Exit
+user --> UC_Control
+
+' Relationships
+UC_Start ..> UC_Control : <<include>>
+UC_Control ..> UC_Move : <<include>>
+UC_Control ..> UC_Attack : <<include>>
+UC_Control ..> UC_Skill : <<extend>>
+
+UC_Attack --> UC_Combat
+UC_Skill --> UC_Combat
+
+UC_Combat ..> UC_Score : <<include>>
+UC_Combat ..> UC_Item : <<extend>> (Drop Item)
+UC_Item ..> UC_Attack : <<extend>> (Change Weapon)
+
+UC_Combat --> UC_BossBattle : Progress
+UC_BossBattle --> UC_GameClear : On Success
+UC_Control --> UC_GameOver : On Player Death
+
+' System background processes
+UC_Start --> UC_Spawn
+UC_Start --> UC_Sound
+UC_Start --> UC_Render
+
 @enduml
