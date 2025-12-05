@@ -25,6 +25,12 @@
     <Filter Include="GameObjects\Weapons &amp; Items">
       <UniqueIdentifier>{00000000-0000-0000-0000-000000000008}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Examples">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000010}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{00000000-0000-0000-0000-000000000011}</UniqueIdentifier>
     </Filter>
@@ -228,6 +234,15 @@
     <ClInclude Include="ItemFactory.h">
       <Filter>GameObjects\Weapons &amp; Items</Filter>
     </ClInclude>
+    <ClCompile Include="WeaponGrenade.cpp">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponHMG.cpp">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponShotgun.cpp">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\bgm_hero.mp3">
@@ -295,5 +310,16 @@
     <Image Include="Sprites\player_death.png">
       <Filter>Resources\Sprites</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WeaponGrenade.h">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponHMG.h">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponShotgun.h">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

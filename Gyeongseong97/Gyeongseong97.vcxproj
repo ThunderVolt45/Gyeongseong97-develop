@@ -170,7 +170,10 @@
     <ClCompile Include="Utility.cpp" />
     <ClCompile Include="Vanguard.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponGrenade.cpp" />
+    <ClCompile Include="WeaponHMG.cpp" />
     <ClCompile Include="WeaponItem.cpp" />
+    <ClCompile Include="WeaponShotgun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AudioManager.h" />
@@ -204,7 +207,10 @@
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Vanguard.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="WeaponGrenade.h" />
+    <ClInclude Include="WeaponHMG.h" />
     <ClInclude Include="WeaponItem.h" />
+    <ClInclude Include="WeaponShotgun.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\bgm_hero.mp3" />

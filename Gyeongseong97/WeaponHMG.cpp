@@ -1,34 +1,34 @@
-#include "Weapon.h"
+#include "WeaponHMG.h"
 #include "Player.h"
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "BulletPool.h"
+#include "Utility.h"
 #include "GameConstants.h"
 
-void Weapon::AddAmmo(int amount)
+WeaponHMG::WeaponHMG()
+	: Weapon(WeaponType::HMG, 1, 300, 4, false)
 {
-	remainBullet += amount;
+	// 총알 300발을 900RPM으로 화끈하게 때려붓는 중기관총!
 }
 
-// ==========================
-// WeaponDefault
-// ==========================
-WeaponDefault::WeaponDefault()
-	: Weapon(WeaponType::Default, 1, 9999, 8, true)
+void WeaponHMG::Shoot(Player* owner)
 {
-	// 450RPM의 무난무난한 기본 무기
-}
+	if (remainBullet <= 0) return;
 
-void WeaponDefault::Shoot(Player* owner)
-{
-	// 기존 플레이어의 기본 발사 로직
+	remainBullet--;
+
+	// 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
 	BulletPool& bulletPool = BulletPool::GetInstance();
+
+	// Bullet의 X축 속도를 랜덤하게 부여하고 발사
+	float speedX = (float)Utility::GenerateRandomNumber(-6, 6) / 10;
 
 	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
 		owner->GetCenterX(),
 		owner->y,
-		0.0f,
+		speedX,
 		6.0f,
 		true,
 		damage

@@ -5,6 +5,9 @@
 #include "GameConstants.h"
 #include "ImageLoader.h"
 #include "Weapon.h"
+#include "WeaponHMG.h"
+#include "WeaponShotgun.h"
+#include "WeaponGrenade.h"
 
 WeaponItem::WeaponItem(float x, float y, float speed, WeaponType type) :
 	weaponType(type), speed(speed)

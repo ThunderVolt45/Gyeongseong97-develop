@@ -46,24 +46,3 @@ public:
 	WeaponDefault();
 	void Shoot(Player* owner) override;
 };
-
-class WeaponHMG : public Weapon
-{
-public:
-	WeaponHMG();
-	void Shoot(Player* owner) override;
-};
-
-class WeaponShotgun : public Weapon
-{
-public:
-	WeaponShotgun();
-	void Shoot(Player* owner) override;
-};
-
-class WeaponGrenade : public Weapon
-{
-public:
-	WeaponGrenade();
-	void Shoot(Player* owner) override;
-};

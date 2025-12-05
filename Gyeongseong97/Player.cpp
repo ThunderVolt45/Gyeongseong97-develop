@@ -4,6 +4,7 @@
 #include "BulletPool.h"
 #include "ExplosionPool.h"
 #include "InputManager.h"
+#include "WeaponGrenade.h"
 
 Player::Player() : GameObject()
 {
