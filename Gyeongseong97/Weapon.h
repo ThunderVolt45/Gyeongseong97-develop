@@ -50,6 +50,12 @@ public:
 	void Shoot(Player* owner) override;
 };
 
+class WeaponShotgun : public Weapon
+{
+public:
+
+};
+
 class WeaponGrenade : public Weapon
 {
 public:

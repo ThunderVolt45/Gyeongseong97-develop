@@ -2,6 +2,7 @@
 
 #include "StageManager.h"
 #include "GameManager.h"
+#include "RenderSystem.h"
 #include "AudioManager.h"
 #include "EnemyFactory.h"
 #include "ItemFactory.h"
@@ -35,45 +36,50 @@ void StageManager::Initialize()
 	// tick 값 (마이크로초) 를 float 값 (초) 로 변환한다
 	std::chrono::duration<float> floatSeconds = std::chrono::duration_cast<std::chrono::duration<float>>(TICK_TIME);
 	tickTimeToFloat = floatSeconds.count();
-
-	// json 파일을 연다
-	std::ifstream file("stage_data.json");
-
-	if (file.is_open())
+	
+	try
 	{
-		// json 역직렬화
-		json data = json::parse(file);
+		// json 파일을 연다
+		std::ifstream file("stage_data.json");
 
-		// wave 값을 가져온다
-		for (const auto& waveData : data["waves"])
+		if (file.is_open())
 		{
-			Wave wave;
-			wave.nextWaveDelay = waveData["nextWaveDelay"];
+			// json 역직렬화
+			json data = json::parse(file);
 
-			// wave 내의 enemies 값을 가져온다
-			for (const auto& enemyData : waveData["enemies"])
+			// wave 값을 가져온다
+			for (const auto& waveData : data["waves"])
 			{
-				SpawnData spawn;
-				spawn.type = static_cast<SpawnType>(enemyData["type"]);
-				spawn.x = enemyData["x"];
-				spawn.y = enemyData["y"];
-				spawn.health = enemyData["health"];
-				spawn.speed = enemyData["speed"];
-				spawn.nextEnemyDelay = enemyData["nextEnemyDelay"];
+				Wave wave;
+				wave.nextWaveDelay = waveData["nextWaveDelay"];
 
-				wave.enemies.push_back(spawn);
+				// wave 내의 enemies 값을 가져온다
+				for (const auto& enemyData : waveData["enemies"])
+				{
+					SpawnData spawn;
+					spawn.type = static_cast<SpawnType>(enemyData["type"]);
+					spawn.x = enemyData["x"];
+					spawn.y = enemyData["y"];
+					spawn.health = enemyData["health"];
+					spawn.speed = enemyData["speed"];
+					spawn.nextEnemyDelay = enemyData["nextEnemyDelay"];
+
+					wave.enemies.push_back(spawn);
+				}
+
+				waves.push_back(wave);
 			}
-
-			waves.push_back(wave);
 		}
-	}
-	else
-	{
-		std::wcerr << "Error : stage_data.json을 불러오는데 실패했습니다." << std::endl;
-	}
 
-	// 파일을 모두 읽어들였다면 파일을 닫는다
-	file.close();
+		// 파일을 모두 읽어들였다면 파일을 닫는다
+		file.close();
+	}
+	catch (const std::exception& e)
+	{
+		string error = e.what();
+		cerr << "StageManager : " + error << endl;
+		RenderSystem::ShowErrorMessage("StageManager : " + error);
+	}
 }
 
 void StageManager::Reset()

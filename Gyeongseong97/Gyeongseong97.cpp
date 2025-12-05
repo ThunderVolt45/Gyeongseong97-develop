@@ -237,6 +237,7 @@ void GameLoop(ScreenInteractive& screen)
 {
 	// 게임 매니저 인스턴스
 	GameManager& gameManager = GameManager::GetInstance();
+	gameManager.Initialize();
 
 	// 컴포넌트 연결
 	// Renderer: 화면을 그리는 역할

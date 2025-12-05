@@ -23,18 +23,21 @@
 
 GameManager::GameManager()
 {
-	// 스테이지 초기화
-	stageManager.Initialize();
-
-	// 플레이어 생성
-	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y);
-
 	IsRunning = true;
 }
 
 GameManager::~GameManager()
 {
 
+}
+
+void GameManager::Initialize()
+{
+	// 플레이어 생성
+	player = Player(PLAYER_DEFAULT_POSITION_X, PLAYER_DEFAULT_POSITION_Y);
+
+	// 스테이지 초기화
+	stageManager.Initialize();
 }
 
 GameManager& GameManager::GetInstance()

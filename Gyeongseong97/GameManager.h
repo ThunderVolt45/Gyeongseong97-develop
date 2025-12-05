@@ -46,6 +46,8 @@ private:
 	void Reset();
 
 public:
+	void Initialize(); // 스테이지 및 게임 초기화
+
 	Player player;
 	GameObject background;
 
