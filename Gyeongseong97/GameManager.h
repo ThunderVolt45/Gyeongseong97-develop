@@ -42,9 +42,6 @@ private:
 
 	// 새로 생성할 오브젝트들을 모아둘 vector
 	std::vector<std::shared_ptr<GameObject>> objectsToCreate;
-	
-	// 게임 틱
-	long long tick = 0;
 
 	void Reset();
 
@@ -57,6 +54,9 @@ public:
 	/// </summary>
 	/// <returns>GameManager 객체의 참조값</returns>
 	static GameManager& GetInstance();
+
+	// 게임 틱
+	long long tick = 0;
 
 	// 스레드 동기화를 위한 뮤텍스
 	std::recursive_mutex gameMutex;

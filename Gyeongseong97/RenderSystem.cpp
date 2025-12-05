@@ -4,6 +4,7 @@
 
 std::string RenderSystem::errorMessage = "";
 bool RenderSystem::isErrorActive = false;
+long long RenderSystem::errorDisplayStartTime = 0;
 
 void RenderSystem::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
 {
@@ -73,10 +74,14 @@ void RenderSystem::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& obj
 	}
 }
 
-void RenderSystem::ShowErrorMessage(const std::string& message)
-{
+void RenderSystem::ShowErrorMessage(const std::string& message) {
+
     errorMessage = message;
+
     isErrorActive = true;
+
+    errorDisplayStartTime = GameManager::GetInstance().tick;
+
 }
 
 void RenderSystem::ClearErrorMessage()
@@ -88,6 +93,10 @@ void RenderSystem::ClearErrorMessage()
 ftxui::Element RenderSystem::Render()
 {
 	GameManager& gameManager = GameManager::GetInstance();
+
+	if (isErrorActive && (gameManager.tick - errorDisplayStartTime > ERROR_DISPLAY_DURATION_TICKS)) {
+		ClearErrorMessage();
+	}
 
 	// 캔버스 생성
 	auto canvas = ftxui::Canvas(GAME_WIDTH, GAME_HEIGHT);

@@ -14,6 +14,7 @@ class RenderSystem
 private:
 	static std::string errorMessage;
 	static bool isErrorActive;
+	static long long errorDisplayStartTime; // New member
 
 	static void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);
 
