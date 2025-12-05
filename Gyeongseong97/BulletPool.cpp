@@ -14,20 +14,15 @@ BulletPool& BulletPool::GetInstance()
 
 std::shared_ptr<Bullet> BulletPool::GetBullet(int x, int y, float speedX, float speedY, bool isMine)
 {
-	return GetBullet(x, y, speedX, speedY, isMine, 1, false);
+	return GetBullet(x, y, speedX, speedY, isMine, 1);
 }
 
 std::shared_ptr<Bullet> BulletPool::GetBullet(int x, int y, float speedX, float speedY, bool isMine, int damage)
 {
-	return GetBullet(x, y, speedX, speedY, isMine, damage, false);
-}
-
-std::shared_ptr<Bullet> BulletPool::GetBullet(int x, int y, float speedX, float speedY, bool isMine, int damage, bool isExplosive)
-{
 	if (pool.empty())
 	{
 		auto bullet = std::make_shared<Bullet>();
-		bullet->Reset(x, y, speedX, speedY, isMine, damage, isExplosive);
+		bullet->Reset(x, y, speedX, speedY, isMine, damage);
 		return bullet;
 	}
 	else
@@ -35,9 +30,16 @@ std::shared_ptr<Bullet> BulletPool::GetBullet(int x, int y, float speedX, float 
 		std::shared_ptr<Bullet> bullet = pool.back();
 		pool.pop_back();
 
-		bullet->Reset(x, y, speedX, speedY, isMine, damage, isExplosive);
+		bullet->Reset(x, y, speedX, speedY, isMine, damage);
 		return bullet;
 	}
+}
+
+std::shared_ptr<Bullet> BulletPool::GetCustomBullet(int x, int y, float speedX, float speedY, bool isMine, int damage, Sprite sprite, std::function<void(Bullet*)> onUpdate, std::function<void(Bullet*)> onDestroy)
+{
+	auto bullet = GetBullet(x, y, speedX, speedY, isMine, damage);
+	bullet->SetCustomBehavior(sprite, onUpdate, onDestroy);
+	return bullet;
 }
 
 void BulletPool::ReturnBullet(std::shared_ptr<Bullet> bullet)

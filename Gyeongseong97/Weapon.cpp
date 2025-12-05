@@ -1,10 +1,11 @@
 #include "Weapon.h"
 #include "Player.h"
-#include "BulletPool.h"
 #include "GameManager.h"
-#include "GameConstants.h"
 #include "AudioManager.h"
 #include "Utility.h"
+#include "BulletPool.h"
+#include "ExplosionPool.h"
+#include "GameConstants.h"
 
 // ==========================
 // WeaponDefault 기본 무기
@@ -93,14 +94,56 @@ void WeaponGrenade::Shoot(Player* owner)
 	GameManager& gameManager = GameManager::GetInstance();
 	BulletPool& bulletPool = BulletPool::GetInstance();
 
-	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+	// Sprite 생성
+	auto c = ftxui::Color::DarkGreen;
+	auto sprite = Sprite(4, 4,
+		{
+			c, c, c, c,
+			c, c, c, c,
+			c, c, c, c,
+			c, c, c, c,
+		});
+	
+	// 폭★8
+	auto explosion = [&](Bullet* b) {
+		// 파편 효과 생성 (총알)
+		// 8방향으로 총알 발사
+		for (int x = -1; x <= 1; x++)
+		{
+			for (int y = -1; y <= 1; y++)
+			{
+				if (x == 0 && y == 0) continue;
+
+				std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+					b->GetCenterX(),
+					b->GetCenterY(),
+					6.0f * x,
+					6.0f * y,
+					true
+				);
+
+				gameManager.CreateGameObject(bullet);
+			}
+		}
+
+		// 폭발 효과 생성 (데미지 전달)
+		std::shared_ptr<Explosion> explosion =
+			ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, damage);
+
+		gameManager.CreateGameObject(explosion, false);
+		};
+
+	// 커스텀 총알 생성
+	std::shared_ptr<Bullet> bullet = bulletPool.GetCustomBullet(
 		owner->GetCenterX(),
 		owner->y,
 		0.0f,
 		4.5f,
 		true,
 		damage,
-		true
+		sprite,
+		nullptr,
+		explosion
 	);
 
 	gameManager.CreateGameObject(bullet);
@@ -135,8 +178,7 @@ void WeaponShotgun::Shoot(Player* owner)
 			0.0f + (0.25f * i),
 			6.0f,
 			true,
-			damage,
-			true
+			damage
 		);
 
 		gameManager.CreateGameObject(bullet);

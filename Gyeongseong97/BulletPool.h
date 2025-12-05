@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <functional>
 #include "Bullet.h"
 
 class BulletPool
@@ -14,7 +15,7 @@ public:
 	static BulletPool& GetInstance();
 	std::shared_ptr<Bullet> GetBullet(int x, int y, float speedX, float speedY, bool isMine);
 	std::shared_ptr<Bullet> GetBullet(int x, int y, float speedX, float speedY, bool isMine, int damage);
-	std::shared_ptr<Bullet> GetBullet(int x, int y, float speedX, float speedY, bool isMine, int damage, bool isExplosive);
+	std::shared_ptr<Bullet> GetCustomBullet(int x, int y, float speedX, float speedY, bool isMine, int damage, Sprite sprite, std::function<void(Bullet*)> onUpdate, std::function<void(Bullet*)> onDestroy);
 
 	void ReturnBullet(std::shared_ptr<Bullet> bullet);
 };

@@ -16,7 +16,7 @@ Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage
 	Reset(x, y, speedX, speedY, isMine, damage);
 }
 
-void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int damage, bool isExplosive)
+void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int damage)
 {
 	this->x = x;
 	this->y = y;
@@ -26,42 +26,40 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 	this->damage = damage;
 	this->isExplosive = isExplosive;
 
+	// Clear custom behaviors
+	onUpdate = nullptr;
+	onDestroy = nullptr;
+
 	AudioManager& audioManager = AudioManager::GetInstance();
 
-	if (isExplosive)
+	ftxui::Color color = ftxui::Color::Yellow;
+
+	if (!isMine)
 	{
-		ftxui::Color c = ftxui::Color::DarkRed;
-
-		if (!isMine)
-		{
-			c = ftxui::Color::RosyBrown;
-		}
-
-		sprite = Sprite(4, 4,
-			{
-				c, c, c, c,
-				c, c, c, c,
-				c, c, c, c,
-				c, c, c, c,
-			});
+		color = ftxui::Color::Red1;
 	}
-	else
-	{
-		ftxui::Color color = ftxui::Color::Yellow;
 
-		if (!isMine)
-		{
-			color = ftxui::Color::Red1;
-		}
+	sprite = Sprite(1, 1, { color });
+}
 
-		sprite = Sprite(1, 1, { color });
-	}
+void Bullet::SetCustomBehavior(Sprite sprite, std::function<void(Bullet*)> onUpdate = nullptr, std::function<void(Bullet*)> onDestroy = nullptr)
+{
+	this->sprite = sprite;
+	this->onUpdate = onUpdate;
+	this->onDestroy = onDestroy;
 }
 
 void Bullet::Update()
 {
-	x -= speedX;
-	y -= speedY;
+	if (onUpdate)
+	{
+		onUpdate(this);
+	}
+	else
+	{
+		x -= speedX;
+		y -= speedY;
+	}
 }
 
 int Bullet::GetDamage()
@@ -71,36 +69,9 @@ int Bullet::GetDamage()
 
 void Bullet::Destroy()
 {
-	if (isExplosive)
+	if (onDestroy)
 	{
-		GameManager& gameManager = GameManager::GetInstance();
-		BulletPool& pool = BulletPool::GetInstance();
-
-		// 파편 효과 생성 (총알)
-		// 8방향으로 총알 발사
-		for (int x = -1; x <= 1; x++)
-		{
-			for (int y = -1; y <= 1; y++)
-			{
-				if (x == 0 && y == 0) continue;
-
-				std::shared_ptr<Bullet> bullet = pool.GetBullet(
-					GetCenterX(),
-					GetCenterY(),
-					6.0f * x,
-					6.0f * y,
-					isPlayer
-				);
-
-				gameManager.CreateGameObject(bullet);
-			}
-		}
-
-		// 폭발 효과 생성 (데미지 전달)
-		std::shared_ptr<Explosion> explosion = 
-			ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 60, 45, damage);
-
-		gameManager.CreateGameObject(explosion, false);
+		onDestroy(this);
 	}
 
 	GameObject::Destroy();

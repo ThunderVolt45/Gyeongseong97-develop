@@ -25,12 +25,6 @@
     <Filter Include="GameObjects\Weapons &amp; Items">
       <UniqueIdentifier>{00000000-0000-0000-0000-000000000008}</UniqueIdentifier>
     </Filter>
-    <Filter Include="External">
-      <UniqueIdentifier>{00000000-0000-0000-0000-000000000009}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Examples">
-      <UniqueIdentifier>{00000000-0000-0000-0000-000000000010}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{00000000-0000-0000-0000-000000000011}</UniqueIdentifier>
     </Filter>
@@ -234,15 +228,6 @@
     <ClInclude Include="ItemFactory.h">
       <Filter>GameObjects\Weapons &amp; Items</Filter>
     </ClInclude>
-    <ClCompile Include="miniaudio.c">
-      <Filter>External</Filter>
-    </ClCompile>
-    <ClInclude Include="json.hpp">
-      <Filter>External</Filter>
-    </ClInclude>
-    <ClCompile Include="MainGameLoopExample.cpp">
-      <Filter>Examples</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Sounds\bgm_hero.mp3">
@@ -261,12 +246,6 @@
       <Filter>Resources\Sounds</Filter>
     </Media>
     <Media Include="Sounds\sfx_gunfire.wav">
-      <Filter>Resources\Sounds</Filter>
-    </Media>
-    <Media Include="Sounds\sfx_get.wav">
-      <Filter>Resources\Sounds</Filter>
-    </Media>
-    <Media Include="Sounds\sfx_grenade.wav">
       <Filter>Resources\Sounds</Filter>
     </Media>
   </ItemGroup>
@@ -314,117 +293,6 @@
       <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\player_death.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0001.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0002.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0003.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0004.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0005.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0006.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0007.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0008.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0009.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0010.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0011.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0012.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0013.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0014.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0015.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0016.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0017.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0018.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0019.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0020.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0021.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0022.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0023.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0024.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0025.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0026.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0027.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0028.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0029.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0030.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0031.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0032.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0033.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0034.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0035.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0036.png">
-      <Filter>Resources\Sprites</Filter>
-    </Image>
-    <Image Include="Sprites\폭8\폭8_0037.png">
       <Filter>Resources\Sprites</Filter>
     </Image>
   </ItemGroup>
