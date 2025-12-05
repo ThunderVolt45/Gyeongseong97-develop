@@ -30,7 +30,7 @@ private:
 	/// </summary>
 	~GameManager();
 
-	/// 복사 생성자와 대입 연산자를 삭제해 인스턴스가 복제되지 못하게 한다.
+	// 복사 생성자와 대입 연산자를 삭제해 인스턴스가 복제되지 못하게 한다.
 	GameManager(const GameManager&) = delete;
 	GameManager& operator=(const GameManager&) = delete;
 

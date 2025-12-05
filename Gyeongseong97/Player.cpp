@@ -1,10 +1,9 @@
-#include <windows.h>
-
 #include "GameManager.h"
 #include "GameConstants.h"
 #include "Player.h"
 #include "BulletPool.h"
 #include "ExplosionPool.h"
+#include "InputManager.h"
 
 Player::Player() : GameObject()
 {
@@ -80,14 +79,16 @@ void Player::Update()
 	if (cooldown > 0) cooldown--;
 
 	// 키 입력 처리
+	InputManager& inputManager = InputManager::GetInstance();
+
 	// 이동 (화살표 키)
-	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) && x > 2 - sprite.sizeX / 2) x -= 3;
-	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000) && x < GAME_WIDTH - 2 - sprite.sizeX / 2) x += 3;
-	if ((GetAsyncKeyState(VK_UP) & 0x8000) && y > 2 - sprite.sizeY / 2) y -= 2;
-	if ((GetAsyncKeyState(VK_DOWN) & 0x8000) && y < GAME_HEIGHT - 2 - sprite.sizeY / 2) y += 2;
+	if (inputManager.IsKeyDown(KEYCODE_LEFT) && x > 2 - sprite.sizeX / 2) x -= 3;
+	if (inputManager.IsKeyDown(KEYCODE_RIGHT) && x < GAME_WIDTH - 2 - sprite.sizeX / 2) x += 3;
+	if (inputManager.IsKeyDown(KEYCODE_UP) && y > 2 - sprite.sizeY / 2) y -= 2;
+	if (inputManager.IsKeyDown(KEYCODE_DOWN) && y < GAME_HEIGHT - 2 - sprite.sizeY / 2) y += 2;
 
 	// 발사 (Space 키) -> Shoot() 함수 호출로 변경
-	if ((GetAsyncKeyState(VK_SPACE) & 0x8000) && cooldown <= 0)
+	if (inputManager.IsKeyDown(KEYCODE_SPACE) && cooldown <= 0)
 	{
 		Shoot();
 	}

@@ -8,6 +8,7 @@
 #include "Explosion.h"
 #include "ExplosionPool.h"
 #include "CollisionManager.h"
+#include "InputManager.h" // Include InputManager
 
 #include <set>
 #include <algorithm>
@@ -147,6 +148,9 @@ int GameManager::GetEnemyCount()
 
 void GameManager::Update()
 {
+	// InputManager 업데이트 (키 상태 갱신)
+	InputManager::GetInstance().Update();
+
 	// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
 	// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
 	std::lock_guard<std::recursive_mutex> lock(gameMutex);
