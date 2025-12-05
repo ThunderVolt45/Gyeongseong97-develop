@@ -36,5 +36,5 @@ void BossStateAppeared::Update(Narration& boss)
 
 	// 정렬이 끝나면 보스전 시작
 	boss.invincible = false;
-	boss.ChangePattern(); // EndPattern() -> ChangePattern() 으로 이름 변경 예정
+	boss.ChangePattern();
 }

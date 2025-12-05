@@ -56,7 +56,7 @@ void WeaponGrenade::Shoot(Player* owner)
 
 		// 폭발 효과 생성 (데미지 전달)
 		std::shared_ptr<Explosion> explosion =
-			ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, damage);
+			ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, damage, true);
 
 		gameManager.CreateGameObject(explosion, false);
 		};

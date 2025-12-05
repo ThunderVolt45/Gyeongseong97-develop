@@ -13,13 +13,14 @@ private:
 	int animationIndex;
 	bool isCommonSize;
 	int damage; // 폭발 데미지
+	bool isPlayer;
 
 	void SetSprites(int w, int h);
 
 public:
-	Explosion(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y, int damage = 0);
+	Explosion(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y, int damage = 0, bool isPlayer = true);
 
-	void Reset(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y, int damage = 0);
+	void Reset(int x, int y, int w = EXPLOSION_DEFAULT_SIZE_X, int h = EXPLOSION_DEFAULT_SIZE_Y, int damage = 0, bool isPlayer = true);
 	void Update() override;
 	void OnCollision(GameObject& other) override; // 충돌 처리 함수 오버라이드
 	void OnDestroy(std::shared_ptr<GameObject> self) override;

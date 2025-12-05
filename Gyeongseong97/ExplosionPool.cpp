@@ -12,7 +12,7 @@ ExplosionPool& ExplosionPool::GetInstance()
 	return instance;
 }
 
-std::shared_ptr<Explosion> ExplosionPool::GetExplosion(int x, int y, int w, int h, int damage)
+std::shared_ptr<Explosion> ExplosionPool::GetExplosion(int x, int y, int w, int h, int damage, bool isPlayer)
 {
 	if (pool.empty())
 	{
@@ -23,7 +23,7 @@ std::shared_ptr<Explosion> ExplosionPool::GetExplosion(int x, int y, int w, int 
 		std::shared_ptr<Explosion> explosion = pool.back();
 		pool.pop_back();
 
-		explosion->Reset(x, y, w, h, damage);
+		explosion->Reset(x, y, w, h, damage, isPlayer);
 
 		return explosion;
 	}

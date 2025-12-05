@@ -10,18 +10,18 @@
 // 플라이웨이트 패턴
 // 기본 크기 폭8 오브젝트는 다 같은 Sprite를 돌려쓰므로 그냥 static으로 하나만 저장하면 된다.
 std::vector<Sprite> Explosion::commonSprites;
-
-Explosion::Explosion(int x, int y, int w, int h, int damage)
+Explosion::Explosion(int x, int y, int w, int h, int damage, bool isPlayer)
 {
-	Reset(x, y, w, h, damage);
+	Reset(x, y, w, h, damage, isPlayer);
 }
 
-void Explosion::Reset(int x, int y, int w, int h, int damage)
+void Explosion::Reset(int x, int y, int w, int h, int damage, bool isPlayer)
 {
 	this->x = (float)(x - w / 2);
 	this->y = (float)(y - h / 2);
-
 	this->damage = damage;
+	this->isPlayer = isPlayer;
+
 	tick = 0;
 	lifeTimeTick = 120;
 	animationIndex = 0;
@@ -108,17 +108,22 @@ void Explosion::OnCollision(GameObject& other)
 	// (폭발 애니메이션이 재생되는 내내 데미지를 주는 것을 방지)
 	if (damage <= 0 || tick > 1) return;
 
-	// Player 충돌 처리
-	if (auto player = dynamic_cast<Player*>(&other))
+	if (isPlayer)
 	{
-		// 플레이어에게는 약간의 데미지만 입힘 (1칸)
-		player->TakeDamage(1);
+		// Enemy 충돌 처리
+		if (auto enemy = dynamic_cast<Enemy*>(&other))
+		{
+			enemy->TakeDamage(damage);
+			GameManager::GetInstance().score += 100;
+		}
 	}
-	// Enemy 충돌 처리
-	else if (auto enemy = dynamic_cast<Enemy*>(&other))
+	else
 	{
-		enemy->TakeDamage(damage);
-		GameManager::GetInstance().score += 100;
+		// Player 충돌 처리
+		if (auto player = dynamic_cast<Player*>(&other))
+		{
+			player->TakeDamage(damage);
+		}
 	}
 }
 
