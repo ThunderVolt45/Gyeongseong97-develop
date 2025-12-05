@@ -49,18 +49,25 @@ void ItemFactory::CreateItem(ItemInfo item)
 	// 아이템을 생성한다
 	switch (item.type)
 	{
-	case SpawnType::ItemGranade:
-	{
-		auto granade = std::make_shared<WeaponItem>
-			(spawnX, spawnY, item.speed, WeaponType::Grenade);
-		gameManager.CreateGameObject(granade);
-		break;
-	}
 	case SpawnType::ItemHMG:
 	{
 		auto hmg = std::make_shared<WeaponItem>
 			(spawnX, spawnY, item.speed, WeaponType::HMG);
 		gameManager.CreateGameObject(hmg);
+		break;
+	}
+	case SpawnType::ItemShotgun:
+	{
+		auto shotgun = std::make_shared<WeaponItem>
+			(spawnX, spawnY, item.speed, WeaponType::Shotgun);
+		gameManager.CreateGameObject(shotgun);
+		break;
+	}
+	case SpawnType::ItemGranade:
+	{
+		auto granade = std::make_shared<WeaponItem>
+			(spawnX, spawnY, item.speed, WeaponType::Grenade);
+		gameManager.CreateGameObject(granade);
 		break;
 	}
 	}

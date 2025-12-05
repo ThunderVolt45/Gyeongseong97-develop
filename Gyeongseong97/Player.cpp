@@ -96,14 +96,14 @@ void Player::Update()
 	if (inputManager.IsKeyDown(KEYCODE_UP) && y > 2 - sprite.sizeY / 2) y -= 2;
 	if (inputManager.IsKeyDown(KEYCODE_DOWN) && y < GAME_HEIGHT - 2 - sprite.sizeY / 2) y += 2;
 
-	// 발사 (Space 키) -> Shoot() 함수 호출로 변경
-	if (inputManager.IsKeyDown(KEYCODE_SPACE) && cooldown <= 0)
+	// 발사 (Z 키) -> Shoot() 함수 호출로 변경
+	if (inputManager.IsKeyDown(KEYCODE_Z) && cooldown <= 0)
 	{
 		Shoot();
 	}
 
-	// 수류탄 (Z 키) 연사 X
-	if (inputManager.IsKeyPressed(KEYCODE_Z))
+	// 수류탄 (X 키) 연사 X
+	if (inputManager.IsKeyPressed(KEYCODE_X))
 	{
 		Grenade();
 	}

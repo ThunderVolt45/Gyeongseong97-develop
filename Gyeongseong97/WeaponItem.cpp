@@ -14,17 +14,20 @@ WeaponItem::WeaponItem(float x, float y, float speed, WeaponType type) :
 
 	switch (type)
 	{
+	case WeaponType::Shotgun:
+		spriteName = SPR_SHOTGUN.data();
+		break;
 	case WeaponType::Grenade:
 		spriteName = SPR_BOMB.data();
 		break;
 	case WeaponType::HMG:
 	case WeaponType::Default:
 	default:
-		spriteName = SPR_BULLET.data();
+		spriteName = SPR_HMG.data();
 		break;
 	}
 
-	sprite = ImageLoader::CreateSpriteFromImage(spriteName, 24, 22); 
+	sprite = ImageLoader::CreateSpriteFromImage(spriteName, 22, 20); 
 
 	this->x = x - sprite.sizeX;
 	this->y = y - sprite.sizeY;
@@ -52,6 +55,9 @@ void WeaponItem::OnCollision(GameObject& other)
 		{
 		case WeaponType::HMG:
 			newWeapon = std::make_shared<WeaponHMG>();
+			break;
+		case WeaponType::Shotgun:
+			newWeapon = std::make_shared<WeaponShotgun>();
 			break;
 		case WeaponType::Grenade:
 			newWeapon = std::make_shared<WeaponGrenade>();

@@ -9,7 +9,8 @@ constexpr int KEYCODE_RIGHT = VK_RIGHT;
 constexpr int KEYCODE_UP = VK_UP;
 constexpr int KEYCODE_DOWN = VK_DOWN;
 constexpr int KEYCODE_SPACE = VK_SPACE;
-constexpr int KEYCODE_Z = 0x005A; // Z
+constexpr int KEYCODE_Z = 0x5A; // Z
+constexpr int KEYCODE_X = 0x58; // X
 
 class InputManager
 {

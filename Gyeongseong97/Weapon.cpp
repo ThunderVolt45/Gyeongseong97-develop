@@ -154,7 +154,7 @@ void WeaponGrenade::Shoot(Player* owner)
 // WeaponShotgun 산탄총
 // ==========================
 WeaponShotgun::WeaponShotgun() :
-	Weapon(WeaponType::Shotgun, 1, 30, 30, false)
+	Weapon(WeaponType::Shotgun, 2, 30, 30, false)
 {
 	// 0.5초 간격으로 여러 발의 Bullet을 한번에 쏘는 산탄총
 }
@@ -169,13 +169,13 @@ void WeaponShotgun::Shoot(Player* owner)
 	GameManager& gameManager = GameManager::GetInstance();
 	BulletPool& bulletPool = BulletPool::GetInstance();
 
-	// 한번에 11발 정도? 발사
-	for (int i = -5; i <= 5; i++)
+	// 한번에 5발 정도? 발사
+	for (int i = -2; i <= 2; i++)
 	{
 		std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
 			owner->GetCenterX(),
 			owner->y,
-			0.0f + (0.25f * i),
+			0.0f + (0.4f * i),
 			6.0f,
 			true,
 			damage
