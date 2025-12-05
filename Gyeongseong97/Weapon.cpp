@@ -44,28 +44,27 @@ WeaponHMG::WeaponHMG()
 
 void WeaponHMG::Shoot(Player* owner)
 {
-	if (remainBullet > 0)
-	{
-		remainBullet--;
+	if (remainBullet <= 0) return;
 
-		// 발사 로직
-		GameManager& gameManager = GameManager::GetInstance();
-		BulletPool& bulletPool = BulletPool::GetInstance();
+	remainBullet--;
 
-		// Bullet의 X축 속도를 랜덤하게 부여하고 발사
-		float speedX = (float)Utility::GenerateRandomNumber(-6, 6) / 10;
+	// 발사 로직
+	GameManager& gameManager = GameManager::GetInstance();
+	BulletPool& bulletPool = BulletPool::GetInstance();
 
-		std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
-			owner->GetCenterX(),
-			owner->y,
-			speedX,
-			6.0f,
-			true,
-			damage
-		);
+	// Bullet의 X축 속도를 랜덤하게 부여하고 발사
+	float speedX = (float)Utility::GenerateRandomNumber(-6, 6) / 10;
 
-		gameManager.CreateGameObject(bullet);
-	}
+	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+		owner->GetCenterX(),
+		owner->y,
+		speedX,
+		6.0f,
+		true,
+		damage
+	);
+
+	gameManager.CreateGameObject(bullet);
 }
 
 // ==========================
@@ -79,19 +78,54 @@ WeaponGrenade::WeaponGrenade()
 
 void WeaponGrenade::Shoot(Player* owner)
 {
-	if (remainBullet > 0)
+	if (remainBullet <= 0) return;
+
+	remainBullet--;
+
+	// 발사 로직
+	GameManager& gameManager = GameManager::GetInstance();
+	BulletPool& bulletPool = BulletPool::GetInstance();
+
+	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+		owner->GetCenterX(),
+		owner->y,
+		0.0f,
+		5.0f,
+		true,
+		damage,
+		true
+	);
+
+	gameManager.CreateGameObject(bullet);
+}
+
+// ==========================
+// WeaponShotgun 산탄총
+// ==========================
+WeaponShotgun::WeaponShotgun() :
+	Weapon(WeaponType::Shotgun, 1, 30, 30, false)
+{
+	// 0.5초 간격으로 여러 발의 Bullet을 한번에 쏘는 산탄총
+}
+
+void WeaponShotgun::Shoot(Player* owner)
+{
+	if (remainBullet <= 0) return;
+
+	remainBullet--;
+
+	// 발사 로직
+	GameManager& gameManager = GameManager::GetInstance();
+	BulletPool& bulletPool = BulletPool::GetInstance();
+
+	// 한번에 11발 정도? 발사
+	for (int i = -5; i <= 5; i++)
 	{
-		remainBullet--;
-
-		// 발사 로직
-		GameManager& gameManager = GameManager::GetInstance();
-		BulletPool& bulletPool = BulletPool::GetInstance();
-
 		std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
 			owner->GetCenterX(),
 			owner->y,
-			0.0f,
-			5.0f,
+			0.0f + (0.25f * i),
+			6.0f,
 			true,
 			damage,
 			true

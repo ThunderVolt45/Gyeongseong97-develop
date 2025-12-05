@@ -7,6 +7,7 @@ enum class WeaponType
 {
 	Default,
 	HMG,
+	Shotgun,
 	Grenade
 };
 
@@ -53,7 +54,8 @@ public:
 class WeaponShotgun : public Weapon
 {
 public:
-
+	WeaponShotgun();
+	void Shoot(Player* owner) override;
 };
 
 class WeaponGrenade : public Weapon
