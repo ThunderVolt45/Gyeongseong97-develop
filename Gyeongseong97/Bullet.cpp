@@ -6,6 +6,11 @@
 #include "ExplosionPool.h"
 #include "Explosion.h"
 
+Bullet::Bullet()
+{
+
+}
+
 Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage)
 {
 	Reset(x, y, speedX, speedY, isMine, damage);

@@ -12,9 +12,14 @@
 class RenderSystem
 {
 private:
+	static std::string errorMessage;
+	static bool isErrorActive;
+
 	static void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);
 
 public:
 	static ftxui::Element Render();
+	static void ShowErrorMessage(const std::string& message);
+	static void ClearErrorMessage();
 };
 

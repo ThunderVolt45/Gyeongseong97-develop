@@ -2,6 +2,9 @@
 #include "GameManager.h"
 #include "GameConstants.h"
 
+std::string RenderSystem::errorMessage = "";
+bool RenderSystem::isErrorActive = false;
+
 void RenderSystem::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
 {
 	int spriteIndex = 0;
@@ -68,6 +71,18 @@ void RenderSystem::DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& obj
 			spriteIndex++;
 		}
 	}
+}
+
+void RenderSystem::ShowErrorMessage(const std::string& message)
+{
+    errorMessage = message;
+    isErrorActive = true;
+}
+
+void RenderSystem::ClearErrorMessage()
+{
+    errorMessage = "";
+    isErrorActive = false;
 }
 
 ftxui::Element RenderSystem::Render()
@@ -138,6 +153,14 @@ ftxui::Element RenderSystem::Render()
 			});
 	}
 
+	// (존재한다면) 에러 메시지 표시
+	if (isErrorActive)
+	{
+		canvas.DrawText(0, GAME_HEIGHT - 1, errorMessage, [](ftxui::Pixel& p) {
+			p.foreground_color = ftxui::Color::Red;
+			});
+	}
+
 	// 캔버스를 박스로 감싸준다
 	auto UI = ftxui::canvas(std::move(canvas)) | ftxui::border | ftxui::center;
 
@@ -163,8 +186,8 @@ ftxui::Element RenderSystem::Render()
 	std::wstring textTime = L"Time : " + gameManager.gameTime;
 	std::wstring textScore = L"Score : " + std::to_wstring(gameManager.score);
 
-	// 렌더링 타겟 반환
-	return ftxui::hbox(
+	// 렌더링 결과 생성
+	auto finalRender = ftxui::hbox(
 		{
 			UI | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, GAME_WIDTH / 2),
 			ftxui::vbox(
@@ -178,4 +201,6 @@ ftxui::Element RenderSystem::Render()
 			) | ftxui::size(ftxui::WIDTH, ftxui::Constraint::EQUAL, 20)
 		}
 	);
+
+	return finalRender;
 }

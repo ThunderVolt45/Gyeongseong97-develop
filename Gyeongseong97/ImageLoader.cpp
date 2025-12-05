@@ -1,6 +1,7 @@
 #pragma execution_character_set( "utf-8" )
 
 #include "ImageLoader.h"
+#include "RenderSystem.h"
 #include "Utility.h"
 #include "GameConstants.h"
 
@@ -44,6 +45,8 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 	// 이미지 로딩에 실패했다면 핑크색으로 채워서 보낸다
 	if (!data)
 	{
+		RenderSystem::ShowErrorMessage("ImageLoader : " + strFilePath + " 파일을 불러오는데 실패했습니다.");
+		
 		sprite.sizeX = sizeX;
 		sprite.sizeY = sizeY;
 		for (int y = 0; y < sizeY; y++)
@@ -53,6 +56,7 @@ Sprite ImageLoader::CreateSpriteFromImage(std::wstring fileName, int sizeX, int 
 				sprite.colors.push_back(ftxui::Color::Pink1);
 			}
 		}
+
 		// 실패한 경우 캐시하지 않거나, 빈 스프라이트를 캐시할 수도 있음. 
 		// 여기서는 매번 재시도하도록 캐시하지 않음.
 		return sprite;

@@ -12,6 +12,7 @@ public:
 	bool isPlayer;
 	bool isExplosive;
 
+	Bullet();
 	Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage = 1);
 
 	virtual void Reset(int x, int y, float speedX, float speedY, bool isMine, int damage = 1, bool isExplosive = false);

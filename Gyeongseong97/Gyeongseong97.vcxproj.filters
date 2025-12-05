@@ -111,6 +111,9 @@
     <ClCompile Include="WeaponItem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="ItemFactory.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utility.h">
@@ -203,5 +206,69 @@
     <ClInclude Include="WeaponItem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ItemFactory.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Sounds\bgm_hero.mp3" />
+    <Media Include="Sounds\bgm_hk97_16bit.mp3" />
+    <Media Include="Sounds\bgm_outro.mp3" />
+    <Media Include="Sounds\sfx_car.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="Sounds\sfx_explosion.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="Sounds\sfx_gunfire.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sprites\background.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\enemy_Carmikaze.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\enemy_Instigated.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\enemy_narration.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\enemy_vanguard.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\intro_kdh.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\intro_narration.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\intro_reds.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\intro_sy.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\item_bomb.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\item_bomb_get.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\item_bullet.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\item_bullet_get.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\player.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="Sprites\player_death.png">
+      <Filter>리소스 파일</Filter>
+    </Image>
   </ItemGroup>
 </Project>

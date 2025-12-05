@@ -6,6 +6,7 @@
 #include "AudioManager.h"
 #include "Utility.h"
 #include "GameConstants.h"
+#include "RenderSystem.h"
 
 #include <iostream>
 #include <vector>
@@ -78,7 +79,7 @@ void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 
 	if (result != MA_SUCCESS)
 	{
-		std::cerr << "miniaudio : " << filePath << " 파일을 불러오는데 실패했습니다." << std::endl;
+		RenderSystem::ShowErrorMessage("AudioManager : " + strFilePath + " 파일을 불러오는데 실패했습니다.");
 		delete pSound;
 		return;
 	}
