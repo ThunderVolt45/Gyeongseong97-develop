@@ -127,6 +127,9 @@ void Narration::OnCollision(GameObject& other)
 	if (player)
 	{
 		TakeDamage(COLLISION_DAMAGE);
+
+		// 보스 몹이니 특별히 플레이어에게 추가 데미지 부여
+		player->TakeDamage(COLLISION_DAMAGE);
 	}
 }
 

@@ -1,280 +1,431 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Core">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000001}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000002}</UniqueIdentifier>
     </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000003}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\BossState">
-      <UniqueIdentifier>{4A1B2C3D-4E5F-6789-0123-456789ABCDEF}</UniqueIdentifier>
+    <Filter Include="GameObjects\Enemies">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000004}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\BossState">
-      <UniqueIdentifier>{FEDCBA98-7654-3210-FEDC-BA9876543210}</UniqueIdentifier>
+    <Filter Include="GameObjects\Enemies\BossStates">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000005}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Projectiles">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000006}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Effects">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Weapons &amp; Items">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000008}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000009}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Examples">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Sounds">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000012}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Sprites">
+      <UniqueIdentifier>{00000000-0000-0000-0000-000000000013}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gyeongseong97.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
+    <ClInclude Include="GameConstants.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Core</Filter>
+    </ClInclude>
     <ClCompile Include="AudioManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ImageLoader.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Explosion.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="StageManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Vanguard.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Carmikaze.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Narration.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayingSoundInfo.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletPool.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ExplosionPool.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyFactory.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="BossState.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateAppeared.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateAttackDive.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateAttackShot.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateDeath.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateIdle.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateSpawnCarmikaze.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="BossStateSpawnVanguard.cpp">
-      <Filter>소스 파일\BossState</Filter>
-    </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="WeaponItem.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemFactory.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="ImageLoader.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="StageManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="StageManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayingSoundInfo.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayingSoundInfo.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyFactory.cpp">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Vanguard.cpp">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Carmikaze.cpp">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Narration.cpp">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClCompile>
+    <ClInclude Include="Enemy.h">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyFactory.h">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Vanguard.h">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Carmikaze.h">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Narration.h">
+      <Filter>GameObjects\Enemies</Filter>
+    </ClInclude>
+    <ClCompile Include="BossState.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateAppeared.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateAttackDive.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateAttackShot.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateDeath.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateIdle.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateSpawnCarmikaze.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClCompile Include="BossStateSpawnVanguard.cpp">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClCompile>
+    <ClInclude Include="BossState.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateAppeared.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateAttackDive.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateAttackShot.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateDeath.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateIdle.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateSpawnCarmikaze.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateSpawnVanguard.h">
+      <Filter>GameObjects\Enemies\BossStates</Filter>
+    </ClInclude>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>GameObjects\Projectiles</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletPool.cpp">
+      <Filter>GameObjects\Projectiles</Filter>
+    </ClCompile>
+    <ClInclude Include="Bullet.h">
+      <Filter>GameObjects\Projectiles</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletPool.h">
+      <Filter>GameObjects\Projectiles</Filter>
+    </ClInclude>
+    <ClCompile Include="Explosion.cpp">
+      <Filter>GameObjects\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplosionPool.cpp">
+      <Filter>GameObjects\Effects</Filter>
+    </ClCompile>
+    <ClInclude Include="Explosion.h">
+      <Filter>GameObjects\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplosionPool.h">
+      <Filter>GameObjects\Effects</Filter>
+    </ClInclude>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClCompile>
+    <ClCompile Include="WeaponItem.cpp">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemFactory.cpp">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClCompile>
+    <ClInclude Include="Weapon.h">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
+    <ClInclude Include="WeaponItem.h">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemFactory.h">
+      <Filter>GameObjects\Weapons &amp; Items</Filter>
+    </ClInclude>
+    <ClCompile Include="miniaudio.c">
+      <Filter>External</Filter>
+    </ClCompile>
+    <ClInclude Include="json.hpp">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClCompile Include="MainGameLoopExample.cpp">
+      <Filter>Examples</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Utility.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageLoader.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Explosion.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="StageManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="GameConstants.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Vanguard.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Carmikaze.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Narration.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayingSoundInfo.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletPool.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ExplosionPool.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyFactory.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="BossState.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateAppeared.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateAttackDive.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateAttackShot.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateDeath.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateIdle.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateSpawnCarmikaze.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="BossStateSpawnVanguard.h">
-      <Filter>헤더 파일\BossState</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="WeaponItem.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemFactory.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Sounds\bgm_hero.mp3" />
-    <Media Include="Sounds\bgm_hk97_16bit.mp3" />
-    <Media Include="Sounds\bgm_outro.mp3" />
+    <Media Include="Sounds\bgm_hero.mp3">
+      <Filter>Resources\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\bgm_hk97_16bit.mp3">
+      <Filter>Resources\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\bgm_outro.mp3">
+      <Filter>Resources\Sounds</Filter>
+    </Media>
     <Media Include="Sounds\sfx_car.wav">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sounds</Filter>
     </Media>
     <Media Include="Sounds\sfx_explosion.wav">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sounds</Filter>
     </Media>
     <Media Include="Sounds\sfx_gunfire.wav">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\sfx_get.wav">
+      <Filter>Resources\Sounds</Filter>
+    </Media>
+    <Media Include="Sounds\sfx_grenade.wav">
+      <Filter>Resources\Sounds</Filter>
     </Media>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Sprites\background.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\enemy_Carmikaze.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\enemy_Instigated.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\enemy_narration.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\enemy_vanguard.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\intro_kdh.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\intro_narration.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\intro_reds.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\intro_sy.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\item_bomb.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\item_bomb_get.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\item_bullet.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\item_bullet_get.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\player.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
     </Image>
     <Image Include="Sprites\player_death.png">
-      <Filter>리소스 파일</Filter>
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0001.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0002.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0003.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0004.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0005.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0006.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0007.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0008.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0009.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0010.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0011.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0012.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0013.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0014.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0015.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0016.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0017.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0018.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0019.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0020.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0021.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0022.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0023.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0024.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0025.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0026.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0027.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0028.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0029.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0030.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0031.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0032.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0033.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0034.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0035.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0036.png">
+      <Filter>Resources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\폭8\폭8_0037.png">
+      <Filter>Resources\Sprites</Filter>
     </Image>
   </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@ constexpr std::chrono::microseconds TICK_TIME = 16700us; // 16667us = 약 60fps
 constexpr int ERROR_DISPLAY_DURATION_TICKS = 300; // 5 * 초당 60틱
 
 // 게임 난이도 관련 설정 상수
-constexpr float COLLISION_DAMAGE = 0.2f; // 상호 간 충돌 데미지
+constexpr float COLLISION_DAMAGE = 0.1f; // 상호 간 충돌 데미지
 
 // 플레이어 기본 위치
 constexpr int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;

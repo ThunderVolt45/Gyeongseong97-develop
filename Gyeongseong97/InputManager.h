@@ -46,10 +46,10 @@ public:
     bool IsKeyDown(int key_code) const;
     
     /// <summary>
-    /// 키가 (지속적으로) 눌리는 중인지 여부를 검사한다
+    /// 키가 처음 눌린 상태인지를 검사한다
     /// </summary>
     /// <param name="key_code">VK_KEYCODE</param>
-    /// <returns>키가 지속적으로 눌리는 중인지 여부</returns>
+    /// <returns>키가 처음 눌린 건지 여부</returns>
     bool IsKeyPressed(int key_code) const;
 
 private:
