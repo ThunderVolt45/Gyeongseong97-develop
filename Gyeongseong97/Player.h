@@ -28,8 +28,9 @@ public:
 	void Reset();
 	void Update() override;
 	void OnCollision(GameObject& other) override;
+	void TakeDamage(float damage);
 
-	// 새로운 무기 시스템 메서드
+	// 무기 시스템 메서드
 	void Shoot();
 	void EquipWeapon(std::shared_ptr<Weapon> newWeapon);
 };

@@ -139,16 +139,8 @@ void Player::OnCollision(GameObject& other)
 		// 자신의 총알이면 무시
 		if (bullet->isPlayer) return;
 
-		if (!bullet->isPlayer)
-		{
-			health -= bullet->GetDamage();
-		}
-
-		// 체력이 다 닳았으면 파괴
-		if (health <= 0 && !gameManager.IsGameOver)
-		{
-			Destroy();
-		}
+		// 데미지를 받는다
+		TakeDamage(bullet->GetDamage());
 
 		// 총알 파괴
 		bullet->Destroy();
@@ -160,12 +152,16 @@ void Player::OnCollision(GameObject& other)
 	Enemy* enemy = dynamic_cast<Enemy*>(&other);
 	if (enemy)
 	{
-		health -= 0.1f;
+		TakeDamage(COLLISION_DAMAGE);
+	}
+}
 
-		// 체력이 다 닳았으면 파괴
-		if (health <= 0 && !gameManager.IsGameOver)
-		{
-			Destroy();
-		}
+void Player::TakeDamage(float damage)
+{
+	health -= damage;
+
+	if (health <= 0 && !GameManager::GetInstance().IsGameOver)
+	{
+		Destroy();
 	}
 }

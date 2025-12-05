@@ -1,5 +1,3 @@
-#include <iostream> // For std::cout
-
 #include "GameManager.h"
 #include "ItemFactory.h"
 #include "Utility.h"
@@ -10,7 +8,7 @@
 #include "BulletPool.h"
 #include "ExplosionPool.h"
 
-// State Pattern Headers
+// 상태 패턴 헤더
 #include "BossState.h"
 #include "BossStateAppeared.h"
 #include "BossStateAttackDive.h"
@@ -52,7 +50,7 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 
 #pragma region Public
 
-void Narration::TakeDamage(int damage)
+void Narration::TakeDamage(float damage)
 {
 	if (invincible) return;
 
@@ -115,7 +113,7 @@ void Narration::OnCollision(GameObject& other)
 		// 플레이어가 쏜 총알에만 반응
 		if (bullet->isPlayer)
 		{
-			// 데미지 처리 위임
+			// 데미지 처리
 			TakeDamage(bullet->GetDamage());
 
 			// 히트 당 기본 점수
@@ -131,11 +129,7 @@ void Narration::OnCollision(GameObject& other)
 	Player* player = dynamic_cast<Player*>(&other);
 	if (player)
 	{
-		// 데미지 처리 위임 (0.1f 데미지지만 int 형변환으로 0이 될 수 있음. 최소 1로 처리하거나 float 데미지 지원 필요)
-		// 현재 시스템상 int 데미지이므로 1로 처리
-		TakeDamage(1);
-
-		return;
+		TakeDamage(COLLISION_DAMAGE);
 	}
 }
 

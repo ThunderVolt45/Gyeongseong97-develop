@@ -61,7 +61,7 @@ void Enemy::Destroy()
 
 #pragma region Public
 
-void Enemy::TakeDamage(int damage)
+void Enemy::TakeDamage(float damage)
 {
 	health -= damage;
 	hitEffectTick = 2;
@@ -96,6 +96,7 @@ void Enemy::OnCollision(GameObject& other)
 			// 총알 파괴
 			bullet->Destroy();
 		}
+
 		return;
 	}
 
@@ -103,9 +104,7 @@ void Enemy::OnCollision(GameObject& other)
 	Player* player = dynamic_cast<Player*>(&other);
 	if (player)
 	{
-		TakeDamage(1); // Player 충돌 시 데미지 처리 (0.1f를 1로 근사)
-
-		return;
+		TakeDamage(COLLISION_DAMAGE);
 	}
 }
 

@@ -55,7 +55,7 @@ public:
 public:
 	Narration(int x, int y, int health, float speed, int killScore);
 
-	void TakeDamage(int damage) override;
+	void TakeDamage(float damage) override;
 	void Update() override;
 	void OnCollision(GameObject& other) override;
 	void ChangePattern();

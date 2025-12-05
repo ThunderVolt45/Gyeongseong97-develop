@@ -10,6 +10,7 @@ constexpr int GAME_WIDTH = 240; // 기본값 : 160,
 constexpr int GAME_HEIGHT = 180; // 기본값 : 120, 캔버스 높이는 텍스트 높이의 2배 (Block 기준)
 constexpr int SCORE_FOR_HIT = 100; // 총알 히트 당 점수
 constexpr std::chrono::microseconds TICK_TIME = 16700us; // 16667us = 약 60fps
+constexpr float COLLISION_DAMAGE = 0.2f; // 상호 간 충돌시 데미지
 
 // 플레이어 기본 위치
 constexpr int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;

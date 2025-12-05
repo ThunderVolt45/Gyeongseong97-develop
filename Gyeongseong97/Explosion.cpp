@@ -112,13 +112,7 @@ void Explosion::OnCollision(GameObject& other)
 	if (auto player = dynamic_cast<Player*>(&other))
 	{
 		// 플레이어에게는 약간의 데미지만 입힘 (1칸)
-		// 혹은 폭발 데미지를 그대로 적용하고 싶다면 player->health -= damage;
-		player->health -= 1;
-		
-		if (player->health <= 0 && !GameManager::GetInstance().IsGameOver)
-		{
-			player->Destroy();
-		}
+		player->TakeDamage(1);
 	}
 	// Enemy 충돌 처리
 	else if (auto enemy = dynamic_cast<Enemy*>(&other))
