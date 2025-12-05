@@ -47,8 +47,6 @@ public:
 	int defaultPosX = GAME_WIDTH / 2;
 	int defaultPosY = 40;
 	
-	long long tick;
-	long long lastStateChangeTick;
 	long long internalTick;
 	int internalCounter;
 

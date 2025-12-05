@@ -38,8 +38,6 @@ Narration::Narration(int x, int y, int health, float speed, int killScore)
 	state = &BossState::appeared; // 초기 상태 설정
 	bossState = BossStateEnum::Initialize;
 	lastBossState = BossStateEnum::Initialize;
-	tick = 0;
-	lastStateChangeTick = 0;
 	internalTick = 0;
 
 	// 기타 변수 초기화
@@ -95,7 +93,6 @@ void Narration::ChangePattern()
 
 void Narration::Update()
 {
-	tick++;
 	ProcessHitEffect();
 	
 	// 상태 패턴 위임
