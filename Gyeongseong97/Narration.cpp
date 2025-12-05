@@ -75,15 +75,28 @@ void Narration::ChangePattern()
 	internalCounter = 0;
 	internalTick = 30;
 
-	// 낮은 확률 (25% 정도) 로 아이템 생성
+	// 낮은 확률 (20% 정도) 로 아이템 생성
 	int random = Utility::GenerateRandomNumber(0, 99);
-	if (random < 25)
+	if (random < 20)
 	{
 		ItemInfo item;
 		item.x = Utility::GenerateRandomNumber(10, GAME_WIDTH - 10);
 		item.y = 0;
 		item.speed = 0.5f;
-		item.type = random < 15 ? SpawnType::ItemHMG : SpawnType::ItemGranade;
+
+		switch (Utility::GenerateRandomNumber(0, 2))
+		{
+		case 0:
+			item.type = SpawnType::ItemHMG;
+			break;
+		case 1:
+			item.type = SpawnType::ItemShotgun;
+			break;
+		case 2:
+			item.type = SpawnType::ItemGranade;
+			break;
+		}
+
 		ItemFactory::CreateItem(item);
 	}
 
