@@ -248,7 +248,7 @@ void HowToPlay(ScreenInteractive& screen)
 				text(L"Z 키 : 공격") | color(Color::White) | center,
 				text(L"X 키 : 수류탄 투척") | color(Color::White) | center,
 				text(L""),
-				text(L"스페이스바를 눌러 계속...") | center | color(Color::GrayDark),
+				text(L"Z키를 눌러 계속...") | center | color(Color::GrayDark),
 				text(L"")
 			}) | border | center
 				| size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
@@ -259,7 +259,7 @@ void HowToPlay(ScreenInteractive& screen)
 	// 입력 이벤트 처리
 	auto screenComponent = CatchEvent(renderer,
 		[&](Event event) {
-			if (event.character() == " ")
+			if (event == Event::z || event == Event::Z)
 			{
 				screen.Exit(); // 스페이스바 입력을 받으면 탈출
 			}
@@ -304,6 +304,10 @@ void Credits(ScreenInteractive& screen)
 	lines.push_back("\n");
 	lines.push_back("\n");
 	lines.push_back("\n");
+	lines.push_back("\n");
+	lines.push_back("\n");
+	lines.push_back("\n");
+	lines.push_back("\n");
 
 	// Third Party Notice 파일을 읽어들인다
 	ifstream thirdPartyNoticeFile(thirdPartyNoticePath);
@@ -335,7 +339,7 @@ void Credits(ScreenInteractive& screen)
 			elements.push_back(text(L"CREDITS") | bold | center | color(ftxui::Color::Red1));
 			elements.push_back(text(L""));
 			elements.push_back(text(L"Gyeongseong97 - WinAPI + FTXUI + miniaudio C++ Terminal Shooting Game")
-				| center | color(Color::Yellow));
+				| center | color(Color::Yellow1));
 			elements.push_back(text(L"------------------------------------------------------------------------------------------------")
 				| center | color(Color::Red1));
 
