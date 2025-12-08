@@ -107,28 +107,46 @@ ftxui::Element RenderSystem::Render()
 		// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
 		std::lock_guard<std::recursive_mutex> lock(gameManager.gameMutex);
 
-		// Background 레이어 그리기
+		auto background = std::list<std::shared_ptr<GameObject>>();
+		auto main = std::list<std::shared_ptr<GameObject>>();
+		auto foreground = std::list<std::shared_ptr<GameObject>>();
+
+		// 레이어 별 분류
 		for (const auto& object : gameManager.gameObjects)
 		{
-			if (object->layer == TargetLayer::Background)
-				DrawObjectSprite(canvas, *object);
+			switch (object->layer)
+			{
+			case TargetLayer::Background:
+				background.push_back(object);
+				break;
+			case TargetLayer::Foreground:
+				foreground.push_back(object);
+				break;
+			default:
+				main.push_back(object);
+				break;
+			}
+		}
+
+		// Background 레이어 그리기
+		for (const auto& object : background)
+		{
+			DrawObjectSprite(canvas, *object);
 		}
 
 		// Main 레이어 그리기
-		for (const auto& object : gameManager.gameObjects)
+		for (const auto& object : main)
 		{
-			if (object->layer == TargetLayer::Main)
-				DrawObjectSprite(canvas, *object);
+			DrawObjectSprite(canvas, *object);
 		}
 
 		// 플레이어 그리기
 		DrawObjectSprite(canvas, gameManager.player);
 
 		// Foreground 레이어 그리기
-		for (const auto& object : gameManager.gameObjects)
+		for (const auto& object : foreground)
 		{
-			if (object->layer == TargetLayer::Foreground)
-				DrawObjectSprite(canvas, *object);
+			DrawObjectSprite(canvas, *object);
 		}
 	}
 
