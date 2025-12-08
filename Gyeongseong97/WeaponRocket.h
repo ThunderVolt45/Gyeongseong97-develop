@@ -2,10 +2,10 @@
 #include "Weapon.h"
 #include "Bullet.h"
 
-class WeaponGrenade : public Weapon
+class WeaponRocket : public Weapon
 {
 public:
-	WeaponGrenade();
+	WeaponRocket();
 	void Shoot(Player* owner) override;
-	static void ExplosionBehavior(Bullet* b);
+	static void RocketHomingBehavior(Bullet* b);
 };

@@ -8,6 +8,7 @@
 #include "WeaponHMG.h"
 #include "WeaponShotgun.h"
 #include "WeaponGrenade.h"
+#include "WeaponRocket.h"
 
 WeaponItem::WeaponItem(float x, float y, float speed, WeaponType type) :
 	weaponType(type), speed(speed)
@@ -64,6 +65,9 @@ void WeaponItem::OnCollision(GameObject& other)
 			break;
 		case WeaponType::Grenade:
 			newWeapon = std::make_shared<WeaponGrenade>();
+			break;
+		case WeaponType::Rocket:
+			newWeapon = std::make_shared<WeaponRocket>();
 			break;
 		default:
 			newWeapon = std::make_shared<WeaponDefault>();

@@ -31,35 +31,6 @@ void WeaponGrenade::Shoot(Player* owner)
 			c, c, c, c,
 			c, c, c, c,
 		});
-	
-	// 폭★8
-	auto explosion = [&](Bullet* b) {
-		// 파편 효과 생성 (총알)
-		// 8방향으로 총알 발사
-		for (int x = -1; x <= 1; x++)
-		{
-			for (int y = -1; y <= 1; y++)
-			{
-				if (x == 0 && y == 0) continue;
-
-				std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
-					b->GetCenterX(),
-					b->GetCenterY(),
-					6.0f * x,
-					6.0f * y,
-					true
-				);
-
-				gameManager.CreateGameObject(bullet);
-			}
-		}
-
-		// 폭발 효과 생성 (데미지 전달)
-		std::shared_ptr<Explosion> explosion =
-			ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, damage, true);
-
-		gameManager.CreateGameObject(explosion, false);
-		};
 
 	// 커스텀 총알 생성
 	std::shared_ptr<Bullet> bullet = bulletPool.GetCustomBullet(
@@ -72,9 +43,42 @@ void WeaponGrenade::Shoot(Player* owner)
 		-1,
 		sprite,
 		nullptr,
-		explosion
+		&WeaponGrenade::ExplosionBehavior
 	);
 
 	gameManager.CreateGameObject(bullet);
 	AudioManager::GetInstance().PlayAudio(SFX_GRENADE.data(), 0.2f);
+}
+
+void WeaponGrenade::ExplosionBehavior(Bullet* b)
+{
+	// 발사 로직
+	GameManager& gameManager = GameManager::GetInstance();
+	BulletPool& bulletPool = BulletPool::GetInstance();
+
+	// 파편 효과 생성 (총알)
+		// 8방향으로 총알 발사
+	for (int x = -1; x <= 1; x++)
+	{
+		for (int y = -1; y <= 1; y++)
+		{
+			if (x == 0 && y == 0) continue;
+
+			std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+				b->GetCenterX(),
+				b->GetCenterY(),
+				6.0f * x,
+				6.0f * y,
+				true
+			);
+
+			gameManager.CreateGameObject(bullet);
+		}
+	}
+
+	// 폭발 효과 생성 (데미지 전달)
+	std::shared_ptr<Explosion> explosion =
+		ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, b->damage, true);
+
+	gameManager.CreateGameObject(explosion, false);
 }

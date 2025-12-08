@@ -9,7 +9,8 @@ enum class WeaponType
 	Default,
 	HMG,
 	Shotgun,
-	Grenade
+	Grenade,
+	Rocket
 };
 
 class Weapon
