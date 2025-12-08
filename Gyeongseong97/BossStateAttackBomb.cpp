@@ -52,7 +52,7 @@ void BossStateAttackBomb::Update(Narration& boss)
 					false
 				);
 
-				gameManager.CreateGameObject(bullet);
+				gameManager.CreateGameObject(bullet, TargetLayer::Foreground);
 			}
 		}
 
@@ -60,7 +60,7 @@ void BossStateAttackBomb::Update(Narration& boss)
 		std::shared_ptr<Explosion> explosion =
 			explosionPool.GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, 1, false);
 
-		gameManager.CreateGameObject(explosion, false);
+		gameManager.CreateGameObject(explosion, TargetLayer::Background);
 		};
 
 	// 플레이어와 나레이션 사이의 방향 벡터를 구한다 (Bullet은 x -= speedX 이므로 boss - player로 계산)
@@ -94,7 +94,7 @@ void BossStateAttackBomb::Update(Narration& boss)
 	);
 
 	// 폭탄 생성
-	gameManager.CreateGameObject(bomb);
+	gameManager.CreateGameObject(bomb, TargetLayer::Foreground);
 	AudioManager::GetInstance().PlayAudio(SFX_GRENADE.data(), 0.2f);
 
 	// 다음 패턴으로 넘어간다

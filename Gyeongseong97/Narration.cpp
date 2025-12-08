@@ -155,7 +155,7 @@ void Narration::Destroy()
 	GameManager& gameManager = GameManager::GetInstance();
 
 	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 120, 90);
-	gameManager.CreateGameObject(explosion, false);
+	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;
 

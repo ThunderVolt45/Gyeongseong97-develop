@@ -107,13 +107,28 @@ ftxui::Element RenderSystem::Render()
 		// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
 		std::lock_guard<std::recursive_mutex> lock(gameManager.gameMutex);
 
-		// 플레이어 오브젝트 그리기
-		DrawObjectSprite(canvas, gameManager.player);
-
-		// 게임 오브젝트 그리기
+		// Background 레이어 그리기
 		for (const auto& object : gameManager.gameObjects)
 		{
-			DrawObjectSprite(canvas, *object);
+			if (object->layer == TargetLayer::Background)
+				DrawObjectSprite(canvas, *object);
+		}
+
+		// Main 레이어 그리기
+		for (const auto& object : gameManager.gameObjects)
+		{
+			if (object->layer == TargetLayer::Main)
+				DrawObjectSprite(canvas, *object);
+		}
+
+		// 플레이어 그리기
+		DrawObjectSprite(canvas, gameManager.player);
+
+		// Foreground 레이어 그리기
+		for (const auto& object : gameManager.gameObjects)
+		{
+			if (object->layer == TargetLayer::Foreground)
+				DrawObjectSprite(canvas, *object);
 		}
 	}
 

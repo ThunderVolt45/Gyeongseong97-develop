@@ -51,7 +51,7 @@ void Carmikaze::Destroy()
 	GameManager& gameManager = GameManager::GetInstance();
 
 	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 60, 45);
-	gameManager.CreateGameObject(explosion, false);
+	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;
 }

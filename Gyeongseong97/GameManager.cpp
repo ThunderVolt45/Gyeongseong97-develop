@@ -8,7 +8,7 @@
 #include "Explosion.h"
 #include "ExplosionPool.h"
 #include "CollisionManager.h"
-#include "InputManager.h" // Include InputManager
+#include "InputManager.h"
 
 #include <set>
 #include <algorithm>
@@ -80,18 +80,62 @@ void GameManager::Reset()
 	tick = 0;
 }
 
-void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack)
+void GameManager::UpdateGameObjects(std::list<std::shared_ptr<GameObject>> objects)
+{
+	// 게임 오브젝트 업데이트
+	for (auto iter = objects.begin(); iter != objects.end(); )
+	{
+		auto& obj = *iter;
+
+		// 객체별 로직 업데이트
+		obj->Update();
+
+		// 화면 밖으로 나갔다면 즉시 제거 목록에 추가하고 업데이트 중단
+		if (obj->IsOutOfScreen())
+		{
+			// 파괴 예정 명단에 추가한다
+			DestroyGameObject(obj.get());
+		}
+
+		iter++;
+	}
+}
+
+void GameManager::EraseGameObjects()
+{
+	// 제거 명단에 오른 오브젝트가 없다면 중단
+	if (objectsToDestroy.empty())
+	{
+		return;
+	}
+
+	// 게임 오브젝트 삭제!
+	gameObjects.erase(
+		std::remove_if(gameObjects.begin(), gameObjects.end(),
+			[&](const std::shared_ptr<GameObject>& ptr) {
+				if (objectsToDestroy.count(ptr.get()) > 0)
+				{
+					// 객체 파괴시 객체 스스로 수행해야 할 로직이 있다면 실행한다
+					ptr->OnDestroy(ptr);
+
+					return true;
+				}
+
+				return false;
+			}
+		),
+		gameObjects.end()
+	);
+
+	// 제거 명단 정리
+	objectsToDestroy.clear();
+}
+
+void GameManager::CreateGameObject(std::shared_ptr<GameObject> gameObject, TargetLayer layer)
 {
 	std::lock_guard<std::recursive_mutex> lock(gameMutex);
-
-	if (pushToBack)
-	{
-		gameObjects.push_back(gameObject);
-	}
-	else
-	{
-		gameObjects.push_front(gameObject);
-	}
+	gameObject->layer = layer;
+	gameObjects.push_back(gameObject);
 }
 
 void GameManager::DestroyGameObject(GameObject* gameObject)
@@ -171,60 +215,13 @@ void GameManager::Update()
 	}
 
 	// 게임 오브젝트 업데이트
-	for (auto iter = gameObjects.begin(); iter != gameObjects.end(); )
-	{
-		auto& obj = *iter;
-		
-		// 객체별 로직 업데이트
-		obj->Update();
-
-		// 화면 밖으로 나갔다면 즉시 제거 목록에 추가하고 업데이트 중단
-		if (obj->IsOutOfScreen())
-		{
-			// 객체 파괴시 객체 스스로 수행해야 할 로직이 있다면 실행한다
-			obj->OnDestroy(obj);
-
-			iter = gameObjects.erase(iter);
-			continue;
-		}
-
-		iter++;
-	}
+	UpdateGameObjects(gameObjects);
 
 	// 충돌 검사 (CollisionManager 위임)
 	CollisionManager::ProcessCollisions(gameObjects, player, objectsToDestroy);
 
 	// 제거 명단에 오른 오브젝트를 모두 제거
-	if (!objectsToDestroy.empty())
-	{
-		gameObjects.erase(
-			std::remove_if(gameObjects.begin(), gameObjects.end(),
-				[&](const std::shared_ptr<GameObject>& ptr) {
-					if (objectsToDestroy.count(ptr.get()) > 0)
-					{
-						// Bullet 오브젝트는 제거하지 않고 오브젝트 풀로 반환
-						if (auto bullet = std::dynamic_pointer_cast<Bullet>(ptr))
-						{
-							BulletPool::GetInstance().ReturnBullet(bullet);
-						}
-
-						// Explosion 오브젝트 역시 제거하지 않고 오브젝트 풀로 반환
-						else if (auto explosion = std::dynamic_pointer_cast<Explosion>(ptr))
-						{
-							ExplosionPool::GetInstance().ReturnExplosion(explosion);
-						}
-
-						return true;
-					}
-
-					return false;
-				}
-			),
-			gameObjects.end()
-		);
-
-		objectsToDestroy.clear();
-	}
+	EraseGameObjects();
 
 	// 게임 오버 상태가 되면 여기서 중단
 	if (IsGameOver || IsGameClear) return;

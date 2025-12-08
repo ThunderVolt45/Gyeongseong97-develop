@@ -22,7 +22,7 @@ void BossStateDeath::Update(Narration& boss)
 		int x = Utility::GenerateRandomNumber(-40, 40);
 		int y = Utility::GenerateRandomNumber(-30, 30);
 		std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(boss.GetCenterX() + x, boss.GetCenterY() + y);
-		gameManager.CreateGameObject(explosion, false);
+		gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	}
 
 	if (boss.internalTick >= 300)

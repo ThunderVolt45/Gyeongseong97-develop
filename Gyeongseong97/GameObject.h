@@ -1,5 +1,6 @@
 #pragma once
 #include "ImageLoader.h"
+#include "GameConstants.h"
 #include <memory>
 
 class GameObject
@@ -11,6 +12,7 @@ public:
 	float x = 0;
 	float y = 0;
 	Sprite sprite;
+	TargetLayer layer = TargetLayer::Main;
 
 	GameObject();
 	GameObject(int x, int y);

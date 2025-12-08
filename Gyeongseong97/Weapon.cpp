@@ -34,6 +34,6 @@ void WeaponDefault::Shoot(Player* owner)
 		damage
 	);
 
-	gameManager.CreateGameObject(bullet);
+	gameManager.CreateGameObject(bullet, TargetLayer::Foreground);
 	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.15f);
 }

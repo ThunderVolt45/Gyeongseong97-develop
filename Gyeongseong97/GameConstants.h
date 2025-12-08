@@ -5,6 +5,13 @@
 
 using namespace std;
 
+enum class TargetLayer
+{
+	Background,
+	Main,
+	Foreground
+};
+
 // 게임 기본 설정 상수
 constexpr int GAME_WIDTH = 240; // 기본값 : 160,
 constexpr int GAME_HEIGHT = 180; // 기본값 : 120, 캔버스 높이는 텍스트 높이의 2배 (Block 기준)

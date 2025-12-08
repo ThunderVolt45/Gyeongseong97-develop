@@ -60,7 +60,7 @@ void WeaponRocket::Shoot(Player* owner)
 	);
 
 	bullet->SetCustomBehavior(sprite, &WeaponRocket::RocketHomingBehavior, &WeaponRocket::ExplosionBehavior);
-	gameManager.CreateGameObject(bullet);
+	gameManager.CreateGameObject(bullet, TargetLayer::Foreground);
 
 	// 로켓 소리
 	AudioManager::GetInstance().PlayAudio(SFX_ROCKET.data(), 0.15f);
@@ -148,7 +148,7 @@ void WeaponRocket::ExplosionBehavior(Bullet* b)
 	// 전방 폭발 (즉시 생성)
 	std::shared_ptr<Explosion> explosionForward =
 		ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 40, 30, b->damage, true);
-	gameManager.CreateGameObject(explosionForward, false);
+	gameManager.CreateGameObject(explosionForward, TargetLayer::Background);
 
 	// 후방 폭발 (지연 생성)을 위한 Timer(Fuse) Bullet 생성
 	BulletPool& bulletPool = BulletPool::GetInstance();
@@ -177,5 +177,5 @@ void WeaponRocket::DelayedExplosion(Bullet* fuse)
 	std::shared_ptr<Explosion> explosionBackward =
 		ExplosionPool::GetInstance().GetExplosion(fuse->GetCenterX(), fuse->GetCenterY() - 30, 60, 45, fuse->damage, true);
 
-	GameManager::GetInstance().CreateGameObject(explosionBackward, false);
+	GameManager::GetInstance().CreateGameObject(explosionBackward, TargetLayer::Background);
 }

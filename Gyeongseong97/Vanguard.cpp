@@ -82,7 +82,7 @@ void Vanguard::Attack()
 
 	// 발사!
 	std::shared_ptr<Bullet> bullet = BulletPool::GetInstance().GetBullet(GetCenterX(), GetCenterY(), 0.0f, -1.5f, false);
-	GameManager::GetInstance().CreateGameObject(bullet);
+	GameManager::GetInstance().CreateGameObject(bullet, TargetLayer::Foreground);
 	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.2f);
 
 	cooldown += 90; // 90틱 마다 한번 공격

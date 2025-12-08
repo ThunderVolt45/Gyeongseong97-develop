@@ -56,7 +56,7 @@ void Player::Destroy()
 	GameManager& gameManager = GameManager::GetInstance();
 
 	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY());
-	gameManager.CreateGameObject(explosion, false);
+	gameManager.CreateGameObject(explosion, TargetLayer::Foreground);
 
 	sprite = deathSprite;
 	x -= 10;

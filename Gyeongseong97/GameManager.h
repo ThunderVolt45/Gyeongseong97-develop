@@ -9,6 +9,7 @@
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 
+#include "GameConstants.h"
 #include "StageManager.h"
 #include "GameObject.h"
 #include "Player.h"
@@ -44,6 +45,8 @@ private:
 	std::vector<std::shared_ptr<GameObject>> objectsToCreate;
 
 	void Reset();
+	void UpdateGameObjects(std::list<std::shared_ptr<GameObject>> objects);
+	void EraseGameObjects();
 
 public:
 	void Initialize(); // 스테이지 및 게임 초기화
@@ -78,7 +81,7 @@ public:
 	void Update();
 	bool OnEvent(ftxui::Event event);
 
-	void CreateGameObject(std::shared_ptr<GameObject> gameObject, bool pushToBack = true);
+	void CreateGameObject(std::shared_ptr<GameObject> gameObject, TargetLayer layer = TargetLayer::Main);
 	void DestroyGameObject(GameObject* gameObject);
 	void DestroyAllEnemiesExcept(GameObject* except);
 	bool IsEnemyAlive();

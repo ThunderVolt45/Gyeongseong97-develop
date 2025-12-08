@@ -36,9 +36,9 @@ void BossStateAttackShot::Update(Narration& boss)
 		std::shared_ptr<Bullet> bullet1 = BulletPool::GetInstance().GetBullet(boss.GetCenterX() - 15, boss.GetCenterY(), 0.0f, -2.0f, false);
 		std::shared_ptr<Bullet> bullet2 = BulletPool::GetInstance().GetBullet(boss.GetCenterX(), boss.GetCenterY(), 0.0f, -2.0f, false);
 		std::shared_ptr<Bullet> bullet3 = BulletPool::GetInstance().GetBullet(boss.GetCenterX() + 15, boss.GetCenterY(), 0.0f, -2.0f, false);
-		gameManager.CreateGameObject(bullet1);
-		gameManager.CreateGameObject(bullet2);
-		gameManager.CreateGameObject(bullet3);
+		gameManager.CreateGameObject(bullet1, TargetLayer::Foreground);
+		gameManager.CreateGameObject(bullet2, TargetLayer::Foreground);
+		gameManager.CreateGameObject(bullet3, TargetLayer::Foreground);
 
 		// 사격음 출력
 		AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.3f);

@@ -46,7 +46,7 @@ void WeaponGrenade::Shoot(Player* owner)
 		&WeaponGrenade::ExplosionBehavior
 	);
 
-	gameManager.CreateGameObject(bullet);
+	gameManager.CreateGameObject(bullet, TargetLayer::Foreground);
 	AudioManager::GetInstance().PlayAudio(SFX_GRENADE.data(), 0.2f);
 }
 
@@ -80,5 +80,5 @@ void WeaponGrenade::ExplosionBehavior(Bullet* b)
 	std::shared_ptr<Explosion> explosion =
 		ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, b->damage, true);
 
-	gameManager.CreateGameObject(explosion, false);
+	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 }
