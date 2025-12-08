@@ -18,6 +18,8 @@ Bullet::Bullet(int x, int y, float speedX, float speedY, bool isMine, int damage
 
 void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int damage, int lifeTick)
 {
+	type = ObjectType::Bullet;
+
 	this->x = x;
 	this->y = y;
 	this->speedX = speedX;

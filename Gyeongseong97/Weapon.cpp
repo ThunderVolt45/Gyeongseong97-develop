@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include "BulletPool.h"
 #include "GameConstants.h"
+#include "Enums.h"
 
 void Weapon::AddAmmo(int amount)
 {

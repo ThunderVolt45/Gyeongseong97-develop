@@ -2,8 +2,8 @@
 #include "GameConstants.h"
 #include "Enemy.h"
 #include "Bullet.h"
-#include "Explosion.h"
 #include "ExplosionPool.h"
+#include "Enums.h"
 
 #pragma region Constructer & Destroyer
 
@@ -14,6 +14,8 @@ Enemy::Enemy()
 
 Enemy::Enemy(int x, int y, int health, float speed, int killScore)
 {
+	type = ObjectType::Enemy;
+
 	this->health = health;
 	this->speed = speed;
 	this->killScore = killScore;

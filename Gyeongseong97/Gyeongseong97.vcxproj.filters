@@ -333,5 +333,8 @@
     <ClInclude Include="WeaponRocket.h">
       <Filter>GameObjects\Weapons &amp; Items</Filter>
     </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

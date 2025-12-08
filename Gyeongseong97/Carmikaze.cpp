@@ -1,9 +1,9 @@
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "GameConstants.h"
 #include "Carmikaze.h"
-#include "Explosion.h"
 #include "ExplosionPool.h"
+#include "GameConstants.h"
+#include "Enums.h"
 
 #pragma region Constructer & Destroyer
 
@@ -14,6 +14,8 @@ Carmikaze::Carmikaze()
 
 Carmikaze::Carmikaze(int x, int y, int health, float speed, int killScore)
 {
+	type = ObjectType::Enemy;
+
 	this->health = health;
 	this->speed = speed;
 	this->killScore = killScore;

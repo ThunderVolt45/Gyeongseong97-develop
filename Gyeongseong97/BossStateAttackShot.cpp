@@ -3,6 +3,8 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "BulletPool.h"
+#include "Enums.h"
+
 #include <cmath>
 
 void BossStateAttackShot::Update(Narration& boss)

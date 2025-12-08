@@ -3,6 +3,7 @@
 #include "AudioManager.h"
 #include "StageManager.h"
 #include "GameConstants.h"
+#include "Enums.h"
 #include "Bullet.h"
 #include "BulletPool.h"
 #include "Explosion.h"
@@ -155,11 +156,10 @@ void GameManager::DestroyAllEnemiesExcept(GameObject* except)
 		// 예외 대상이면 스킵
 		if (ptr == except) continue;
 		
-		// Enemy 클래스(또는 파생 클래스)인지 확인
-		auto enemy = dynamic_cast<Enemy*>(ptr);
-		if (enemy != nullptr)
+		// Enemy 타입이라면 모조리 파괴
+		if (ptr->type == ObjectType::Enemy)
 		{
-			enemy->Destroy();
+			ptr->Destroy();
 		}
 	}
 }
@@ -168,7 +168,7 @@ bool GameManager::IsEnemyAlive()
 {
 	for (const auto& object : gameObjects)
 	{
-		if (dynamic_cast<Enemy*>(object.get()) != nullptr)
+		if (object.get()->type == ObjectType::Enemy)
 		{
 			// Enemy가 하나라도 발견되면 true 반환
 			return true;
@@ -184,7 +184,7 @@ int GameManager::GetEnemyCount()
 
 	for (const auto& object : gameObjects)
 	{
-		if (dynamic_cast<Enemy*>(object.get()) != nullptr)
+		if (object.get()->type == ObjectType::Enemy)
 		{
 			count++;
 		}

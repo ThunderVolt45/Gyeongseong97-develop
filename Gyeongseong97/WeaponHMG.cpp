@@ -5,6 +5,7 @@
 #include "BulletPool.h"
 #include "Utility.h"
 #include "GameConstants.h"
+#include "Enums.h"
 
 WeaponHMG::WeaponHMG()
 	: Weapon(WeaponType::HMG, HMG_DAMAGE, 300, HMG_COOLTIME, false)

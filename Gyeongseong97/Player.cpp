@@ -1,28 +1,21 @@
+#include "Player.h"
 #include "GameManager.h"
 #include "GameConstants.h"
-#include "Player.h"
+#include "Enums.h"
 #include "BulletPool.h"
 #include "ExplosionPool.h"
 #include "InputManager.h"
 #include "WeaponGrenade.h"
 
-Player::Player() : GameObject()
+Player::Player() : Player(0, 0)
 {
-	maxHealth = 5;
-	health = 5;
-	cooldown = 0;
-	invincible = false;
-	
-	// 기본 무기 초기화
-	defaultWeapon = std::make_shared<WeaponDefault>();
-	currentWeapon = defaultWeapon;
 
-	// 수류탄 초기화
-	grenadeWeapon = std::make_shared<WeaponGrenade>();
 }
 
 Player::Player(int x, int y)
 {
+	type = ObjectType::Player;
+
 	int w = 20;
 	int h = 40;
 

@@ -4,6 +4,7 @@
 #include "AudioManager.h"
 #include "BulletPool.h"
 #include "ExplosionPool.h"
+#include "Enums.h"
 
 void BossStateAttackBomb::Update(Narration& boss)
 {

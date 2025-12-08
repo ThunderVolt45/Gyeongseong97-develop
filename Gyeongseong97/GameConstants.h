@@ -1,16 +1,8 @@
 #pragma once
-
 #include <chrono>
 #include <string>
 
 using namespace std;
-
-enum class TargetLayer
-{
-	Background,
-	Main,
-	Foreground
-};
 
 // 게임 기본 설정 상수
 constexpr int GAME_WIDTH = 240; // 기본값 : 160,

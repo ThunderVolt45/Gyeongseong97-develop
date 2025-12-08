@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "GameManager.h"
 #include "GameConstants.h"
+#include "Enums.h"
 
 std::string RenderSystem::errorMessage = "";
 bool RenderSystem::isErrorActive = false;
@@ -107,9 +108,9 @@ ftxui::Element RenderSystem::Render()
 		// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
 		std::lock_guard<std::recursive_mutex> lock(gameManager.gameMutex);
 
-		auto background = std::list<std::shared_ptr<GameObject>>();
-		auto main = std::list<std::shared_ptr<GameObject>>();
-		auto foreground = std::list<std::shared_ptr<GameObject>>();
+		auto background = std::vector<std::shared_ptr<GameObject>>();
+		auto main = std::vector<std::shared_ptr<GameObject>>();
+		auto foreground = std::vector<std::shared_ptr<GameObject>>();
 
 		// 레이어 별 분류
 		for (const auto& object : gameManager.gameObjects)

@@ -2,6 +2,7 @@
 #include "ItemFactory.h"
 #include "Utility.h"
 #include "GameConstants.h"
+#include "Enums.h"
 #include "Narration.h"
 #include "Carmikaze.h"
 #include "Vanguard.h"
@@ -23,6 +24,8 @@
 
 Narration::Narration(int x, int y, int health, float speed, int killScore)
 {
+	type = ObjectType::Enemy;
+
 	this->health = health;
 	this->speed = speed;
 	this->killScore = killScore;

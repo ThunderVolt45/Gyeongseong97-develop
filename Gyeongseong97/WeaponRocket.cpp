@@ -6,6 +6,7 @@
 #include "BulletPool.h"
 #include "ExplosionPool.h"
 #include "GameConstants.h"
+#include "Enums.h"
 
 #include <cmath>
 #include <algorithm>
@@ -78,22 +79,22 @@ void WeaponRocket::RocketHomingBehavior(Bullet* b)
 		std::lock_guard<std::recursive_mutex> lock(gm.gameMutex);
 		for (auto& obj : gm.gameObjects)
 		{
-			// dynamic_cast를 이용해 Enemy인지 검사한다
-			if (auto enemy = std::dynamic_pointer_cast<Enemy>(obj))
+			// Object Type를 이용해 Enemy인지 검사한다
+			if (obj.get()->type == ObjectType::Enemy)
 			{
 				// 로켓 보다 뒤에 있는 목표는 고려하지 않는다
-				if (enemy->GetCenterY() > b->GetCenterY()) continue;
+				if (obj->GetCenterY() > b->GetCenterY()) continue;
 				
 				// 거리 계산
-				float dx = enemy->GetCenterX() - b->GetCenterX();
-				float dy = enemy->GetCenterY() - b->GetCenterY();
+				float dx = obj->GetCenterX() - b->GetCenterX();
+				float dy = obj->GetCenterY() - b->GetCenterY();
 				float dist = std::sqrt(dx * dx + dy * dy);
 
 				// 마지막으로 찾은 Enemy보다 더 가까이에 있다면 목표를 변경
 				if (dist < minDist)
 				{
 					minDist = dist;
-					target = enemy.get();
+					target = obj.get();
 				}
 			}
 		}

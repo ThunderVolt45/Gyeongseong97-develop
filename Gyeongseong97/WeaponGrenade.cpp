@@ -5,6 +5,7 @@
 #include "BulletPool.h"
 #include "ExplosionPool.h"
 #include "GameConstants.h"
+#include "Enums.h"
 
 WeaponGrenade::WeaponGrenade()
 	: Weapon(WeaponType::Grenade, GRENADE_DAMAGE, 10, GRENADE_COOLTIME, false)

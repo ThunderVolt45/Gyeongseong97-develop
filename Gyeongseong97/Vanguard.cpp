@@ -4,6 +4,7 @@
 #include "Vanguard.h"
 #include "Bullet.h"
 #include "BulletPool.h"
+#include "Enums.h"
 
 #pragma region Constructer & Destroyer
 
@@ -14,6 +15,8 @@ Vanguard::Vanguard()
 
 Vanguard::Vanguard(int x, int y, int health, float speed, int killScore)
 {
+	type = ObjectType::Enemy;
+
 	cooldown = 30; // 등장하자마자 사격하지 못하게 한다
 
 	this->health = health;

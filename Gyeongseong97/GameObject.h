@@ -1,6 +1,8 @@
 #pragma once
 #include "ImageLoader.h"
 #include "GameConstants.h"
+#include "Enums.h"
+
 #include <memory>
 
 class GameObject
@@ -9,10 +11,11 @@ private:
 	bool active = true; // 활성화/비활성화 상태
 
 public:
+	ObjectType type = ObjectType::Default;
+	TargetLayer layer = TargetLayer::Main;
 	float x = 0;
 	float y = 0;
 	Sprite sprite;
-	TargetLayer layer = TargetLayer::Main;
 
 	GameObject();
 	GameObject(int x, int y);

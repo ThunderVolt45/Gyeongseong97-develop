@@ -3,6 +3,7 @@
 #include "GameManager.h"
 #include "ExplosionPool.h"
 #include "Utility.h"
+#include "Enums.h"
 
 void BossStateDeath::Update(Narration& boss)
 {

@@ -10,6 +10,7 @@
 #include <ftxui/dom/elements.hpp>
 
 #include "GameConstants.h"
+#include "Enums.h"
 #include "StageManager.h"
 #include "GameObject.h"
 #include "Player.h"

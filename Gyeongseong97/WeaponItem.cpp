@@ -52,6 +52,10 @@ void WeaponItem::Update()
 
 void WeaponItem::OnCollision(GameObject& other)
 {
+	// 플레이어가 아니면 무시 
+	if (other.type != ObjectType::Player)
+		return;
+
 	Player* player = dynamic_cast<Player*>(&other);
 	if (player)
 	{
@@ -83,8 +87,9 @@ void WeaponItem::OnCollision(GameObject& other)
 			player->EquipWeapon(newWeapon);
 		}
 
-		// 아이템 제거
-		GameManager::GetInstance().DestroyGameObject(this);
-		AudioManager::GetInstance().PlayAudio(SFX_GETWEAPON.data());
 	}
+
+	// 아이템 제거
+	GameManager::GetInstance().DestroyGameObject(this);
+	AudioManager::GetInstance().PlayAudio(SFX_GETWEAPON.data());
 }
