@@ -3,6 +3,8 @@
 #include <stb_image.h>
 #include <iostream>
 #include <string>
+#include <filesystem>
+#include <fstream>
 
 #define NOMINMAX // Prevent min/max macro conflicts with windows.h
 #include <windows.h>
@@ -115,6 +117,7 @@ void TitleScreen(ScreenInteractive& screen)
 		Button(
 			" 크레딧 ",
 			[&] {
+				Credits(screen);
 				return;
 			},
 			ButtonOption::Animated(Color::Green)
@@ -154,7 +157,7 @@ void TitleScreen(ScreenInteractive& screen)
 				text(L"           |___/                      |___/                           |___/                   ") | bold | color(Color::Red1) | center,
 				text(L""),
 				text(L""),
-				text(L"WinAPI + FTXUI + miniaudio C++ 콘솔 게임 포트폴리오") | color(Color::Yellow) | center,
+				text(L"WinAPI + FTXUI + miniaudio C++ Terminal Shooting Game") | color(Color::Yellow) | center,
 				text(L""),
 				text(L"홍콩 97 / 야인시대 패러디 게임") | color(Color::White) | center,
 				text(L"(이 게임은 제작자의 정치적 성향과는 어떠한 연관도 없으며 그냥 웃기려고 만든 겁니다)") | color(Color::White) | center,
@@ -273,7 +276,157 @@ void HowToPlay(ScreenInteractive& screen)
 
 void Credits(ScreenInteractive& screen)
 {
+	// 파일 경로를 구한다
+	filesystem::path currentPath = filesystem::current_path();
+	auto filePath = currentPath /= PATH_THIRD_PARTY_NOTICE.data();
 
+	// 파일을 읽어들일 준비를 한다
+	vector<string> lines;
+
+	// 외부 텍스트 파일을 읽어들인다
+	ifstream inFile(filePath);
+
+	if (inFile.is_open())
+	{
+		string line;
+		while (getline(inFile, line))
+		{
+			lines.push_back(line);
+		}
+	}
+
+	inFile.close();
+
+	// 스크롤 상태 변수
+	float scrollY = 0.0f;
+	bool running = true;
+	const int startPadding = 20; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
+
+	// 화면 생성
+	auto renderer = Renderer(
+		[&] {
+			Elements elements;
+
+			// 타이틀 추가
+			elements.push_back(text(L"------------------------------------------------------------------------------------------------")
+				| center | color(Color::Red1));
+			elements.push_back(text(L"CREDITS") | bold | center | color(ftxui::Color::Red1));
+			elements.push_back(text(L""));
+			elements.push_back(text(L"Gyeongseong97 - WinAPI + FTXUI + miniaudio C++ Terminal Shooting Game")
+				| center | color(Color::Yellow));
+			elements.push_back(text(L"------------------------------------------------------------------------------------------------")
+				| center | color(Color::Red1));
+
+			// 현재 스크롤 위치에 따른 렌더링 시작점 계산
+			// startPadding에서 scrollY만큼 뺀 값이 현재의 첫 번째 줄 Y 위치
+			int currentTopY = startPadding - (int)scrollY;
+
+			// 화면 상단보다 아래에 있다면 여백(filler)을 추가하여 밀어내림
+			if (currentTopY > 0)
+			{
+				elements.push_back(text(L"") | size(HEIGHT, EQUAL, currentTopY));
+			}
+
+			// 텍스트 라인 추가
+			int linesToSkip = 0;
+			
+			// 텍스트가 화면 위로 넘어갔다면(currentTopY < 0), 넘어간 만큼 건너뛰고 렌더링
+			if (currentTopY < 0)
+			{
+				linesToSkip = -currentTopY;
+			}
+
+			// 건너뛴 부분부터 끝까지 (혹은 화면에 보일 만큼만) 렌더링
+			for (size_t i = linesToSkip; i < lines.size(); ++i)
+			{
+				// 너무 많은 요소를 렌더링하면 성능 저하가 올 수 있으므로 화면 높이 정도만 렌더링해도 됨
+				// 여기서는 간단하게 남은 전체를 추가 (FTXUI가 화면 밖은 잘라냄)
+				elements.push_back(text(lines[i]) | center | color(Color::White));
+			}
+
+			// 모든 텍스트가 지나갔을 때의 여백 (자연스러운 종료를 위해)
+			if (linesToSkip >= lines.size() + 5)
+			{
+				elements.push_back(text(L""));
+				elements.push_back(text(L"플레이 해주셔서 감사합니다!") | bold | center | color(Color::Yellow));
+			}
+
+			return vbox(std::move(elements)) 
+				| size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
+				| size(ftxui::HEIGHT, Constraint::EQUAL, GAME_HEIGHT / 4)
+				| center;
+		}
+	);
+
+	// 스크롤 업데이트 스레드
+	std::thread scrollThread([&] {
+		while (running)
+		{
+			// 스크롤 속도 조절 (값이 작을수록 빠름)
+			std::this_thread::sleep_for(std::chrono::milliseconds(250));
+			
+			if (!running) break;
+
+			scrollY += 1.0f; // 1줄씩 올림
+			screen.Post(Event::Custom); // 화면 갱신 요청
+
+			// 모든 크레딧이 올라가고 충분히 시간이 지나면 자동 종료
+			if (scrollY > lines.size() + startPadding + 20) 
+			{
+				screen.Exit();
+				running = false;
+			}
+		}
+	});
+
+	// 입력 이벤트 처리
+	auto screenComponent = CatchEvent(renderer,
+		[&](Event event) {
+			// Space 나 Escape 입력을 받으면 탈출
+			if (event.character() == " " || event == ftxui::Event::Escape)
+			{
+				running = false;
+				screen.Exit();
+				return true;
+			}
+
+			// 방향키 위/아래로 수동 스크롤 속도 조절 혹은 이동 (선택 사항)
+			if (event == Event::ArrowDown)
+			{
+				scrollY += 1.0f;
+				return true;
+			}
+			if (event == Event::ArrowUp)
+			{
+				scrollY -= 1.0f;
+				return true;
+			}
+			if (event == Event::PageDown)
+			{
+				scrollY += 10.0f;
+				return true;
+			}
+			if (event == Event::PageUp)
+			{
+				scrollY -= 10.0f;
+				return true;
+			}
+
+			return false;
+		}
+	);
+
+	screen.Loop(screenComponent);
+
+	// 스레드 정리
+	running = false;
+	if (scrollThread.joinable())
+	{
+		scrollThread.join();
+	}
+
+	// 화면 정리
+	ClearScreen();
 }
 
 void GameLoop(ScreenInteractive& screen)
