@@ -278,29 +278,51 @@ void Credits(ScreenInteractive& screen)
 {
 	// 파일 경로를 구한다
 	filesystem::path currentPath = filesystem::current_path();
-	auto filePath = currentPath /= PATH_THIRD_PARTY_NOTICE.data();
+
+	filesystem::path thirdPartyNoticePath = currentPath;
+	thirdPartyNoticePath /= PATH_THIRD_PARTY_NOTICE.data();
+
+	filesystem::path licensePath = currentPath;
+	licensePath /= PATH_LICENSE.data();
 
 	// 파일을 읽어들일 준비를 한다
 	vector<string> lines;
 
-	// 외부 텍스트 파일을 읽어들인다
-	ifstream inFile(filePath);
-
-	if (inFile.is_open())
+	// License 파일을 읽어들인다
+	ifstream licenseFile(licensePath);
+	if (licenseFile.is_open())
 	{
 		string line;
-		while (getline(inFile, line))
+		while (getline(licenseFile, line))
 		{
 			lines.push_back(line);
 		}
 	}
 
-	inFile.close();
+	licenseFile.close();
+
+	lines.push_back("\n");
+	lines.push_back("\n");
+	lines.push_back("\n");
+
+	// Third Party Notice 파일을 읽어들인다
+	ifstream thirdPartyNoticeFile(thirdPartyNoticePath);
+
+	if (thirdPartyNoticeFile.is_open())
+	{
+		string line;
+		while (getline(thirdPartyNoticeFile, line))
+		{
+			lines.push_back(line);
+		}
+	}
+
+	thirdPartyNoticeFile.close();
 
 	// 스크롤 상태 변수
 	float scrollY = 0.0f;
 	bool running = true;
-	const int startPadding = 20; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
+	const int startPadding = 10; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
 
 	// 화면 생성
 	auto renderer = Renderer(
@@ -321,10 +343,20 @@ void Credits(ScreenInteractive& screen)
 			// startPadding에서 scrollY만큼 뺀 값이 현재의 첫 번째 줄 Y 위치
 			int currentTopY = startPadding - (int)scrollY;
 
-			// 화면 상단보다 아래에 있다면 여백(filler)을 추가하여 밀어내림
+			// 지나치게 아래로 스크롤하지 못하게 막아준다
+			if (currentTopY > 40)
+			{
+				currentTopY = 40;
+				scrollY = -30;
+			}
+
+			// 화면 상단보다 아래에 있다면 여백 text을 추가하여 밀어내린다
 			if (currentTopY > 0)
 			{
-				elements.push_back(text(L"") | size(HEIGHT, EQUAL, currentTopY));
+				for (int i = 0; i < currentTopY; i++)
+				{
+					elements.push_back(text(L""));
+				}
 			}
 
 			// 텍스트 라인 추가
@@ -336,11 +368,12 @@ void Credits(ScreenInteractive& screen)
 				linesToSkip = -currentTopY;
 			}
 
-			// 건너뛴 부분부터 끝까지 (혹은 화면에 보일 만큼만) 렌더링
-			for (size_t i = linesToSkip; i < lines.size(); ++i)
+			// 건너뛴 부분부터 화면에 보일 만큼만 렌더링
+			for (size_t i = linesToSkip; i < linesToSkip + 40 && i < lines.size(); ++i)
 			{
-				// 너무 많은 요소를 렌더링하면 성능 저하가 올 수 있으므로 화면 높이 정도만 렌더링해도 됨
-				// 여기서는 간단하게 남은 전체를 추가 (FTXUI가 화면 밖은 잘라냄)
+				// 너무 많은 요소를 렌더링하면 성능 저하도 올 수도 있고
+				// 어차피 보이지도 않으므로 화면에 보이는 부분까지만 렌더링하면 된다
+				// 여기서는 간단하게 40줄 정도 추가 (FTXUI가 화면 밖은 잘라냄)
 				elements.push_back(text(lines[i]) | center | color(Color::White));
 			}
 
@@ -349,6 +382,8 @@ void Credits(ScreenInteractive& screen)
 			{
 				elements.push_back(text(L""));
 				elements.push_back(text(L"플레이 해주셔서 감사합니다!") | bold | center | color(Color::Yellow));
+				elements.push_back(text(L""));
+				elements.push_back(text(L"- 심영물 유기하고 게리모드로 빤스런한 월수는 쇼미더심영 후속작을 내놓아라 -") | bold | center | color(Color::Red1));
 			}
 
 			return vbox(std::move(elements)) 
@@ -363,7 +398,7 @@ void Credits(ScreenInteractive& screen)
 		while (running)
 		{
 			// 스크롤 속도 조절 (값이 작을수록 빠름)
-			std::this_thread::sleep_for(std::chrono::milliseconds(250));
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 			
 			if (!running) break;
 
@@ -371,7 +406,7 @@ void Credits(ScreenInteractive& screen)
 			screen.Post(Event::Custom); // 화면 갱신 요청
 
 			// 모든 크레딧이 올라가고 충분히 시간이 지나면 자동 종료
-			if (scrollY > lines.size() + startPadding + 20) 
+			if (scrollY > lines.size() + startPadding + 15) 
 			{
 				screen.Exit();
 				running = false;

@@ -72,6 +72,7 @@ constexpr wstring_view SPR_SHOTGUN{ L"item_shotgun.png" };
 constexpr wstring_view SPR_ROCKET{ L"item_rocket.png" };
 
 // 기타 리소스
+constexpr wstring_view PATH_LICENSE{ L"LICENSE" };
 constexpr wstring_view PATH_THIRD_PARTY_NOTICE{ L"THIRD_PARTY_NOTICES.md" };
 
 // 기타 문자열 상수
