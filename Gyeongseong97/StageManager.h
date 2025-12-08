@@ -17,7 +17,8 @@ enum class SpawnType : int
 	Narration,
 	ItemHMG = -1,
 	ItemShotgun = -2,
-	ItemGranade = -3
+	ItemGranade = -3,
+	ItemRocket = -4
 };
 
 struct SpawnData

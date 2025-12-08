@@ -14,7 +14,7 @@ void Weapon::AddAmmo(int amount)
 // WeaponDefault
 // ==========================
 WeaponDefault::WeaponDefault()
-	: Weapon(WeaponType::Default, 1, 9999, 8, true)
+	: Weapon(WeaponType::Default, DEFAULT_WEAPON_DAMAGE, 9999, DEFAULT_WEAPON_COOLTIME, true)
 {
 	// 450RPM의 무난무난한 기본 무기
 }

@@ -70,5 +70,12 @@ void ItemFactory::CreateItem(ItemInfo item)
 		gameManager.CreateGameObject(granade);
 		break;
 	}
+	case SpawnType::ItemRocket:
+	{
+		auto rocket = std::make_shared<WeaponItem>
+			(spawnX, spawnY, item.speed, WeaponType::Rocket);
+		gameManager.CreateGameObject(rocket);
+		break;
+	}
 	}
 }

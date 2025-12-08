@@ -42,6 +42,12 @@ void Bullet::Reset(int x, int y, float speedX, float speedY, bool isMine, int da
 	sprite = Sprite(1, 1, { color });
 }
 
+void Bullet::SetCustomBehavior(std::function<void(Bullet*)> onUpdate = nullptr, std::function<void(Bullet*)> onDestroy = nullptr)
+{
+	this->onUpdate = onUpdate;
+	this->onDestroy = onDestroy;
+}
+
 void Bullet::SetCustomBehavior(Sprite sprite, std::function<void(Bullet*)> onUpdate = nullptr, std::function<void(Bullet*)> onDestroy = nullptr)
 {
 	this->sprite = sprite;

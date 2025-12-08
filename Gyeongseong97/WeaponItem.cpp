@@ -24,6 +24,9 @@ WeaponItem::WeaponItem(float x, float y, float speed, WeaponType type) :
 	case WeaponType::Grenade:
 		spriteName = SPR_BOMB.data();
 		break;
+	case WeaponType::Rocket:
+		spriteName = SPR_ROCKET.data();
+		break;
 	case WeaponType::HMG:
 	case WeaponType::Default:
 	default:

@@ -20,7 +20,8 @@ public:
 
 	virtual void Reset(int x, int y, float speedX, float speedY, bool isMine, int damage = 1, int lifeTick = -1);
 	
-	// New method to set custom behavior
+	// Bullet에 고유한 동작을 부여하는 함수
+	void SetCustomBehavior(std::function<void(Bullet*)> onUpdate, std::function<void(Bullet*)> onDestroy);
 	void SetCustomBehavior(Sprite sprite, std::function<void(Bullet*)> onUpdate, std::function<void(Bullet*)> onDestroy);
 
 	void Update() override;

@@ -7,7 +7,7 @@
 #include "GameConstants.h"
 
 WeaponGrenade::WeaponGrenade()
-	: Weapon(WeaponType::Grenade, 5, 10, 30, false)
+	: Weapon(WeaponType::Grenade, GRENADE_DAMAGE, 10, GRENADE_COOLTIME, false)
 {
 	// 0.5초 간격으로 나가는 강력한 유★탄발사기
 }
@@ -57,7 +57,7 @@ void WeaponGrenade::ExplosionBehavior(Bullet* b)
 	BulletPool& bulletPool = BulletPool::GetInstance();
 
 	// 파편 효과 생성 (총알)
-		// 8방향으로 총알 발사
+	// 8방향으로 총알 발사
 	for (int x = -1; x <= 1; x++)
 	{
 		for (int y = -1; y <= 1; y++)

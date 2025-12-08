@@ -169,7 +169,7 @@ void StageManager::Update()
 
 			EnemyFactory::CreateEnemy(enemy);
 		}
-		else
+		else // 아이템
 		{
 			ItemInfo item;
 			item.type = spawnData.type;

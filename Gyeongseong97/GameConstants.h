@@ -15,6 +15,22 @@ constexpr int ERROR_DISPLAY_DURATION_TICKS = 300; // 5 * 초당 60틱
 // 게임 난이도 관련 설정 상수
 constexpr float COLLISION_DAMAGE = 0.1f; // 상호 간 충돌 데미지
 
+constexpr int DEFAULT_WEAPON_DAMAGE = 1; // 기본 무기 데미지
+constexpr int DEFAULT_WEAPON_COOLTIME = 8; // 연사력 (틱)
+
+constexpr int HMG_DAMAGE = 1; // HMG 데미지
+constexpr int HMG_COOLTIME = 4; // 연사력 (틱)
+
+constexpr int SHOTGUN_DAMAGE_FOR_PELLET = 2; // 산탄총 팰릿당 데미지
+constexpr int SHOTGUN_COOLTIME = 30; // 연사력 (틱)
+
+constexpr int GRENADE_DAMAGE = 5; // 수류탄 데미지
+constexpr int GRENADE_COOLTIME = 30; // 연사력 (틱)
+
+constexpr int ROCKET_DAMAGE = 3; // 로켓 데미지
+constexpr int ROCKET_COOLTIME = 30; // 연사력 (틱)
+constexpr int ROCKET_MAX_LIFETICK = 120; // 로켓 총알의 최대 수명
+
 // 플레이어 기본 위치
 constexpr int PLAYER_DEFAULT_POSITION_X = GAME_WIDTH / 2;
 constexpr int PLAYER_DEFAULT_POSITION_Y = GAME_HEIGHT - 20;
@@ -42,6 +58,7 @@ constexpr wstring_view SFX_CAR{ L"sfx_car.wav" };
 constexpr wstring_view SFX_EXPLOSION{ L"sfx_explosion.wav" };
 constexpr wstring_view SFX_GETWEAPON{ L"sfx_get.wav" };
 constexpr wstring_view SFX_GRENADE{ L"sfx_grenade.wav" };
+constexpr wstring_view SFX_ROCKET{ L"sfx_rocket.wav" };
 
 // 이미지 리소스
 constexpr wstring_view SPR_PLAYER{ L"player.png" };
@@ -53,6 +70,7 @@ constexpr wstring_view SPR_NARRATION{ L"enemy_narration.png" };
 constexpr wstring_view SPR_HMG{ L"item_hmg.png" };
 constexpr wstring_view SPR_BOMB{ L"item_bomb.png" };
 constexpr wstring_view SPR_SHOTGUN{ L"item_shotgun.png" };
+constexpr wstring_view SPR_ROCKET{ L"item_rocket.png" };
 
 // 기타 문자열 상수
 constexpr wstring_view SPR_EXPLOSION_PREFIX{ L"폭8\\폭8_" };

@@ -7,7 +7,7 @@
 #include "GameConstants.h"
 
 WeaponHMG::WeaponHMG()
-	: Weapon(WeaponType::HMG, 1, 300, 4, false)
+	: Weapon(WeaponType::HMG, HMG_DAMAGE, 300, HMG_COOLTIME, false)
 {
 	// 총알 300발을 900RPM으로 화끈하게 때려붓는 중기관총!
 }

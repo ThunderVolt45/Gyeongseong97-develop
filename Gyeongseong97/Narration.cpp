@@ -84,7 +84,7 @@ void Narration::ChangePattern()
 		item.y = 0;
 		item.speed = 0.5f;
 
-		switch (Utility::GenerateRandomNumber(0, 2))
+		switch (Utility::GenerateRandomNumber(0, 3))
 		{
 		case 0:
 			item.type = SpawnType::ItemHMG;
@@ -94,6 +94,9 @@ void Narration::ChangePattern()
 			break;
 		case 2:
 			item.type = SpawnType::ItemGranade;
+			break;
+		case 3:
+			item.type = SpawnType::ItemRocket;
 			break;
 		}
 

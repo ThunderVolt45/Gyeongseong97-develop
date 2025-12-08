@@ -6,7 +6,7 @@
 #include "GameConstants.h"
 
 WeaponShotgun::WeaponShotgun() :
-	Weapon(WeaponType::Shotgun, 2, 40, 30, false)
+	Weapon(WeaponType::Shotgun, SHOTGUN_DAMAGE_FOR_PELLET, 30, SHOTGUN_COOLTIME, false)
 {
 	// 0.5초 간격으로 여러 발의 Bullet을 한번에 쏘는 산탄총
 }
