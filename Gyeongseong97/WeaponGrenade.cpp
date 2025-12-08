@@ -2,8 +2,8 @@
 #include "Player.h"
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "BulletPool.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Explosion.h"
 #include "GameConstants.h"
 #include "Enums.h"
 
@@ -21,7 +21,6 @@ void WeaponGrenade::Shoot(Player* owner)
 
 	// 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
 
 	// Sprite 생성
 	auto c = ftxui::Color::DarkGreen;
@@ -34,18 +33,17 @@ void WeaponGrenade::Shoot(Player* owner)
 		});
 
 	// 커스텀 총알 생성
-	std::shared_ptr<Bullet> bullet = bulletPool.GetCustomBullet(
+	std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 		owner->GetCenterX(),
 		owner->y,
 		0.0f,
 		4.5f,
 		true,
 		damage,
-		-1,
-		sprite,
-		nullptr,
-		&WeaponGrenade::ExplosionBehavior
+		-1
 	);
+
+	bullet->SetCustomBehavior(sprite, nullptr, &WeaponGrenade::ExplosionBehavior);
 
 	gameManager.CreateGameObject(bullet, TargetLayer::Foreground);
 	AudioManager::GetInstance().PlayAudio(SFX_GRENADE.data(), 0.2f);
@@ -55,7 +53,6 @@ void WeaponGrenade::ExplosionBehavior(Bullet* b)
 {
 	// 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
 
 	// 파편 효과 생성 (총알)
 	// 8방향으로 총알 발사
@@ -65,7 +62,7 @@ void WeaponGrenade::ExplosionBehavior(Bullet* b)
 		{
 			if (x == 0 && y == 0) continue;
 
-			std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+			std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 				b->GetCenterX(),
 				b->GetCenterY(),
 				6.0f * x,
@@ -79,7 +76,7 @@ void WeaponGrenade::ExplosionBehavior(Bullet* b)
 
 	// 폭발 효과 생성 (데미지 전달)
 	std::shared_ptr<Explosion> explosion =
-		ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, b->damage, true);
+		ObjectPool<Explosion>::GetInstance().Get(b->GetCenterX(), b->GetCenterY(), 60, 45, b->damage, true);
 
 	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 }

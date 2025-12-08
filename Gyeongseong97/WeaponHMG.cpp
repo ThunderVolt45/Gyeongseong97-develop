@@ -2,8 +2,9 @@
 #include "Player.h"
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "BulletPool.h"
+#include "ObjectPool.h"
 #include "Utility.h"
+#include "Bullet.h"
 #include "GameConstants.h"
 #include "Enums.h"
 
@@ -21,12 +22,11 @@ void WeaponHMG::Shoot(Player* owner)
 
 	// 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
 
 	// Bullet의 X축 속도를 랜덤하게 부여하고 발사
 	float speedX = (float)Utility::GenerateRandomNumber(-6, 6) / 10;
 
-	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+	std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 		owner->GetCenterX(),
 		owner->y,
 		speedX,

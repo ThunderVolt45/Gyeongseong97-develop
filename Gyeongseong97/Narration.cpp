@@ -6,8 +6,9 @@
 #include "Narration.h"
 #include "Carmikaze.h"
 #include "Vanguard.h"
-#include "BulletPool.h"
-#include "ExplosionPool.h"
+#include "Bullet.h"
+#include "Explosion.h"
+#include "ObjectPool.h"
 
 // 상태 패턴 헤더
 #include "BossState.h"
@@ -157,7 +158,7 @@ void Narration::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 120, 90);
+	std::shared_ptr<Explosion> explosion = ObjectPool<Explosion>::GetInstance().Get(GetCenterX(), GetCenterY(), 120, 90);
 	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;

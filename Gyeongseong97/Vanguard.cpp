@@ -3,7 +3,7 @@
 #include "GameConstants.h"
 #include "Vanguard.h"
 #include "Bullet.h"
-#include "BulletPool.h"
+#include "ObjectPool.h"
 #include "Enums.h"
 
 #pragma region Constructer & Destroyer
@@ -84,7 +84,7 @@ void Vanguard::Attack()
 	if (cooldown > 0) return;
 
 	// 발사!
-	std::shared_ptr<Bullet> bullet = BulletPool::GetInstance().GetBullet(GetCenterX(), GetCenterY(), 0.0f, -1.5f, false);
+	std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(GetCenterX(), GetCenterY(), 0.0f, -1.5f, false);
 	GameManager::GetInstance().CreateGameObject(bullet, TargetLayer::Foreground);
 	AudioManager::GetInstance().PlayAudio(SFX_GUNFIRE.data(), 0.2f);
 

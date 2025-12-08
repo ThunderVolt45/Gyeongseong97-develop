@@ -1,17 +1,10 @@
 #pragma once
-#include <functional>
 #include "GameObject.h"
+#include "Enums.h"
+
+#include <functional>
 
 class Player; // Forward declaration
-
-enum class WeaponType
-{
-	Default,
-	HMG,
-	Shotgun,
-	Grenade,
-	Rocket
-};
 
 class Weapon
 {

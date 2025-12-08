@@ -1,7 +1,8 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "Carmikaze.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Explosion.h"
 #include "GameConstants.h"
 #include "Enums.h"
 
@@ -52,7 +53,7 @@ void Carmikaze::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY(), 60, 45);
+	std::shared_ptr<Explosion> explosion = ObjectPool<Explosion>::GetInstance().Get(GetCenterX(), GetCenterY(), 60, 45);
 	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;

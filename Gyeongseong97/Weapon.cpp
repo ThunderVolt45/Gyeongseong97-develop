@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "BulletPool.h"
+#include "ObjectPool.h"
 #include "GameConstants.h"
 #include "Enums.h"
 
@@ -24,9 +24,8 @@ void WeaponDefault::Shoot(Player* owner)
 {
 	// 기존 플레이어의 기본 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
 
-	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+	std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 		owner->GetCenterX(),
 		owner->y,
 		0.0f,

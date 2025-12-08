@@ -2,8 +2,9 @@
 #include "Narration.h"
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "BulletPool.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Bullet.h"
+#include "Explosion.h"
 #include "Enums.h"
 
 void BossStateAttackBomb::Update(Narration& boss)
@@ -18,8 +19,6 @@ void BossStateAttackBomb::Update(Narration& boss)
 
 	// 고폭탄 발사 준비
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
-	ExplosionPool& explosionPool = ExplosionPool::GetInstance();
 
 	// Sprite 생성
 	auto c = ftxui::Color::DarkRed;
@@ -34,8 +33,6 @@ void BossStateAttackBomb::Update(Narration& boss)
 	// 폭★8
 	auto explosion = [](Bullet* b) {
 		GameManager& gameManager = GameManager::GetInstance();
-		BulletPool& bulletPool = BulletPool::GetInstance();
-		ExplosionPool& explosionPool = ExplosionPool::GetInstance();
 
 		// 파편 효과 생성 (총알)
 		// 8방향으로 총알 발사
@@ -45,7 +42,7 @@ void BossStateAttackBomb::Update(Narration& boss)
 			{
 				if (x == 0 && y == 0) continue;
 
-				std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+				std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 					b->GetCenterX(),
 					b->GetCenterY(),
 					6.0f * x,
@@ -59,7 +56,7 @@ void BossStateAttackBomb::Update(Narration& boss)
 
 		// 폭발 효과 생성 (데미지 전달)
 		std::shared_ptr<Explosion> explosion =
-			explosionPool.GetExplosion(b->GetCenterX(), b->GetCenterY(), 60, 45, 1, false);
+			ObjectPool<Explosion>::GetInstance().Get(b->GetCenterX(), b->GetCenterY(), 60, 45, 1, false);
 
 		gameManager.CreateGameObject(explosion, TargetLayer::Background);
 		};
@@ -81,18 +78,17 @@ void BossStateAttackBomb::Update(Narration& boss)
 	dx *= speed;
 	dy *= speed;
 
-	std::shared_ptr<Bullet> bomb = BulletPool::GetInstance().GetCustomBullet(
+	std::shared_ptr<Bullet> bomb = ObjectPool<Bullet>::GetInstance().Get(
 		boss.GetCenterX(),
 		boss.GetCenterY(),
 		dx,
 		dy,
 		false,
 		2,
-		60,
-		sprite,
-		nullptr,
-		explosion
+		60
 	);
+
+	bomb->SetCustomBehavior(sprite, nullptr, explosion);
 
 	// 폭탄 생성
 	gameManager.CreateGameObject(bomb, TargetLayer::Foreground);

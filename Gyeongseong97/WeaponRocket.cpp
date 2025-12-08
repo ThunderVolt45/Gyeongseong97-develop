@@ -3,8 +3,9 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "ImageLoader.h"
-#include "BulletPool.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Bullet.h"
+#include "Explosion.h"
 #include "GameConstants.h"
 #include "Enums.h"
 
@@ -12,7 +13,7 @@
 #include <algorithm>
 
 WeaponRocket::WeaponRocket()
-	: Weapon(WeaponType::Rocket, ROCKET_DAMAGE, 30, ROCKET_COOLTIME, false)
+	: Weapon(WeaponType::Rocket, 3, 30, 25, false)
 {
 	// 높은 피해량과 호밍 능력을 갖지만 탄이 적고 연사가 느린 로켓런처
 }
@@ -20,11 +21,9 @@ WeaponRocket::WeaponRocket()
 void WeaponRocket::Shoot(Player* owner)
 {
 	if (remainBullet <= 0) return;
-
 	remainBullet--;
 
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
 	
 	// Sprite 생성
 	auto w = ftxui::Color::White;
@@ -50,7 +49,8 @@ void WeaponRocket::Shoot(Player* owner)
 		}
 	);
 
-	std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+	// 커스텀 총알 생성
+	std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 		owner->GetCenterX(),
 		owner->y,
 		0.0f,
@@ -61,10 +61,10 @@ void WeaponRocket::Shoot(Player* owner)
 	);
 
 	bullet->SetCustomBehavior(sprite, &WeaponRocket::RocketHomingBehavior, &WeaponRocket::ExplosionBehavior);
-	gameManager.CreateGameObject(bullet, TargetLayer::Foreground);
+	gameManager.CreateGameObject(bullet);
 
-	// 로켓 소리
-	AudioManager::GetInstance().PlayAudio(SFX_ROCKET.data(), 0.15f);
+	// 로켓 발사음
+	AudioManager::GetInstance().PlayAudio(SFX_ROCKET.data(), 0.2f);
 }
 
 void WeaponRocket::RocketHomingBehavior(Bullet* b)
@@ -148,13 +148,11 @@ void WeaponRocket::ExplosionBehavior(Bullet* b)
 
 	// 전방 폭발 (즉시 생성)
 	std::shared_ptr<Explosion> explosionForward =
-		ExplosionPool::GetInstance().GetExplosion(b->GetCenterX(), b->GetCenterY(), 40, 30, b->damage, true);
+		ObjectPool<Explosion>::GetInstance().Get(b->GetCenterX(), b->GetCenterY(), 40, 30, b->damage, true);
 	gameManager.CreateGameObject(explosionForward, TargetLayer::Background);
 
 	// 후방 폭발 (지연 생성)을 위한 Timer(Fuse) Bullet 생성
-	BulletPool& bulletPool = BulletPool::GetInstance();
-	
-	std::shared_ptr<Bullet> fuse = bulletPool.GetBullet(
+	std::shared_ptr<Bullet> fuse = ObjectPool<Bullet>::GetInstance().Get(
 		b->GetCenterX(), // 위치 유지
 		b->GetCenterY(),
 		0.0f, 
@@ -176,7 +174,7 @@ void WeaponRocket::DelayedExplosion(Bullet* fuse)
 	// 지연된 후방 폭발 생성
 	// fuse의 위치를 기준으로 생성 (fuse는 움직이지 않았으므로 원본 위치와 동일)
 	std::shared_ptr<Explosion> explosionBackward =
-		ExplosionPool::GetInstance().GetExplosion(fuse->GetCenterX(), fuse->GetCenterY() - 30, 60, 45, fuse->damage, true);
+		ObjectPool<Explosion>::GetInstance().Get(fuse->GetCenterX(), fuse->GetCenterY() - 30, 60, 45, fuse->damage, true);
 
 	GameManager::GetInstance().CreateGameObject(explosionBackward, TargetLayer::Background);
 }

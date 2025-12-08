@@ -1,7 +1,8 @@
 #include "BossStateDeath.h"
 #include "Narration.h"
 #include "GameManager.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Explosion.h"
 #include "Utility.h"
 #include "Enums.h"
 
@@ -22,7 +23,7 @@ void BossStateDeath::Update(Narration& boss)
 	{
 		int x = Utility::GenerateRandomNumber(-40, 40);
 		int y = Utility::GenerateRandomNumber(-30, 30);
-		std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(boss.GetCenterX() + x, boss.GetCenterY() + y);
+		std::shared_ptr<Explosion> explosion = ObjectPool<Explosion>::GetInstance().Get(boss.GetCenterX() + x, boss.GetCenterY() + y);
 		gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	}
 

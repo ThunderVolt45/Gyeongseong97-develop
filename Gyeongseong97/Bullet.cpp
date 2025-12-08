@@ -1,9 +1,8 @@
 #include "Bullet.h"
+#include "GameManager.h"
 #include "AudioManager.h"
 #include "GameConstants.h"
-#include "BulletPool.h"
-#include "GameManager.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
 #include "Explosion.h"
 
 Bullet::Bullet()
@@ -102,6 +101,6 @@ void Bullet::OnDestroy(std::shared_ptr<GameObject> self)
 	// 오브젝트 풀에 반환
 	if (auto bullet = std::dynamic_pointer_cast<Bullet>(self))
 	{
-		BulletPool::GetInstance().ReturnBullet(bullet);
+		ObjectPool<Bullet>::GetInstance().Return(bullet);
 	}
 }

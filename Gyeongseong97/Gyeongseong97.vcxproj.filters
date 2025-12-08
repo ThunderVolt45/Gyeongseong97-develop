@@ -195,25 +195,13 @@
     <ClCompile Include="Bullet.cpp">
       <Filter>GameObjects\Projectiles</Filter>
     </ClCompile>
-    <ClCompile Include="BulletPool.cpp">
-      <Filter>GameObjects\Projectiles</Filter>
-    </ClCompile>
     <ClInclude Include="Bullet.h">
-      <Filter>GameObjects\Projectiles</Filter>
-    </ClInclude>
-    <ClInclude Include="BulletPool.h">
       <Filter>GameObjects\Projectiles</Filter>
     </ClInclude>
     <ClCompile Include="Explosion.cpp">
       <Filter>GameObjects\Effects</Filter>
     </ClCompile>
-    <ClCompile Include="ExplosionPool.cpp">
-      <Filter>GameObjects\Effects</Filter>
-    </ClCompile>
     <ClInclude Include="Explosion.h">
-      <Filter>GameObjects\Effects</Filter>
-    </ClInclude>
-    <ClInclude Include="ExplosionPool.h">
       <Filter>GameObjects\Effects</Filter>
     </ClInclude>
     <ClCompile Include="Weapon.cpp">
@@ -335,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

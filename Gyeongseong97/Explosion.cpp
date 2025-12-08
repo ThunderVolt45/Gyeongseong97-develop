@@ -3,7 +3,7 @@
 #include "AudioManager.h"
 #include "ImageLoader.h"
 #include "GameConstants.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -131,6 +131,6 @@ void Explosion::OnDestroy(std::shared_ptr<GameObject> self)
 {
 	if (auto explosion = std::dynamic_pointer_cast<Explosion>(self))
 	{
-		ExplosionPool::GetInstance().ReturnExplosion(explosion);
+		ObjectPool<Explosion>::GetInstance().Return(explosion);
 	}
 }

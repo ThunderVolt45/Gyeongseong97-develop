@@ -8,7 +8,7 @@
 class GameObject
 {
 private:
-	bool active = true; // 활성화/비활성화 상태
+	bool active = true; // 활성화 상태
 
 public:
 	ObjectType type = ObjectType::Default;
@@ -67,6 +67,9 @@ public:
 	/// GameObject의 파괴를 알리는 메서드 (풀링 시스템에서 재활용을 위해 사용)
 	/// </summary>
 	virtual void Destroy(); // public으로 변경 및 virtual 유지
+
+	bool IsActive() const { return active; }
+	void SetActive(bool isActive) { this->active = isActive; }
 };
 
 

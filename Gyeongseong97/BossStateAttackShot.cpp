@@ -2,7 +2,7 @@
 #include "Narration.h"
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "BulletPool.h"
+#include "ObjectPool.h"
 #include "Enums.h"
 
 #include <cmath>
@@ -35,9 +35,9 @@ void BossStateAttackShot::Update(Narration& boss)
 	if (boss.internalTick <= 0)
 	{
 		// 총알 발사!!!
-		std::shared_ptr<Bullet> bullet1 = BulletPool::GetInstance().GetBullet(boss.GetCenterX() - 15, boss.GetCenterY(), 0.0f, -2.0f, false);
-		std::shared_ptr<Bullet> bullet2 = BulletPool::GetInstance().GetBullet(boss.GetCenterX(), boss.GetCenterY(), 0.0f, -2.0f, false);
-		std::shared_ptr<Bullet> bullet3 = BulletPool::GetInstance().GetBullet(boss.GetCenterX() + 15, boss.GetCenterY(), 0.0f, -2.0f, false);
+		std::shared_ptr<Bullet> bullet1 = ObjectPool<Bullet>::GetInstance().Get(boss.GetCenterX() - 15, boss.GetCenterY(), 0.0f, -2.0f, false);
+		std::shared_ptr<Bullet> bullet2 = ObjectPool<Bullet>::GetInstance().Get(boss.GetCenterX(), boss.GetCenterY(), 0.0f, -2.0f, false);
+		std::shared_ptr<Bullet> bullet3 = ObjectPool<Bullet>::GetInstance().Get(boss.GetCenterX() + 15, boss.GetCenterY(), 0.0f, -2.0f, false);
 		gameManager.CreateGameObject(bullet1, TargetLayer::Foreground);
 		gameManager.CreateGameObject(bullet2, TargetLayer::Foreground);
 		gameManager.CreateGameObject(bullet3, TargetLayer::Foreground);

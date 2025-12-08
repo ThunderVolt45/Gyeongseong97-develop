@@ -150,13 +150,11 @@
     <ClCompile Include="BossStateSpawnCarmikaze.cpp" />
     <ClCompile Include="BossStateSpawnVanguard.cpp" />
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="BulletPool.cpp" />
     <ClCompile Include="Carmikaze.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="Explosion.cpp" />
-    <ClCompile Include="ExplosionPool.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gyeongseong97.cpp" />
@@ -189,14 +187,12 @@
     <ClInclude Include="BossStateSpawnCarmikaze.h" />
     <ClInclude Include="BossStateSpawnVanguard.h" />
     <ClInclude Include="Bullet.h" />
-    <ClInclude Include="BulletPool.h" />
     <ClInclude Include="Carmikaze.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Explosion.h" />
-    <ClInclude Include="ExplosionPool.h" />
     <ClInclude Include="GameConstants.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
@@ -204,6 +200,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="ItemFactory.h" />
     <ClInclude Include="Narration.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayingSoundInfo.h" />
     <ClInclude Include="RenderSystem.h" />

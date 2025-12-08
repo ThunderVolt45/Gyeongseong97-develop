@@ -2,8 +2,9 @@
 #include "GameManager.h"
 #include "GameConstants.h"
 #include "Enums.h"
-#include "BulletPool.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Bullet.h"
+#include "Explosion.h"
 #include "InputManager.h"
 #include "WeaponGrenade.h"
 
@@ -48,7 +49,7 @@ void Player::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY());
+	std::shared_ptr<Explosion> explosion = ObjectPool<Explosion>::GetInstance().Get(GetCenterX(), GetCenterY());
 	gameManager.CreateGameObject(explosion, TargetLayer::Foreground);
 
 	sprite = deathSprite;

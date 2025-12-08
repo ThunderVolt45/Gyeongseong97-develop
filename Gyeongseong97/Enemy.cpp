@@ -2,7 +2,8 @@
 #include "GameConstants.h"
 #include "Enemy.h"
 #include "Bullet.h"
-#include "ExplosionPool.h"
+#include "ObjectPool.h"
+#include "Explosion.h"
 #include "Enums.h"
 
 #pragma region Constructer & Destroyer
@@ -53,7 +54,7 @@ void Enemy::Destroy()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
-	std::shared_ptr<Explosion> explosion = ExplosionPool::GetInstance().GetExplosion(GetCenterX(), GetCenterY());
+	std::shared_ptr<Explosion> explosion = ObjectPool<Explosion>::GetInstance().Get(GetCenterX(), GetCenterY());
 	gameManager.CreateGameObject(explosion, TargetLayer::Background);
 	gameManager.DestroyGameObject(this);
 	gameManager.score += killScore;

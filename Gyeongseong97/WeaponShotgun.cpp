@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "BulletPool.h"
+#include "ObjectPool.h"
 #include "GameConstants.h"
 
 WeaponShotgun::WeaponShotgun() :
@@ -19,12 +19,11 @@ void WeaponShotgun::Shoot(Player* owner)
 
 	// 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
-	BulletPool& bulletPool = BulletPool::GetInstance();
 
 	// 한번에 5발 정도? 발사
 	for (int i = -2; i <= 2; i++)
 	{
-		std::shared_ptr<Bullet> bullet = bulletPool.GetBullet(
+		std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 			owner->GetCenterX(),
 			owner->y,
 			0.0f + (0.4f * i),

@@ -1,6 +1,7 @@
 #include "EnemyFactory.h"
 #include "GameManager.h"
 #include "GameConstants.h"
+#include "Enums.h"
 #include "Utility.h"
 #include "Enemy.h"
 #include "Vanguard.h"
