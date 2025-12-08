@@ -29,6 +29,8 @@ using namespace std;
 #pragma region Declarations
 void TitleScreen(ScreenInteractive& screen);
 void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4);
+void HowToPlay(ScreenInteractive& screen);
+void Credits(ScreenInteractive& screen);
 void GameLoop(ScreenInteractive& screen);
 #pragma endregion
 
@@ -60,7 +62,7 @@ int main()
 	DrawCutscene(screen,
 		L"intro_sy.png",
 		L"",
-		L"1949년이 다가왔다.",
+		L"1946년이 다가왔다.",
 		L"X같이 못생긴 심영이 학생과 시민들을 빨갱이로 만들기 시작했다!",
 		L""
 		);
@@ -89,13 +91,8 @@ int main()
 		L""
 	);
 
-	DrawCutscene(screen,
-		L"intro.png",
-		L"조 작 법",
-		L"방향키 : 플레이어 상하좌우 이동",
-		L"Space : 사격 (연사)",
-		L""
-		);
+	// 조작법
+	HowToPlay(screen);
 
 	// 게임 시작
 	GameLoop(screen);
@@ -167,7 +164,10 @@ void TitleScreen(ScreenInteractive& screen)
 				text(L""),
 				button->Render() | center,
 				text(L""),
-			}) | border | center | color(Color::Red) | size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2);
+			}) | border | center | color(Color::Red)
+			| size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
+			| size(ftxui::HEIGHT, Constraint::EQUAL, GAME_HEIGHT / 4);
+
 		}
 	);
 
@@ -231,6 +231,49 @@ void DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine
 	
 	// 화면 정리
 	ClearScreen();
+}
+
+void HowToPlay(ScreenInteractive& screen)
+{
+	auto renderer = Renderer(
+		[&] {
+			return vbox({
+				text(L""),
+				text(L"H O W   T O   P L A Y") | bold | color(Color::Red1) | center,
+				text(L"                                                                           "),
+				text(L"화살표 키 : 플레이어 캐릭터 이동") | color(Color::White) | center,
+				text(L"Z 키 : 공격") | color(Color::White) | center,
+				text(L"X 키 : 수류탄 투척") | color(Color::White) | center,
+				text(L""),
+				text(L"스페이스바를 눌러 계속...") | center | color(Color::GrayDark),
+				text(L"")
+			}) | border | center
+				| size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
+				| size(ftxui::HEIGHT, Constraint::EQUAL, GAME_HEIGHT / 4);
+		}
+	);
+
+	// 입력 이벤트 처리
+	auto screenComponent = CatchEvent(renderer,
+		[&](Event event) {
+			if (event.character() == " ")
+			{
+				screen.Exit(); // 스페이스바 입력을 받으면 탈출
+			}
+
+			return true;
+		}
+	);
+
+	screen.Loop(screenComponent);
+
+	// 화면 정리
+	ClearScreen();
+}
+
+void Credits(ScreenInteractive& screen)
+{
+
 }
 
 void GameLoop(ScreenInteractive& screen)
