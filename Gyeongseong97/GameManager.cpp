@@ -71,9 +71,11 @@ void GameManager::Reset()
 	if (!audioManager.IsPlaying(BGM_MAIN.data()))
 		audioManager.PlayAudio(BGM_MAIN.data(), BGM_VOULME, true);
 
+	// 변수 리셋
 	score = 0;
 	IsGameOver = false;
 	IsGameClear = false;
+	IsGamePause = false;
 	tick = 0;
 
 	// 게임 시작
@@ -194,6 +196,9 @@ int GameManager::GetEnemyCount()
 
 void GameManager::Update()
 {
+	// 일시 정지 상태에선 아무 것도 하지 않는다
+	if (IsGamePause) return;
+
 	// InputManager 업데이트 (키 상태 갱신)
 	InputManager::GetInstance().Update();
 
@@ -237,9 +242,27 @@ bool GameManager::OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event)
 		return true;
 	}
 
-	// 나가기 (Q, Escape)
-	if (event == ftxui::Event::Character('q') || event == ftxui::Event::Escape)
+	// 일시정지 (Escape)
+	if (event == ftxui::Event::Escape)
 	{
+		if (IsGameOver || IsGameClear)
+		{
+			return false;
+		}
+
+		IsGamePause = !IsGamePause;
+
+		return true;
+	}
+
+	// 나가기 (Q)
+	if (event == ftxui::Event::Q || event == ftxui::Event::q)
+	{
+		if (!IsGameOver && !IsGameClear && !IsGamePause)
+		{
+			return false;
+		}
+
 		Reset();
 		IsRunning = false;
 		screen.Exit();
@@ -248,12 +271,14 @@ bool GameManager::OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event)
 	}
 
 	// 재시작 (R)
-	if (IsGameOver || IsGameClear)
+	if (event == ftxui::Event::R || event == ftxui::Event::r)
 	{
-		if (event == ftxui::Event::Character('r'))
+		if (!IsGameOver && !IsGameClear && !IsGamePause)
 		{
-			Reset();
+			return false;
 		}
+
+		Reset();
 
 		return true;
 	}

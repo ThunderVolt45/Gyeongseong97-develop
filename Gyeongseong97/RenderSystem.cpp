@@ -158,6 +158,27 @@ ftxui::Element RenderSystem::RenderGameScreen()
 		"FPS : " + std::to_string(gameManager.currentFps) 
 		+ ", Logic : " + std::to_string(gameManager.currentLps));
 
+	// 일시정지시 일시정지 메시지 표시
+	if (gameManager.IsGamePause)
+	{
+		canvas.DrawText(GAME_WIDTH / 2 - (5 * 2) - 2, GAME_HEIGHT / 2 - 8,
+			"GAME PAUSE",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::Black;
+				p.background_color = ftxui::Color::Yellow1;
+			});
+		canvas.DrawText(GAME_WIDTH / 2 - (15 * 2) - 2, GAME_HEIGHT / 2,
+			"게임이 일시정지 되었습니다.",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::White;
+			});
+		canvas.DrawText(GAME_WIDTH / 2 - (19 * 2) - 2, GAME_HEIGHT / 2 + 8,
+			"(Esc키를 눌러 계속, R키를 눌러 재시작, Q키를 눌러 나가기)",
+			[](ftxui::Pixel& p) {
+				p.foreground_color = ftxui::Color::White;
+			});
+	}
+
 	// 게임 오버 시 게임 오버 메시지 표시
 	if (gameManager.IsGameOver)
 	{
@@ -167,12 +188,12 @@ ftxui::Element RenderSystem::RenderGameScreen()
 				p.foreground_color = ftxui::Color::Black;
 				p.background_color = ftxui::Color::Red;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (22 * 2) - 2, GAME_HEIGHT / 2, 
+		canvas.DrawText(GAME_WIDTH / 2 - (12 * 2) - 2, GAME_HEIGHT / 2, 
 			"김두한은 오렌지병이었던 고혈압으로 쓰러졌다.",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, 
+		canvas.DrawText(GAME_WIDTH / 2 - (12 * 2) - 2, GAME_HEIGHT / 2 + 8, 
 			"(R키를 눌러 재시작, Q키를 눌러 나가기)",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
@@ -186,12 +207,12 @@ ftxui::Element RenderSystem::RenderGameScreen()
 				p.foreground_color = ftxui::Color::Black;
 				p.background_color = ftxui::Color::Green;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (25 * 2) - 2, GAME_HEIGHT / 2, 
+		canvas.DrawText(GAME_WIDTH / 2 - (28 * 2) - 2, GAME_HEIGHT / 2, 
 			"김두한은 사악한 공산당원들을 모조리 다 쓸어버렸다!",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
 			});
-		canvas.DrawText(GAME_WIDTH / 2 - (18 * 2) - 2, GAME_HEIGHT / 2 + 8, 
+		canvas.DrawText(GAME_WIDTH / 2 - (12 * 2) - 2, GAME_HEIGHT / 2 + 8, 
 			"(R키를 눌러 재시작, Q키를 눌러 나가기)",
 			[](ftxui::Pixel& p) {
 				p.foreground_color = ftxui::Color::White;
