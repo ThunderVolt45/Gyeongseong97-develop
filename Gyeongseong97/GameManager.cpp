@@ -263,8 +263,10 @@ bool GameManager::OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event)
 			return false;
 		}
 
+		// 나갈 땐 뒷정리를 해야한다
 		Reset();
 		IsRunning = false;
+		
 		screen.Exit();
 
 		return true;

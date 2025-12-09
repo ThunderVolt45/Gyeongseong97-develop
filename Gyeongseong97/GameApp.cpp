@@ -251,7 +251,7 @@ AppState GameApp::HowToPlay(ScreenInteractive& screen)
 				text(L""),
 				text(L"Z키를 눌러 계속...") | center | color(Color::GrayDark),
 				text(L"")
-			}) | border | center
+			}) | border | center | color(ftxui::Color::Red1)
 				| size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
 				| size(ftxui::HEIGHT, Constraint::EQUAL, GAME_HEIGHT / 4);
 		}
@@ -503,7 +503,7 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 				}
 
 				// 게임 진행 시간 계산
-				if (!gameManager.IsGameOver && !gameManager.IsGameClear)
+				if (!gameManager.IsGameOver && !gameManager.IsGameClear && !gameManager.IsGamePause)
 				{
 					chrono::duration<double> duration = now - startTime;
 					long long durationSecond = static_cast<long long>(duration.count());
