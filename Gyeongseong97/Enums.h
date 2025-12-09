@@ -29,6 +29,7 @@ enum class SpawnType : int
 	Vanguard,
 	Carmikaze,
 	Narration,
+	Army,
 	ItemHMG = -1,
 	ItemShotgun = -2,
 	ItemGranade = -3,

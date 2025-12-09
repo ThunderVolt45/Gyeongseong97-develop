@@ -5,6 +5,7 @@
 #include "Utility.h"
 #include "Enemy.h"
 #include "Vanguard.h"
+#include "Army.h"
 #include "Carmikaze.h"
 #include "Narration.h"
 
@@ -53,36 +54,69 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 	// 적을 생성한다
 	switch (enemy.type)
 	{
+	case SpawnType::Instigated:
+	{
+		auto instigated = std::make_shared<Enemy>(
+			spawnX,
+			spawnY,
+			enemy.health,
+			enemy.speed,
+			enemy.killScore == -1 ? 0 : enemy.killScore
+		);
+
+		gameManager.CreateGameObject(instigated);
+		break;
+	}
 	case SpawnType::Vanguard:
 	{
-		auto vanguard = std::make_shared<Vanguard>(spawnX, spawnY, enemy.health, enemy.speed, 
-			enemy.killScore == - 1 ? 500 : enemy.killScore);
+		auto vanguard = std::make_shared<Vanguard>(
+			spawnX, 
+			spawnY, 
+			enemy.health, 
+			enemy.speed, 
+			enemy.killScore == - 1 ? 500 : enemy.killScore
+		);
 
 		gameManager.CreateGameObject(vanguard);
 		break;
 	}
 	case SpawnType::Carmikaze:
 	{
-		auto carmikaze = std::make_shared<Carmikaze>(spawnX, spawnY, enemy.health, enemy.speed, 
-			enemy.killScore == -1 ? 1000 : enemy.killScore);
+		auto carmikaze = std::make_shared<Carmikaze>(
+			spawnX, 
+			spawnY, 
+			enemy.health, 
+			enemy.speed, 
+			enemy.killScore == -1 ? 1000 : enemy.killScore
+		);
 
 		gameManager.CreateGameObject(carmikaze);
 		break;
 	}
 	case SpawnType::Narration:
 	{
-		auto narration = std::make_shared<Narration>(spawnX, spawnY, enemy.health, enemy.speed, 
-			enemy.killScore == -1 ? 10000 : enemy.killScore);
+		auto narration = std::make_shared<Narration>(
+			spawnX, 
+			spawnY, 
+			enemy.health, 
+			enemy.speed, 
+			enemy.killScore == -1 ? 10000 : enemy.killScore
+		);
 
 		gameManager.CreateGameObject(narration);
 		break;
 	}
-	case SpawnType::Instigated:
+	case SpawnType::Army:
 	{
-		auto instigated = std::make_shared<Enemy>(spawnX, spawnY, enemy.health, enemy.speed, 
-			enemy.killScore == -1 ? 0 : enemy.killScore);
+		auto army = std::make_shared<Army>(
+			spawnX,
+			spawnY,
+			enemy.health,
+			enemy.speed,
+			enemy.killScore == -1 ? 500 : enemy.killScore
+		);
 
-		gameManager.CreateGameObject(instigated);
+		gameManager.CreateGameObject(army);
 		break;
 	}
 	}

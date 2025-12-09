@@ -27,15 +27,15 @@ void WeaponRocket::Shoot(Player* owner)
 	
 	// Sprite 생성
 	auto w = ftxui::Color::White;
-	auto y = ftxui::Color::Yellow;
+	auto b = ftxui::Color::BlueLight;
 	Sprite sprite = Sprite(4, 16, 
 		{
 			w, w, w, w,
 			w, w, w, w,
 			w, w, w, w,
 			w, w, w, w,
-			y, y, y, y,
-			y, y, y, y,
+			b, b, b, b,
+			b, b, b, b,
 			w, w, w, w,
 			w, w, w, w,
 			w, w, w, w,

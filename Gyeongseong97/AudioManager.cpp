@@ -69,7 +69,8 @@ void AudioManager::PlayAudio(std::wstring audioPath, float volume, bool loop)
 	// 오디오 경로를 구한다
 	std::filesystem::path currentPath = std::filesystem::current_path();
 
-	auto strFilePath = Utility::ConvertWideToUtf8(currentPath.c_str()) + Utility::ConvertWideToUtf8((AUDIO_PATH.data() + audioPath).c_str());
+	auto strFilePath = Utility::ConvertWideToUtf8(currentPath.c_str()) 
+		+ Utility::ConvertWideToUtf8((AUDIO_PATH.data() + audioPath).c_str());
 	auto filePath = strFilePath.c_str();
 
 	// ma_sound 객체를 생성

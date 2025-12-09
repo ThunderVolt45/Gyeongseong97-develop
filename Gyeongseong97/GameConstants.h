@@ -64,6 +64,7 @@ constexpr wstring_view SPR_PLAYER{ L"player.png" };
 constexpr wstring_view SPR_PLAYER_DEATH{ L"player_death.png" };
 constexpr wstring_view SPR_INSTIGATED{ L"enemy_Instigated.png" };
 constexpr wstring_view SPR_VANGUARD{ L"enemy_vanguard.png" };
+constexpr wstring_view SPR_ARMY{ L"enemy_army.png" };
 constexpr wstring_view SPR_CARMIKAZE{ L"enemy_Carmikaze.png" };
 constexpr wstring_view SPR_NARRATION{ L"enemy_narration.png" };
 constexpr wstring_view SPR_HMG{ L"item_hmg.png" };
