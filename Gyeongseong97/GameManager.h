@@ -80,7 +80,7 @@ public:
 	std::function<void()> onResetCallback;
 
 	void Update();
-	bool OnEvent(ftxui::Event event);
+	bool OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event);
 
 	void CreateGameObject(std::shared_ptr<GameObject> gameObject, TargetLayer layer = TargetLayer::Main);
 	void DestroyGameObject(GameObject* gameObject);

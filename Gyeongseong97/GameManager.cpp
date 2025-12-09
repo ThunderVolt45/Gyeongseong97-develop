@@ -226,7 +226,7 @@ void GameManager::Update()
 	stageManager.Update();
 }
 
-bool GameManager::OnEvent(ftxui::Event event)
+bool GameManager::OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event)
 {
 	// 화면 갱신 이벤트는 무시한다
 	if (event == ftxui::Event::Custom)
@@ -238,6 +238,8 @@ bool GameManager::OnEvent(ftxui::Event event)
 	if (event == ftxui::Event::Character('q') || event == ftxui::Event::Escape)
 	{
 		IsRunning = false;
+		screen.Exit();
+
 		return true;
 	}
 

@@ -29,7 +29,7 @@
 using namespace ftxui;
 using namespace std;
 
-GameApp::GameApp()
+GameApp::GameApp() : currentAppState(TITLE_SCREEN)
 {
 }
 
@@ -49,8 +49,67 @@ void GameApp::Run()
 	// FTXUI Screen 생성
 	auto screen = ScreenInteractive::FitComponent();
 
-	// 타이틀 화면 출력
-	TitleScreen(screen);
+	// 프로그램 루프 시작
+	while (currentAppState != EXIT)
+	{
+		switch (currentAppState)
+		{
+			case TITLE_SCREEN: // 타이틀
+				currentAppState = TitleScreen(screen);
+				break;
+			case INTRO_CUTSCENE: // 컷신
+				currentAppState = DrawCutscene(screen,
+					L"intro_sy.png",
+					L"",
+					L"1946년이 다가왔다.",
+					L"X같이 못생긴 심영이 학생과 시민들을 빨갱이로 만들기 시작했다!",
+					L"",
+                    INTRO_CUTSCENE // Next state if user exits this cutscene
+				);
+				if (currentAppState != INTRO_CUTSCENE) break;
+
+				currentAppState = DrawCutscene(screen,
+					L"intro_reds.png",
+					L"",
+					L"경성이 빨갱이로 가득차버렸다! 경성은 엉망이 되었다!",
+					L"그리하여 비밀 결사 백의사에서는 백색 테러리스트 김두한을 불렀다.",
+					L"",
+                    INTRO_CUTSCENE // Next state if user exits this cutscene
+				);
+				if (currentAppState != INTRO_CUTSCENE) break;
+
+				currentAppState = DrawCutscene(screen,
+					L"intro_kdh.png",
+					L"",
+					L"김두한은 조선의 주먹 황제이자 백색 테러주의자다.",
+					L"1972억 공산당 빨갱이들을 모조리 시체로 결☆ 정 시킬 것이다!",
+					L"",
+                    INTRO_CUTSCENE // Next state if user exits this cutscene
+				);
+				if (currentAppState != INTRO_CUTSCENE) break;
+
+				currentAppState = DrawCutscene(screen,
+					L"intro_narration.png",
+					L"",
+					L"그러나 공산당에서는 이미 비밀 연구를 진행했었으니...",
+					L"나레이션 양반을 개조해 김두한을 1972년으로 보내버릴 최종 병기로 만든 것이었다!",
+					L"",
+                    HOW_TO_PLAY // Next state after the last cutscene
+				);
+				break;
+			case HOW_TO_PLAY: // 게임 플레이 방법
+				currentAppState = HowToPlay(screen);
+				break;
+			case GAME_PLAYING: // 메인 게임 루프
+				currentAppState = GameLoop(screen);
+				break;
+			case CREDITS: // 크레딧
+				currentAppState = Credits(screen);
+				break;
+			case EXIT:
+				break; // 루프 탈출로 종료 처리를 수행한다
+		}
+	}
 }
 
 void GameApp::ClearScreen()
@@ -58,14 +117,17 @@ void GameApp::ClearScreen()
 	system("cls");
 }
 
-void GameApp::TitleScreen(ScreenInteractive& screen)
+AppState GameApp::TitleScreen(ScreenInteractive& screen)
 {
+	AppState nextState = TITLE_SCREEN; // Default to stay on title screen
+
 	// 버튼
 	auto button = Container::Horizontal({
 		Button(
 			"  게임 시작  ",
 			[&] {
-				CutsceneScreen(screen);
+				nextState = INTRO_CUTSCENE;
+				screen.Exit();
 				return;
 			},
 			ButtonOption::Animated(Color::Red)
@@ -73,7 +135,8 @@ void GameApp::TitleScreen(ScreenInteractive& screen)
 		Button(
 			" 크레딧 ",
 			[&] {
-				Credits(screen);
+				nextState = CREDITS;
+				screen.Exit();
 				return;
 			},
 			ButtonOption::Animated(Color::Green)
@@ -81,7 +144,8 @@ void GameApp::TitleScreen(ScreenInteractive& screen)
 		Button(
 			" 나가기 ",
 			[&] {
-				exit(0); // 즉시 프로그램을 폭☆8 시킨다
+				nextState = EXIT;
+				screen.Exit();
 				return;
 			},
 			ButtonOption::Animated(Color::Yellow)
@@ -131,58 +195,29 @@ void GameApp::TitleScreen(ScreenInteractive& screen)
 	);
 
 	screen.Loop(titleScreenRenderer);
+
+	ClearScreen();
+
+	return nextState;
 }
 
-void GameApp::CutsceneScreen(ftxui::ScreenInteractive& screen)
+AppState GameApp::DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4, AppState nextStateOnTransition)
 {
-	// 인트로 컷신 출력
-	DrawCutscene(screen,
-		L"intro_sy.png",
-		L"",
-		L"1946년이 다가왔다.",
-		L"X같이 못생긴 심영이 학생과 시민들을 빨갱이로 만들기 시작했다!",
-		L""
+	AppState nextState = INTRO_CUTSCENE; // Default to stay, will be updated if transitioned
+
+	// 인트로 화면 생성
+	auto introScreenRenderer = Renderer(
+		[&] {
+			return RenderSystem::RenderCutscene(imageName, textLine1, textLine2, textLine3, textLine4);
+		}
 	);
-
-	DrawCutscene(screen,
-		L"intro_reds.png",
-		L"",
-		L"경성이 빨갱이로 가득차버렸다! 경성은 엉망이 되었다!",
-		L"그리하여 비밀 결사 백의사에서는 백색 테러리스트 김두한을 불렀다.",
-		L""
-	);
-
-	DrawCutscene(screen,
-		L"intro_kdh.png",
-		L"",
-		L"김두한은 조선의 주먹 황제이자 백색 테러주의자다.",
-		L"1972억 공산당 빨갱이들을 모조리 시체로 결☆ 결정 시킬 것이다!",
-		L""
-	);
-
-	DrawCutscene(screen,
-		L"intro_narration.png",
-		L"",
-		L"그러나 공산당에서는 이미 비밀 연구를 진행했었으니...",
-		L"나레이션 양반을 개조해 김두한을 1972년으로 보내버릴 최종 병기로 만든 것이었다!",
-		L""
-	);
-
-	// 컷신이 종료되면 조작법 스크린으로 넘어간다
-	HowToPlay(screen);
-}
-
-void GameApp::DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4)
-{
-	auto renderer = Renderer([&] {
-		return RenderSystem::RenderCutscene(imageName, textLine1, textLine2, textLine3, textLine4);
-	});
 
 	// 입력 이벤트 처리
-	auto introScreenComponent = CatchEvent(renderer,
+	auto introScreenComponent = CatchEvent(introScreenRenderer,
 		[&](Event event) {
 			if (event.character() == " ")
 			{
+				nextState = nextStateOnTransition;
 				screen.Exit(); // 스페이스바 입력을 받으면 탈출
 			}
 
@@ -192,10 +227,16 @@ void GameApp::DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring
 
 	// 화면 출력
 	screen.Loop(introScreenComponent);
+
+	ClearScreen();
+
+	return nextState;
 }
 
-void GameApp::HowToPlay(ScreenInteractive& screen)
+AppState GameApp::HowToPlay(ScreenInteractive& screen)
 {
+	AppState nextState = HOW_TO_PLAY; // Default to stay, but it should transition out.
+
 	auto renderer = Renderer(
 		[&] {
 			return vbox({
@@ -219,23 +260,25 @@ void GameApp::HowToPlay(ScreenInteractive& screen)
 		[&](Event event) {
 			if (event == Event::z || event == Event::Z)
 			{
-				// 게임 시작
-				GameLoop(screen);
-				screen.Exit();
-
-				return true;
+				nextState = GAME_PLAYING;
+				screen.Exit(); // 스페이스바 입력을 받으면 탈출
 			}
 
-			return false;
+			return true;
 		}
 	);
 
-	// 화면 출력
 	screen.Loop(screenComponent);
+
+	ClearScreen();
+
+	return nextState;
 }
 
-void GameApp::Credits(ScreenInteractive& screen)
+AppState GameApp::Credits(ScreenInteractive& screen)
 {
+	AppState nextState = CREDITS; // Default to stay
+
 	// 파일 경로를 구한다
 	filesystem::path currentPath = filesystem::current_path();
 
@@ -261,7 +304,6 @@ void GameApp::Credits(ScreenInteractive& screen)
 
 	licenseFile.close();
 
-	// 약간의 공백을 준다
 	lines.push_back("\n");
 	lines.push_back("\n");
 	lines.push_back("\n");
@@ -311,6 +353,7 @@ void GameApp::Credits(ScreenInteractive& screen)
 			// 모든 크레딧이 올라가고 충분히 시간이 지나면 자동 종료
 			if (scrollY > lines.size() + startPadding + 15)
 			{
+				nextState = TITLE_SCREEN; // Transition back to title screen
 				screen.Exit();
 				running = false;
 			}
@@ -323,6 +366,7 @@ void GameApp::Credits(ScreenInteractive& screen)
 			// Space 나 Escape 입력을 받으면 탈출
 			if (event.character() == " " || event == ftxui::Event::Escape)
 			{
+				nextState = TITLE_SCREEN; // Transition back to title screen
 				running = false;
 				screen.Exit();
 				return true;
@@ -354,19 +398,24 @@ void GameApp::Credits(ScreenInteractive& screen)
 		}
 	);
 
-	// 화면 출력
 	screen.Loop(screenComponent);
 
-	// 스레드 정리
+
+	// 정리
 	running = false;
+	ClearScreen();
 	if (scrollThread.joinable())
 	{
 		scrollThread.join();
 	}
+
+	return nextState;
 }
 
-void GameApp::GameLoop(ScreenInteractive& screen)
+AppState GameApp::GameLoop(ScreenInteractive& screen)
 {
+	AppState nextState = GAME_PLAYING;
+
 	// 게임 매니저 인스턴스
 	GameManager& gameManager = GameManager::GetInstance();
 	gameManager.Initialize();
@@ -382,7 +431,7 @@ void GameApp::GameLoop(ScreenInteractive& screen)
 	// CatchEvent: 키보드 입력을 받아 처리하는 역할
 	auto component = CatchEvent(renderer,
 		[&](Event event) {
-			if (!gameManager.OnEvent(event))
+			if (!gameManager.OnEvent(screen, event))
 			{
 				return false;
 			}
@@ -390,8 +439,8 @@ void GameApp::GameLoop(ScreenInteractive& screen)
 			// 게임이 중단되면 종료 신호 전달
 			if (!gameManager.IsRunning)
 			{
+				nextState = TITLE_SCREEN; // Game ended, return to title screen
 				screen.Exit();
-				return true;
 			}
 
 			return true;
@@ -469,8 +518,11 @@ void GameApp::GameLoop(ScreenInteractive& screen)
 	screen.Loop(component);
 
 	// 정리
+	ClearScreen();
 	if (thread.joinable())
 	{
 		thread.join();
 	}
+
+	return nextState;
 }
