@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Army.cpp" />
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BossState.cpp" />
     <ClCompile Include="BossStateAppeared.cpp" />
@@ -177,6 +178,7 @@
     <ClCompile Include="WeaponShotgun.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Army.h" />
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BossState.h" />
     <ClInclude Include="BossStateAppeared.h" />

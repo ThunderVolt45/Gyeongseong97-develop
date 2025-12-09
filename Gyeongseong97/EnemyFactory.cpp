@@ -93,19 +93,6 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 		gameManager.CreateGameObject(carmikaze);
 		break;
 	}
-	case SpawnType::Narration:
-	{
-		auto narration = std::make_shared<Narration>(
-			spawnX, 
-			spawnY, 
-			enemy.health, 
-			enemy.speed, 
-			enemy.killScore == -1 ? 10000 : enemy.killScore
-		);
-
-		gameManager.CreateGameObject(narration);
-		break;
-	}
 	case SpawnType::Army:
 	{
 		auto army = std::make_shared<Army>(
@@ -117,6 +104,19 @@ void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 		);
 
 		gameManager.CreateGameObject(army);
+		break;
+	}
+	case SpawnType::Narration:
+	{
+		auto narration = std::make_shared<Narration>(
+			spawnX, 
+			spawnY, 
+			enemy.health, 
+			enemy.speed, 
+			enemy.killScore == -1 ? 10000 : enemy.killScore
+		);
+
+		gameManager.CreateGameObject(narration);
 		break;
 	}
 	}

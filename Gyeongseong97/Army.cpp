@@ -70,8 +70,8 @@ void Army::Attack()
 	}
 
 	// 속도 적용
-	dx *= speed * 5;
-	dy *= speed * 5;
+	dx *= 2;
+	dy *= 2;
 
 	// 총알 생성
 	std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
