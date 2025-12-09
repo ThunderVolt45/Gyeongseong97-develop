@@ -20,14 +20,14 @@ void WeaponShotgun::Shoot(Player* owner)
 	// 발사 로직
 	GameManager& gameManager = GameManager::GetInstance();
 
-	// 한번에 5발 정도? 발사
-	for (int i = -2; i <= 2; i++)
+	// 한번에 11발 정도? 발사
+	for (int i = -5; i <= 5; i++)
 	{
 		std::shared_ptr<Bullet> bullet = ObjectPool<Bullet>::GetInstance().Get(
 			owner->GetCenterX(),
 			owner->y,
 			0.0f + (0.4f * i),
-			6.0f,
+			6.0f - std::abs(0.1f * i),
 			true,
 			damage
 		);

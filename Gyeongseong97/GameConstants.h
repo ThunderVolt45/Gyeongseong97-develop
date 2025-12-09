@@ -20,7 +20,7 @@ constexpr int DEFAULT_WEAPON_COOLTIME = 8; // 연사력 (틱)
 constexpr int HMG_DAMAGE = 1; // HMG 데미지
 constexpr int HMG_COOLTIME = 4; // 연사력 (틱)
 
-constexpr int SHOTGUN_DAMAGE_FOR_PELLET = 2; // 산탄총 팰릿당 데미지
+constexpr int SHOTGUN_DAMAGE_FOR_PELLET = 1; // 산탄총 팰릿당 데미지
 constexpr int SHOTGUN_COOLTIME = 30; // 연사력 (틱)
 
 constexpr int GRENADE_DAMAGE = 5; // 수류탄 데미지
