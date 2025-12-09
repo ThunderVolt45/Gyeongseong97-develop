@@ -10,6 +10,7 @@
 #include "BossStateAttackBomb.h"
 #include "BossStateSpawnVanguard.h"
 #include "BossStateSpawnCarmikaze.h"
+#include "BossStateSpawnArmy.h"
 
 void BossStateIdle::Update(Narration& boss)
 {
@@ -43,11 +44,11 @@ void BossStateIdle::Update(Narration& boss)
 	}
 
 	// 등장, 대기, 사망을 제외한 임의의 상태로 전이
-	// 2: Shot, 3: Dive, 4: Bomb, 5: Vanguard, 6: Carmikaze
+	// 2: Shot, 3: Dive, 4: Bomb, 5: Vanguard, 6: Carmikaze, 7: Army
 	int random;
 	do
 	{
-		random = Utility::GenerateRandomNumber(2, 6);
+		random = Utility::GenerateRandomNumber(2, 7);
 	} while (random == static_cast<int>(boss.lastBossState));
 
 	// 상태 전이
@@ -69,6 +70,9 @@ void BossStateIdle::Update(Narration& boss)
 		break;
 	case BossStateEnum::Carmikaze:
 		boss.state = &BossState::carmikaze;
+		break;
+	case BossStateEnum::Army:
+		boss.state = &BossState::army;
 		break;
 	}
 }

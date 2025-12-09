@@ -148,6 +148,7 @@
     <ClCompile Include="BossStateAttackShot.cpp" />
     <ClCompile Include="BossStateDeath.cpp" />
     <ClCompile Include="BossStateIdle.cpp" />
+    <ClCompile Include="BossStateSpawnArmy.cpp" />
     <ClCompile Include="BossStateSpawnCarmikaze.cpp" />
     <ClCompile Include="BossStateSpawnVanguard.cpp" />
     <ClCompile Include="Bullet.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="BossStateAttackShot.h" />
     <ClInclude Include="BossStateDeath.h" />
     <ClInclude Include="BossStateIdle.h" />
+    <ClInclude Include="BossStateSpawnArmy.h" />
     <ClInclude Include="BossStateSpawnCarmikaze.h" />
     <ClInclude Include="BossStateSpawnVanguard.h" />
     <ClInclude Include="Bullet.h" />

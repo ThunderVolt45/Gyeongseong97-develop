@@ -11,6 +11,7 @@ class BossStateAttackShot;
 class BossStateAttackDive;
 class BossStateSpawnVanguard;
 class BossStateSpawnCarmikaze;
+class BossStateSpawnArmy;
 class BossStateDeath;
 
 enum class BossStateEnum
@@ -22,6 +23,7 @@ enum class BossStateEnum
 	Bomb, // 폭탄 패턴
 	Vanguard, // 소환 패턴 - 전위대
 	Carmikaze, // 소환 패턴 - 자동차
+	Army, // 소환 패턴 - 인민군
 	Dead // 시체로 결★정
 };
 
@@ -35,6 +37,7 @@ class Narration : public Enemy
 	friend class BossStateAttackDive;
 	friend class BossStateSpawnVanguard;
 	friend class BossStateSpawnCarmikaze;
+	friend class BossStateSpawnArmy;
 	friend class BossStateDeath;
 
 public:

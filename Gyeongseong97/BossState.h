@@ -10,6 +10,7 @@ class BossStateDeath;
 class BossStateIdle;
 class BossStateSpawnCarmikaze;
 class BossStateSpawnVanguard;
+class BossStateSpawnArmy;
 
 class BossState
 {
@@ -23,6 +24,7 @@ public:
 	static BossStateIdle idle;
 	static BossStateSpawnCarmikaze carmikaze;
 	static BossStateSpawnVanguard vanguard;
+	static BossStateSpawnArmy army;
 
 	virtual ~BossState() = default;
 	virtual void Update(Narration& boss) = 0;

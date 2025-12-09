@@ -7,6 +7,7 @@
 #include "BossStateIdle.h"
 #include "BossStateSpawnCarmikaze.h"
 #include "BossStateSpawnVanguard.h"
+#include "BossStateSpawnArmy.h"
 
 // 정적 인스턴스 정의
 BossStateAppeared BossState::appeared;
@@ -17,3 +18,4 @@ BossStateDeath BossState::death;
 BossStateIdle BossState::idle;
 BossStateSpawnCarmikaze BossState::carmikaze;
 BossStateSpawnVanguard BossState::vanguard;
+BossStateSpawnArmy BossState::army;
