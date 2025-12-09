@@ -45,7 +45,6 @@ private:
 	// 새로 생성할 오브젝트들을 모아둘 vector
 	std::vector<std::shared_ptr<GameObject>> objectsToCreate;
 
-	void Reset();
 	void UpdateGameObjects(std::list<std::shared_ptr<GameObject>> objects);
 	void EraseGameObjects();
 
@@ -79,6 +78,7 @@ public:
 	std::wstring gameTime;
 	std::function<void()> onResetCallback;
 
+	void Reset();
 	void Update();
 	bool OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event);
 

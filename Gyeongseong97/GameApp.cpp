@@ -201,7 +201,9 @@ AppState GameApp::TitleScreen(ScreenInteractive& screen)
 	return nextState;
 }
 
-AppState GameApp::DrawCutscene(ScreenInteractive& screen, wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4, AppState nextStateOnTransition)
+AppState GameApp::DrawCutscene(ScreenInteractive& screen, wstring imageName, 
+	wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4, 
+	AppState nextStateOnTransition)
 {
 	AppState nextState = INTRO_CUTSCENE; // Default to stay, will be updated if transitioned
 
@@ -439,8 +441,7 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 			// 게임이 중단되면 종료 신호 전달
 			if (!gameManager.IsRunning)
 			{
-				nextState = TITLE_SCREEN; // Game ended, return to title screen
-				screen.Exit();
+				nextState = TITLE_SCREEN; // 게임이 종료되었으므로 타이틀 화면으로 복귀
 			}
 
 			return true;
@@ -451,6 +452,10 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 	// UI 렌더링과 별개로 게임의 로직을 일정 간격(TICK_TIME)으로 실행
 	std::thread thread(
 		[&] {
+			// 게임 매니저 리셋
+			gameManager.Reset();
+
+			// 시간 측정 준비
 			using clock = std::chrono::steady_clock;
 
 			auto nextFrameTime = clock::now();
@@ -458,13 +463,15 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 			int frames = 0;
 			int logics = 0;
 
-			// 게임 시작 시간
+			// 게임 시작 시간 기록
 			auto startTime = clock::now();
 
+			// 게임을 재시작할 때 마다 시간 초기화
 			gameManager.onResetCallback = [&]() {
 				startTime = clock::now();
 			};
 
+			// 게임 로직 루프
 			while (gameManager.IsRunning)
 			{
 				auto now = clock::now();

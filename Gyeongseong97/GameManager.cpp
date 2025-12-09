@@ -20,7 +20,7 @@
 
 GameManager::GameManager()
 {
-	IsRunning = true;
+
 }
 
 GameManager::~GameManager()
@@ -75,6 +75,9 @@ void GameManager::Reset()
 	IsGameOver = false;
 	IsGameClear = false;
 	tick = 0;
+
+	// 게임 시작
+	IsRunning = true;
 }
 
 void GameManager::UpdateGameObjects(std::list<std::shared_ptr<GameObject>> objects)
@@ -237,6 +240,7 @@ bool GameManager::OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event)
 	// 나가기 (Q, Escape)
 	if (event == ftxui::Event::Character('q') || event == ftxui::Event::Escape)
 	{
+		Reset();
 		IsRunning = false;
 		screen.Exit();
 

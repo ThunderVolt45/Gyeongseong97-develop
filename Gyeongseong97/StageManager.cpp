@@ -28,6 +28,7 @@ void StageManager::GameClear()
 void StageManager::Initialize()
 {
 	// 변수 초기화
+	waves.clear();
 	tick = 0;
 	currentWaveIndex = 0;
 	currentEnemyIndex = 0;
