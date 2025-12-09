@@ -320,10 +320,9 @@ ftxui::Element RenderSystem::RenderCutscene(wstring imageName, wstring textLine1
 	return final;
 }
 
-ftxui::Element RenderSystem::RenderCredits(vector<string> lines, float& scrollY)
+ftxui::Element RenderSystem::RenderCredits(vector<string> lines, int startPadding, float& scrollY)
 {
 	Elements elements;
-	const int startPadding = 10; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
 
 	// 타이틀 추가
 	elements.push_back(text(L"------------------------------------------------------------------------------------------------")
@@ -343,7 +342,7 @@ ftxui::Element RenderSystem::RenderCredits(vector<string> lines, float& scrollY)
 	if (currentTopY > 40)
 	{
 		currentTopY = 40;
-		scrollY = -30;
+		scrollY = 0;
 	}
 
 	// 화면 상단보다 아래에 있다면 여백 text을 추가하여 밀어내린다

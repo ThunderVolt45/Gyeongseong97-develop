@@ -1,22 +1,21 @@
 #include "Utility.h"
 #include <iostream>
 #include <random>
-#include <string> // std::string, std::wcslen
-#include <vector> // Not strictly necessary for this implementation, but often useful
+#include <string>
+#include <vector>
+#include <filesystem>
+#include <fstream>
+#include <istream>
 
 /*
 이게 무슨 개X같은 코드야???
 
-WideCharToMultiByte 같은 플랫폼 종속적인 코드를 제거하기 위해 codecvt 모듈을 쓰려했으나
+WideCharToMultiByte 같은 플랫폼 종속적인 코드를 가능한 줄여보기 위해 codecvt 모듈을 쓰려했으나
 C++17에서 대체제도 안 만들고 Deprecated 처리한 다음 C++26에서 아예 없애버린댄다.
 
 덕분에 나는 AI 드론봇이 만든, 대체 무슨 원리로 동작하는 건지도 모를
 (하지만 동작은 하는 거 같은) 괴코드를 넣어야만 했다.
 이 코드의 원리를 이해하는 사람이 있다면 부디 나 대신 주석을 좀 달아주길
-
-왜 windows.h를 제거하려 했냐고? MIM, MAX 매크로랑 자꾸 충돌을 일으켜대서
-#define NOMINMAX <- 같은 걸 사방 팔방에 넣어대야 하는 상황이 벌어졌는데
-그걸 그냥 손 놓고 구경할 수는 없었거든
 */
 
 // Helper function to convert a single Unicode code point to UTF-8 bytes and append to string
@@ -41,12 +40,6 @@ static void append_unicode_codepoint_to_utf8(std::string& out, uint32_t c) {
     // This implementation assumes valid code points are processed.
 }
 
-/// <summary>
-/// 대체 무슨 원리로 동작하는 건지도 모를 괴코드의 힘을 빌려
-/// wchar_t를 적절하게 utf-8 string으로 변환해주는 메소드
-/// </summary>
-/// <param name="wideStr">변환하고 싶은 wchar_t</param>
-/// <returns>utf-8 문자열</returns>
 std::string Utility::ConvertWideToUtf8(const wchar_t* wideStr)
 {
     if (wideStr == nullptr || wideStr[0] == L'\0')
@@ -107,4 +100,24 @@ int Utility::GenerateRandomNumber(int begin, int end)
 
 	// 난수 생성
 	return distribution(engine);
+}
+
+void Utility::ReadTextFile(std::wstring fileName, std::vector<std::string>& targetVector)
+{
+    // 파일 경로를 구한다
+    std::filesystem::path path = std::filesystem::current_path() /= fileName.c_str();
+
+    // 파일을 읽어들인다
+    std::ifstream file(path);
+
+    if (file.is_open())
+    {
+        std::string line;
+        while (getline(file, line))
+        {
+            targetVector.push_back(line);
+        }
+    }
+    
+    file.close();
 }

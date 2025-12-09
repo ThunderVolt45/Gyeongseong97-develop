@@ -283,63 +283,33 @@ AppState GameApp::Credits(ScreenInteractive& screen)
 {
 	AppState nextState = CREDITS; // Default to stay
 
-	// 파일 경로를 구한다
-	filesystem::path currentPath = filesystem::current_path();
-
-	filesystem::path thirdPartyNoticePath = currentPath;
-	thirdPartyNoticePath /= PATH_THIRD_PARTY_NOTICE.data();
-
-	filesystem::path licensePath = currentPath;
-	licensePath /= PATH_LICENSE.data();
-
-	// 파일을 읽어들일 준비를 한다
+	// 파일을 읽어들일 준비
 	vector<string> lines;
 
+	// Credit 파일을 읽어들인다
+	Utility::ReadTextFile(PATH_CREDIT.data(), lines);
+
+	int i = 7;
+	while (i --> 0) lines.push_back("\n");
+
 	// License 파일을 읽어들인다
-	ifstream licenseFile(licensePath);
-	if (licenseFile.is_open())
-	{
-		string line;
-		while (getline(licenseFile, line))
-		{
-			lines.push_back(line);
-		}
-	}
+	Utility::ReadTextFile(PATH_LICENSE.data(), lines);
 
-	licenseFile.close();
-
-	lines.push_back("\n");
-	lines.push_back("\n");
-	lines.push_back("\n");
-	lines.push_back("\n");
-	lines.push_back("\n");
-	lines.push_back("\n");
-	lines.push_back("\n");
+	i = 7;
+	while (i --> 0) lines.push_back("\n");
 
 	// Third Party Notice 파일을 읽어들인다
-	ifstream thirdPartyNoticeFile(thirdPartyNoticePath);
-
-	if (thirdPartyNoticeFile.is_open())
-	{
-		string line;
-		while (getline(thirdPartyNoticeFile, line))
-		{
-			lines.push_back(line);
-		}
-	}
-
-	thirdPartyNoticeFile.close();
+	Utility::ReadTextFile(PATH_THIRD_PARTY_NOTICE.data(), lines);
 
 	// 스크롤 상태 변수
 	float scrollY = 0.0f;
 	bool running = true;
-	const int startPadding = 10; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
-
+	const int startPadding = 40; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
 
 	// 화면 생성
 	auto renderer = Renderer(
 		[&] {
-			return RenderSystem::RenderCredits(lines, scrollY);
+			return RenderSystem::RenderCredits(lines, startPadding, scrollY);
 		}
 	);
 
