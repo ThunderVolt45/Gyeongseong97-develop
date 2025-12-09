@@ -244,12 +244,14 @@ AppState GameApp::HowToPlay(ScreenInteractive& screen)
 			return vbox({
 				text(L""),
 				text(L"H O W   T O   P L A Y") | bold | color(Color::Red1) | center,
-				text(L"                                                                           "),
+				text(L"                                                                             "),
+				text(L""),
 				text(L"화살표 키 : 플레이어 캐릭터 이동") | color(Color::White) | center,
 				text(L"Z 키 : 공격") | color(Color::White) | center,
 				text(L"X 키 : 수류탄 투척") | color(Color::White) | center,
 				text(L""),
-				text(L"Z키를 눌러 계속...") | center | color(Color::GrayDark),
+				text(L""),
+				text(L"Z키를 눌러 게임 시작") | center | color(Color::GrayDark),
 				text(L"")
 			}) | border | center | color(ftxui::Color::Red1)
 				| size(ftxui::WIDTH, Constraint::EQUAL, (GAME_WIDTH + 40) / 2)
@@ -332,6 +334,7 @@ AppState GameApp::Credits(ScreenInteractive& screen)
 	float scrollY = 0.0f;
 	bool running = true;
 	const int startPadding = 10; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
+
 
 	// 화면 생성
 	auto renderer = Renderer(
@@ -465,16 +468,26 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 
 			// 게임 시작 시간 기록
 			auto startTime = clock::now();
+			auto accumulatedPauseDuration = clock::duration::zero();
+			auto lastLoopTime = clock::now();
 
 			// 게임을 재시작할 때 마다 시간 초기화
 			gameManager.onResetCallback = [&]() {
 				startTime = clock::now();
+				accumulatedPauseDuration = clock::duration::zero();
 			};
 
 			// 게임 로직 루프
 			while (gameManager.IsRunning)
 			{
 				auto now = clock::now();
+				auto loopDelta = now - lastLoopTime;
+				lastLoopTime = now;
+
+				if (gameManager.IsGamePause)
+				{
+					accumulatedPauseDuration += loopDelta;
+				}
 
 				// 로직 업데이트
 				// 시간이 많이 지났으면 Update를 여러 번 호출해서 게임 속도를 맞춤
@@ -505,7 +518,7 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 				// 게임 진행 시간 계산
 				if (!gameManager.IsGameOver && !gameManager.IsGameClear && !gameManager.IsGamePause)
 				{
-					chrono::duration<double> duration = now - startTime;
+					chrono::duration<double> duration = (now - startTime) - accumulatedPauseDuration;
 					long long durationSecond = static_cast<long long>(duration.count());
 					long long mm = durationSecond / 60;
 					long long ss = durationSecond % 60;

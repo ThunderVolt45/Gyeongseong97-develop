@@ -320,7 +320,7 @@ ftxui::Element RenderSystem::RenderCutscene(wstring imageName, wstring textLine1
 	return final;
 }
 
-ftxui::Element RenderSystem::RenderCredits(vector<string> lines, float scrollY)
+ftxui::Element RenderSystem::RenderCredits(vector<string> lines, float& scrollY)
 {
 	Elements elements;
 	const int startPadding = 10; // 텍스트가 시작되기 전 여백 (화면 아래에서 시작)
