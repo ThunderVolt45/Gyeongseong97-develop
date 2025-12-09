@@ -156,6 +156,7 @@
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gyeongseong97.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="GameConstants.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="InputManager.h" />

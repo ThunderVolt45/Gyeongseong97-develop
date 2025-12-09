@@ -19,7 +19,9 @@ private:
 	static void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object);
 
 public:
-	static ftxui::Element Render();
+	static ftxui::Element RenderGameScreen();
+	static ftxui::Element RenderCutscene(wstring imageName, wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4);
+	static ftxui::Element RenderCredits(vector<string> lines, float scrollY);
 	static void ShowErrorMessage(const std::string& message);
 	static void ClearErrorMessage();
 };

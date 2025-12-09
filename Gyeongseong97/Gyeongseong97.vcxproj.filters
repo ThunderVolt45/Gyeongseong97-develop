@@ -45,10 +45,16 @@
     <ClCompile Include="Gyeongseong97.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
     <ClCompile Include="Utility.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClInclude Include="GameConstants.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameApp.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Utility.h">
