@@ -475,27 +475,33 @@ AppState GameApp::GameLoop(ScreenInteractive& screen)
 				screen.Post(Event::Custom);
 				frames++;
 
-				// FPS 계산 (1초마다 갱신)
-				if (now - lastFpsTime >= std::chrono::milliseconds(1000))
+				// 임계 구역 설정
 				{
-					gameManager.currentLps = logics;
-					gameManager.currentFps = frames;
-					logics = 0;
-					frames = 0;
-					lastFpsTime = now;
-				}
+					std::lock_guard<std::recursive_mutex> lock(gameManager.gameMutex);
 
-				// 게임 진행 시간 계산
-				if (!gameManager.IsGameOver && !gameManager.IsGameClear && !gameManager.IsGamePause)
-				{
-					chrono::duration<double> duration = (now - startTime) - accumulatedPauseDuration;
-					long long durationSecond = static_cast<long long>(duration.count());
-					long long mm = durationSecond / 60;
-					long long ss = durationSecond % 60;
+					// FPS 계산 (1초마다 갱신)
+					if (now - lastFpsTime >= std::chrono::milliseconds(1000))
+					{
+						gameManager.currentLps = logics;
+						gameManager.currentFps = frames;
+						logics = 0;
+						frames = 0;
+						lastFpsTime = now;
+					}
 
-					wstringstream strStream;
-					strStream << to_wstring(mm) << L":" << setw(2) << setfill(L'0') << to_wstring(ss);
-					gameManager.gameTime = strStream.str();
+					// 게임 진행 시간 계산
+					if (!gameManager.IsGameOver && !gameManager.IsGameClear && !gameManager.IsGamePause)
+					{
+						chrono::duration<double> duration = (now - startTime) - accumulatedPauseDuration;
+						long long durationSecond = static_cast<long long>(duration.count());
+						long long mm = durationSecond / 60;
+						long long ss = durationSecond % 60;
+
+						wstringstream strStream;
+						strStream << to_wstring(mm) << L":" << setw(2) << setfill(L'0') << to_wstring(ss);
+					
+						gameManager.gameTime = strStream.str();
+					}
 				}
 
 				// 잠깐 대기 (CPU 과점유 방지)

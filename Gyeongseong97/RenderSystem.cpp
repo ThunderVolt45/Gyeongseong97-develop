@@ -104,15 +104,20 @@ ftxui::Element RenderSystem::RenderGameScreen()
 	// 캔버스 생성
 	auto canvas = ftxui::Canvas(GAME_WIDTH, GAME_HEIGHT);
 
+	// 레이어 별 분류 준비
+	auto background = std::vector<std::shared_ptr<GameObject>>();
+	auto main = std::vector<std::shared_ptr<GameObject>>();
+	auto foreground = std::vector<std::shared_ptr<GameObject>>();
+
+	// UI 준비
+	std::wstring textTime;
+	std::wstring textScore;
+
 	// 임계 구역 설정
 	{
 		// Update와 Render가 동시에 호출되어 벌어지는 참사를 막기 위해 mutex로 잠가버린다.
 		// std::lock_guard를 쓰면 lock_guard가 소멸될 때 자동으로 mutex가 해제된다.
 		std::lock_guard<std::recursive_mutex> lock(gameManager.gameMutex);
-
-		auto background = std::vector<std::shared_ptr<GameObject>>();
-		auto main = std::vector<std::shared_ptr<GameObject>>();
-		auto foreground = std::vector<std::shared_ptr<GameObject>>();
 
 		// 레이어 별 분류
 		for (const auto& object : gameManager.gameObjects)
@@ -151,6 +156,10 @@ ftxui::Element RenderSystem::RenderGameScreen()
 		{
 			DrawObjectSprite(canvas, *object);
 		}
+
+		// 기타 UI 그리기
+		textTime = L"Time : " + gameManager.gameTime;
+		textScore = L"Score : " + std::to_wstring(gameManager.score);
 	}
 
 	// FPS 표시
@@ -257,10 +266,6 @@ ftxui::Element RenderSystem::RenderGameScreen()
 			ftxui::gauge(gameManager.player.health / gameManager.player.maxHealth)
 				| color(ftxui::Color::Red) | bgcolor(ftxui::Color::GrayDark)
 		});
-
-	// 기타 UI
-	std::wstring textTime = L"Time : " + gameManager.gameTime;
-	std::wstring textScore = L"Score : " + std::to_wstring(gameManager.score);
 
 	// 게임 화면 생성
 	auto final = ftxui::hbox(
