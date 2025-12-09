@@ -29,17 +29,6 @@ enum class BossStateEnum
 
 class Narration : public Enemy
 {
-	// State classes need access to private members
-	friend class BossState;
-	friend class BossStateAppeared;
-	friend class BossStateIdle;
-	friend class BossStateAttackShot;
-	friend class BossStateAttackDive;
-	friend class BossStateSpawnVanguard;
-	friend class BossStateSpawnCarmikaze;
-	friend class BossStateSpawnArmy;
-	friend class BossStateDeath;
-
 public:
 	BossState* state; // Current state object
 	BossStateEnum lastBossState;
