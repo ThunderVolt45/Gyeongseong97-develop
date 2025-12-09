@@ -1,14 +1,15 @@
 #include "WeaponItem.h"
-#include "Player.h"
+
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "GameConstants.h"
 #include "ImageLoader.h"
+#include "Player.h"
 #include "Weapon.h"
 #include "WeaponHMG.h"
 #include "WeaponShotgun.h"
 #include "WeaponGrenade.h"
 #include "WeaponRocket.h"
+#include "GameConstants.h"
 
 WeaponItem::WeaponItem(float x, float y, float speed, WeaponType type) :
 	weaponType(type), speed(speed)

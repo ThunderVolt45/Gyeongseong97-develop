@@ -1,19 +1,20 @@
 #pragma execution_character_set( "utf-8" )
 
 #include "ImageLoader.h"
+
 #include "RenderSystem.h"
 #include "Utility.h"
 #include "GameConstants.h"
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_WINDOWS_UTF8
+#include <stb_image.h>
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <map>
 #include <filesystem>
-
-#define STB_IMAGE_IMPLEMENTATION
-#define STBI_WINDOWS_UTF8
-#include <stb_image.h>
 
 // 정적 멤버 변수 정의
 std::map<std::string, Sprite> ImageLoader::spriteCache;

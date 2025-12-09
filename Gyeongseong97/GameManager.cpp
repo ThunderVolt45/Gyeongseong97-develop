@@ -1,14 +1,12 @@
 #pragma execution_character_set( "utf-8" )
 #include "GameManager.h"
+
 #include "AudioManager.h"
 #include "StageManager.h"
 #include "GameConstants.h"
 #include "Enums.h"
 #include "CollisionManager.h"
 #include "InputManager.h"
-
-#include <set>
-#include <algorithm>
 
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
@@ -17,6 +15,9 @@
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/screen/color.hpp>
 #include <ftxui/component/component.hpp>
+
+#include <set>
+#include <algorithm>
 
 GameManager::GameManager()
 {

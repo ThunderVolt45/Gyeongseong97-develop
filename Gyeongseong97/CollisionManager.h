@@ -1,10 +1,11 @@
 #pragma once
+#include "GameObject.h"
+#include "Player.h"
+
 #include <vector>
 #include <list>
 #include <memory>
 #include <set>
-#include "GameObject.h"
-#include "Player.h"
 
 class CollisionManager
 {

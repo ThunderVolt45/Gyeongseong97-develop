@@ -1,12 +1,13 @@
 #include "Player.h"
+
 #include "GameManager.h"
-#include "GameConstants.h"
-#include "Enums.h"
-#include "ObjectPool.h"
+#include "InputManager.h"
 #include "Bullet.h"
 #include "Explosion.h"
-#include "InputManager.h"
+#include "ObjectPool.h"
 #include "WeaponGrenade.h"
+#include "GameConstants.h"
+#include "Enums.h"
 
 Player::Player() : Player(0, 0)
 {

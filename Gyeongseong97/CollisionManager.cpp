@@ -1,5 +1,7 @@
 #include "CollisionManager.h"
+
 #include "GameConstants.h"
+
 #include <cmath>
 #include <algorithm>
 #include <set>

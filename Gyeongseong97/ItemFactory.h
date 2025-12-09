@@ -1,5 +1,5 @@
 #pragma once
-#include "StageManager.h"
+#include "Enums.h"
 
 struct ItemInfo
 {

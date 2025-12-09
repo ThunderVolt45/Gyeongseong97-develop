@@ -1,13 +1,14 @@
 #include "EnemyFactory.h"
+
 #include "GameManager.h"
-#include "GameConstants.h"
-#include "Enums.h"
 #include "Utility.h"
 #include "Enemy.h"
 #include "Vanguard.h"
 #include "Army.h"
 #include "Carmikaze.h"
 #include "Narration.h"
+#include "GameConstants.h"
+#include "Enums.h"
 
 void EnemyFactory::CreateEnemy(EnemyInfo enemy)
 {

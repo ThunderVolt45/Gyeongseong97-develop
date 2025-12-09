@@ -1,21 +1,21 @@
 #pragma once
+#include "StageManager.h"
+#include "GameObject.h"
+#include "Player.h"
+#include "Bullet.h"
+#include "Enemy.h"
+#include "GameConstants.h"
+#include "Enums.h"
+
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/elements.hpp>
+
 #include <vector>
 #include <memory>
 #include <set>
 #include <mutex>
 #include <string>
 #include <functional>
-
-#include <ftxui/component/screen_interactive.hpp>
-#include <ftxui/dom/elements.hpp>
-
-#include "GameConstants.h"
-#include "Enums.h"
-#include "StageManager.h"
-#include "GameObject.h"
-#include "Player.h"
-#include "Bullet.h"
-#include "Enemy.h"
 
 class GameManager
 {

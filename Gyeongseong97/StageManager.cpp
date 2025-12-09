@@ -1,6 +1,5 @@
-#include <fstream>
-
 #include "StageManager.h"
+
 #include "GameManager.h"
 #include "RenderSystem.h"
 #include "AudioManager.h"
@@ -14,6 +13,8 @@
 #include "GameConstants.h"
 
 #include "json.hpp"
+
+#include <fstream>
 
 using json = nlohmann::json;
 

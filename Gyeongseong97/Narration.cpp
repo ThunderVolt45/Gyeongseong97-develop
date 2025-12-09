@@ -1,16 +1,14 @@
+#include "Narration.h"
+
 #include "GameManager.h"
 #include "ItemFactory.h"
 #include "Utility.h"
 #include "GameConstants.h"
 #include "Enums.h"
-#include "Narration.h"
-#include "Carmikaze.h"
-#include "Vanguard.h"
 #include "Bullet.h"
 #include "Explosion.h"
 #include "ObjectPool.h"
 
-// 상태 패턴 헤더
 #include "BossState.h"
 #include "BossStateAppeared.h"
 #include "BossStateIdle.h"

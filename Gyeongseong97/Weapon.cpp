@@ -1,10 +1,10 @@
 #include "Weapon.h"
-#include "Player.h"
+
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "Player.h"
 #include "ObjectPool.h"
 #include "GameConstants.h"
-#include "Enums.h"
 
 void Weapon::AddAmmo(int amount)
 {

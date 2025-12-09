@@ -1,11 +1,11 @@
+#include "Vanguard.h"
+
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "GameConstants.h"
-#include "Vanguard.h"
 #include "Bullet.h"
 #include "ObjectPool.h"
+#include "GameConstants.h"
 #include "Enums.h"
-#include "Army.h"
 
 #pragma region Constructer & Destroyer
 

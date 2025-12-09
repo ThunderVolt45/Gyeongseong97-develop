@@ -1,9 +1,10 @@
 #include "Bullet.h"
+
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "GameConstants.h"
-#include "ObjectPool.h"
 #include "Explosion.h"
+#include "ObjectPool.h"
+#include "GameConstants.h"
 
 Bullet::Bullet()
 {

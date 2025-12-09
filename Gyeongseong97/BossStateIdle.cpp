@@ -1,16 +1,17 @@
 #include "BossStateIdle.h"
+
 #include "Narration.h"
 #include "Utility.h"
 #include "ItemFactory.h"
-#include <cmath>
 
-// Include headers for state transitions
 #include "BossStateAttackShot.h"
 #include "BossStateAttackDive.h"
 #include "BossStateAttackBomb.h"
 #include "BossStateSpawnVanguard.h"
 #include "BossStateSpawnCarmikaze.h"
 #include "BossStateSpawnArmy.h"
+
+#include <cmath>
 
 void BossStateIdle::Update(Narration& boss)
 {

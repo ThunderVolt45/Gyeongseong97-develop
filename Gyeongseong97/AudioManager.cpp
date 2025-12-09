@@ -1,12 +1,13 @@
 #pragma execution_character_set( "utf-8" )
 
+#include "AudioManager.h"
+
 #define MINIAUDIO_IMPLEMENTATION
 #include "miniaudio.h"
 
-#include "AudioManager.h"
+#include "RenderSystem.h"
 #include "Utility.h"
 #include "GameConstants.h"
-#include "RenderSystem.h"
 
 #include <iostream>
 #include <vector>

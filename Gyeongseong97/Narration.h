@@ -30,12 +30,10 @@ enum class BossStateEnum
 class Narration : public Enemy
 {
 public:
-	BossState* state; // Current state object
+	BossState* state; // 현재 상태 오브젝트
 	BossStateEnum lastBossState;
 	BossStateEnum bossState;
 
-	// Made public for easier access by state classes (or rely on friends)
-	// Keeping them public/accessible as requested by the refactoring style
 	bool invincible = true;
 	int defaultPosX = GAME_WIDTH / 2;
 	int defaultPosY = 40;

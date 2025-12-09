@@ -1,9 +1,10 @@
+#include "Army.h"
+
 #include "GameManager.h"
 #include "AudioManager.h"
-#include "GameConstants.h"
-#include "Army.h"
 #include "Bullet.h"
 #include "ObjectPool.h"
+#include "GameConstants.h"
 #include "Enums.h"
 
 #pragma region Constructer& Destroyer

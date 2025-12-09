@@ -1,4 +1,6 @@
 #pragma once
+#include "GameObject.h"
+
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/canvas.hpp>
@@ -6,8 +8,6 @@
 #include <ftxui/screen/screen.hpp>
 #include <ftxui/screen/color.hpp>
 #include <ftxui/component/component.hpp>
-
-#include "GameObject.h"
 
 class RenderSystem
 {

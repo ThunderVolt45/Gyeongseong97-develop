@@ -1,9 +1,10 @@
-#include "GameManager.h"
-#include "GameConstants.h"
 #include "Enemy.h"
+
+#include "GameManager.h"
 #include "Bullet.h"
 #include "ObjectPool.h"
 #include "Explosion.h"
+#include "GameConstants.h"
 #include "Enums.h"
 
 #pragma region Constructer & Destroyer

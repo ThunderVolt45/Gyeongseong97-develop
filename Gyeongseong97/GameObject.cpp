@@ -1,7 +1,8 @@
 #include "GameObject.h"
+
+#include "GameManager.h"
 #include "ImageLoader.h"
 #include "GameConstants.h"
-#include "GameManager.h"
 
 GameObject::GameObject()
 {

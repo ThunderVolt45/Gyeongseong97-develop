@@ -1,9 +1,10 @@
 #pragma once
+#include <ftxui/screen/color.hpp>
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <map>
-#include <ftxui/screen/color.hpp>
 
 struct Sprite
 {

@@ -1,6 +1,7 @@
 
-#include "miniaudio.h"
 #include "PlayingSoundInfo.h"
+
+#include "miniaudio.h"
 
 #pragma region PlayingSoundInfo
 
