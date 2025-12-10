@@ -14,8 +14,14 @@ package "Core System" {
     class GameApp {
         - currentAppState : AppState
         + Run()
-        - TitleScreen()
-        - GameLoop()
+        - void ClearScreen();
+        - AppState TitleScreen(ftxui::ScreenInteractive& screen);
+        - AppState DrawCutscene(ftxui::ScreenInteractive& screen, std::wstring imageName,
+            std::wstring textLine1, std::wstring textLine2, std::wstring textLine3, std::wstring textLine4,
+            AppState nextStateOnTransition);
+        - AppState HowToPlay(ftxui::ScreenInteractive& screen);
+        - AppState Credits(ftxui::ScreenInteractive& screen);
+        - AppState GameLoop(ftxui::ScreenInteractive& screen);
     }
 
     class GameManager <<Singleton>> {
@@ -454,4 +460,3 @@ ObjectPool "1" o-- "*" Bullet : 오브젝트 풀링
 ObjectPool "1" o-- "*" Explosion : 오브젝트 풀링
 
 @enduml
-

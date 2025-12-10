@@ -81,7 +81,7 @@ void GameApp::Run()
 				currentAppState = DrawCutscene(screen,
 					L"intro_kdh.png",
 					L"",
-					L"김두한은 조선의 주먹 황제이자 백색 테러주의자다.",
+					L"김두한은 조선의 주먹 황제이자 백색 테러주의자이다.",
 					L"1972억 공산당 빨갱이들을 모조리 시체로 결☆ 정 시킬 것이다!",
 					L"",
                     INTRO_CUTSCENE // Next state if user exits this cutscene
