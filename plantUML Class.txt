@@ -1,9 +1,9 @@
 @startuml
 ' 페이지 나누기
-page 2 x 2
+' page 2 x 2
 
 ' layout engine
-' !pragma layout smetana
+!pragma layout smetana
 
 ' 방향 설정
 left to right direction
@@ -309,11 +309,11 @@ package "Weapons" {
 
 package "Factories" {
     class EnemyFactory {
-        + CreateEnemy()
+        + {static} void CreateEnemy(EnemyInfo enemy)
     }
     
     class ItemFactory {
-        + CreateItem()
+        + {static} void CreateItem(ItemInfo item)
     }
 }
 
@@ -397,15 +397,15 @@ package "Stage System" {
 
 GameApp ..> GameManager : Uses
 GameManager *-- StageManager : Owns
-GameManager o-- GameObject : Manages List
+GameManager "1" o-- "*" GameObject : Manages List
 GameManager --> Player : Has
-AudioManager o-- PlayingSoundInfo : Manages List
-ImageLoader o-- Sprite : Manages Map
-StageManager o-- Wave
-Wave o-- SpawnData
+AudioManager "1" o-- "*" PlayingSoundInfo : Manages List
+ImageLoader "1" o-- "*" Sprite : Manages Map
+StageManager "1" o-- "*" Wave
+Wave "1" o-- "*" SpawnData
 
 Bullet o-- Sprite
-Explosion o-- Sprite
+Explosion "1" o-- "*" Sprite
 
 GameObject o-- Sprite
 GameObject <|-- Player
@@ -432,7 +432,7 @@ BossState <|-- BossStateSpawnCarmikaze
 BossState <|-- BossStateSpawnVanguard
 BossState <|-- BossStateDeath
 
-Player o-- Weapon
+Player "1" o-- "3" Weapon
 Player o-- Sprite
 
 Weapon o-- WeaponType
@@ -450,7 +450,8 @@ GameManager ..> EnemyFactory : Uses
 GameManager ..> ItemFactory : Uses
 GameObject ..> ImageLoader : Uses
 
-ObjectPool o-- Bullet : 오브젝트 풀링
-ObjectPool o-- Explosion : 오브젝트 풀링
+ObjectPool "1" o-- "*" Bullet : 오브젝트 풀링
+ObjectPool "1" o-- "*" Explosion : 오브젝트 풀링
 
 @enduml
+
