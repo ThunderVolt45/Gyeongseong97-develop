@@ -1,0 +1,65 @@
+@startuml
+
+actor "플레이어" as user
+
+rectangle "Gyeongseong 97" {
+
+    package "타이틀 화면" {
+        usecase "게임 시작" as UC_Start
+        usecase "크레딧 보기" as UC_Credits
+        usecase "프로그램 종료" as UC_Exit
+    }
+
+    package "게임 플레이" {
+        usecase "플레이어 조작" as UC_Control
+        usecase "이동 (화살표)" as UC_Move
+        usecase "공격 (Z)" as UC_Attack
+        usecase "수류탄 (X)" as UC_Skill
+        usecase "무기 아이템 획득" as UC_Item
+        
+        usecase "적 처치" as UC_Combat
+        usecase "보스전" as UC_BossBattle
+        
+        usecase "게임 패배" as UC_GameOver
+        usecase "게임 승리" as UC_GameClear
+    }
+
+    package "게임 시스템" {
+        usecase "적 생성" as UC_Spawn
+        usecase "아이템 생성" as UC_SpawnItem
+        usecase "점수 갱신" as UC_Score
+        usecase "BGM/SFX 재생" as UC_Sound
+        usecase "TUI 렌더링" as UC_Render
+    }
+}
+
+' 사용자 상호 작용
+user --> UC_Start
+user --> UC_Credits
+user --> UC_Exit
+user --> UC_Control
+
+' 관계
+UC_Start ..> UC_Control : <<include>>
+UC_Control ..> UC_Move : <<include>>
+UC_Control ..> UC_Attack : <<include>>
+UC_Control ..> UC_Skill : <<include>>
+
+UC_Attack --> UC_Combat
+UC_Skill --> UC_Combat
+
+UC_Combat ..> UC_Score : <<include>>
+UC_Item ..> UC_Attack : <<extend>> (무기 변경)
+UC_Move ..> UC_Item : <<extend>> (아이템 획득)
+
+UC_Combat --> UC_BossBattle : 게임 진행
+UC_BossBattle --> UC_GameClear : 승리 시
+UC_Control --> UC_GameOver : Player Health 고갈시
+
+' 시스템 백그라운드
+UC_Start --> UC_Spawn
+UC_Start --> UC_SpawnItem
+UC_Start --> UC_Sound
+UC_Start --> UC_Render
+
+@enduml

@@ -2,10 +2,6 @@
 
 #include "GameConstants.h"
 
-#include <cmath>
-#include <algorithm>
-#include <set>
-#include <utility>
 
 void CollisionManager::ProcessCollisions(std::list<std::shared_ptr<GameObject>>& gameObjects, Player& player, std::set<GameObject*>& objectsToDestroy)
 {

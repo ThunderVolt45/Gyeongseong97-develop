@@ -49,10 +49,7 @@ private:
 	void EraseGameObjects();
 
 public:
-	void Initialize(); // 스테이지 및 게임 초기화
-
 	Player player;
-	GameObject background;
 
 	/// <summary>
 	/// GameManager의 유일한 인스턴스에 접근하는 메서드
@@ -79,6 +76,7 @@ public:
 	std::wstring gameTime;
 	std::function<void()> onResetCallback;
 
+	void Initialize(); // 스테이지 및 게임 초기화
 	void Reset();
 	void Update();
 	bool OnEvent(ftxui::ScreenInteractive& screen, ftxui::Event event);

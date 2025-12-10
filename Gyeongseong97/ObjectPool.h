@@ -54,10 +54,4 @@ public:
             obj->SetActive(false);
         }
     }
-    
-    size_t GetPoolSize()
-    {
-        std::lock_guard<std::recursive_mutex> lock(poolMutex);
-        return pool.size();
-    }
 };

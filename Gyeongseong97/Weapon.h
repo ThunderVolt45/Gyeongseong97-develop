@@ -14,7 +14,6 @@ public:
 	int maxBullet;
 	int remainBullet;
 	bool isInfinite;
-	
 	int cooldownTick;
 
 	Weapon(WeaponType type, int damage, int maxBullet, int cooldownTick, bool isInfinite)

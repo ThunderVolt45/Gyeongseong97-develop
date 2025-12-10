@@ -9,6 +9,7 @@
 
 class AudioManager
 {
+private:
 	ma_engine audioEngine;
 
 	std::list<PlayingSoundInfo*> activeSounds; // 현재 재생중인 사운드 list

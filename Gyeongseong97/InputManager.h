@@ -29,6 +29,9 @@ private:
     // An array is efficient for Windows virtual key codes (0-255)
     bool keyStates[224]; // Standard virtual key codes go up to 0xE0 (224)
 
+    // IsKeyPressed 처리를 위해 이전 키 상태를 저장한다
+    bool previousKeyStates[224];
+
 public:
     /// <summary>
     /// InputManager의 유일한 인스턴스에 접근하는 메서드
@@ -52,8 +55,4 @@ public:
     /// <param name="key_code">VK_KEYCODE</param>
     /// <returns>키가 처음 눌린 건지 여부</returns>
     bool IsKeyPressed(int key_code) const;
-
-private:
-    // IsKeyPressed 처리를 위해 이전 키 상태를 저장한다
-    bool previousKeyStates[224];
 };
