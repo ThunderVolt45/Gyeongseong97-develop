@@ -29,7 +29,7 @@ public:
 	void Update() override;
 	void OnCollision(GameObject& other) override;
 	void TakeDamage(float damage);
-	void Destroy();
+	void Death();
 
 	// 무기 시스템 메서드
 	void Shoot();

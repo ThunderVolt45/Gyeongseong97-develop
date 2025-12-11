@@ -11,6 +11,7 @@
 // 플라이웨이트 패턴
 // 기본 크기 폭8 오브젝트는 다 같은 Sprite를 돌려쓰므로 그냥 static으로 하나만 저장하면 된다.
 std::vector<Sprite> Explosion::commonSprites;
+
 Explosion::Explosion(int x, int y, int w, int h, int damage, bool isPlayer)
 {
 	Reset(x, y, w, h, damage, isPlayer);
@@ -40,7 +41,7 @@ void Explosion::SetSprites(int w, int h)
 {
 	if (isCommonSize)
 	{
-		// 에셋이 로드되지 않았다면 로드 (Lazy Loading)
+		// 에셋이 로드되지 않았다면 로드
 		if (commonSprites.empty())
 		{
 			LoadSprites(commonSprites, EXPLOSION_DEFAULT_SIZE_X, EXPLOSION_DEFAULT_SIZE_Y);

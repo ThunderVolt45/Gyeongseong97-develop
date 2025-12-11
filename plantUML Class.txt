@@ -3,7 +3,7 @@
 ' page 2 x 2
 
 ' layout engine
-!pragma layout smetana
+' !pragma layout smetana
 
 ' 방향 설정
 left to right direction
@@ -69,7 +69,6 @@ package "Core System" {
         - {static} long long errorDisplayStartTime
         - {static} void DrawObjectSprite(ftxui::Canvas& canvas, const GameObject& object)
         + {static} ftxui::Element RenderGameScreen()
-        + {static} ftxui::Element RenderGameScreen()
         + {static} ftxui::Element RenderCutscene(wstring imageName, 
             {static} wstring textLine1, wstring textLine2, wstring textLine3, wstring textLine4)
         + {static} ftxui::Element RenderCredits(vector<string> lines, int startPadding, float& scrollY)
@@ -82,10 +81,10 @@ package "Core System" {
             {static} Player& player, std::set<GameObject*>& objectsToDestroy)
     }
     
-    class ObjectPool<T> <<Singleton>> {
-        + {static} ObjectPool& GetInstance()
-        + std::shared_ptr<T> Get(Args&&... args)
-        + void Return(std::shared_ptr<T> obj)
+    class Utility {
+	    + {static} std::string ConvertWideToUtf8(const wchar_t* wideStr)
+	    + {static} int GenerateRandomNumber(int begin, int end)
+	    + {static} void ReadTextFile(std::wstring fileName, std::vector<std::string>& targetVector)
     }
 }
 
@@ -121,7 +120,7 @@ package "Game Objects" {
         + void Update() override
         + void OnCollision(GameObject& other) override
         + void TakeDamage(float damage)
-        + void Destroy()
+        + void Death()
         + void Shoot()
         + void Grenade()
         + void EquipWeapon(std::shared_ptr<Weapon> newWeapon)
@@ -161,24 +160,10 @@ package "Game Objects" {
         + void Update() override
     }
     
-    package "Boss" {
-        enum BossStateEnum {
-        	+ Initialize
-	        + Idle
-	        + Shot
-	        + Dive
-	        + Bomb
-	        + Vanguard
-	        + Carmikaze
-	        + Army
-	        + Dead
-        }
-        
-        class Narration {
-            + BossState* state
-	        + BossStateEnum lastBossState
-	        + BossStateEnum bossState
-        }
+    class Narration {
+        + BossState* state
+        + BossStateEnum lastBossState
+        + BossStateEnum bossState
     }
 
     class Bullet {
@@ -227,7 +212,7 @@ package "Game Objects" {
     }
 }
 
-package "Boss AI (State Pattern)" {
+package "Boss State" {
     abstract class BossState {
         + {abstract} virtual void Update(Narration& boss)
     }
@@ -270,14 +255,6 @@ package "Boss AI (State Pattern)" {
 }
 
 package "Weapons" {
-    enum WeaponType {
-        + Default
-        + HMG
-        + Shotgun
-        + Grenade
-        + Rocket
-    }
-    
     abstract class Weapon {
         + WeaponType type;
         + int damage;
@@ -313,121 +290,91 @@ package "Weapons" {
     }
 }
 
-package "Factories" {
-    class EnemyFactory {
-        + {static} void CreateEnemy(EnemyInfo enemy)
-    }
+class EnemyFactory {
+    + {static} void CreateEnemy(EnemyInfo enemy)
+}
     
-    class ItemFactory {
-        + {static} void CreateItem(ItemInfo item)
-    }
+class ItemFactory {
+    + {static} void CreateItem(ItemInfo item)
 }
 
-package "Audio System" {
-    class PlayingSoundInfo {
-    	+ ma_sound* pSound
-    	+ std::wstring audioPath
-    	+ bool isLooping
-    	+ bool isFading
-    	+ std::chrono::high_resolution_clock::time_point fadeStartTime;
-    	+ float fadeDuration = 0.0f;
-    	+ PlayingSoundInfo(ma_sound* pSound, std::wstring audioPath, bool isLooping)
-    	+ ~PlayingSoundInfo()
-    	+ void Play()
-    	+ void Stop()
-    	+ void FadeOut(float milliseconds)
-    	+ bool IsPlaying()
-    	+ void Update()
-    }
-    
-    class AudioManager <<Singleton>> {
-        - ma_engine audioEngine
-        - std::list<PlayingSoundInfo*> activeSounds
-        - std::mutex soundMutex
-        - void PlayAudioThread(PlayingSoundInfo* pSoundInfo)
-        + {static} AudioManager& GetInstance()
-        + void PlayAudio(std::wstring audioPath, float volume, bool loop)
-        + void SetMasterVolume(float volume)
-        + void StopAudio(std::wstring audioPath)
-        + void FadeOutAudio(std::wstring audioPath, float fadeOutTimeInMS)
-        + bool IsPlaying(std::wstring audioPath)
-    }
+class PlayingSoundInfo {
+    + ma_sound* pSound
+    + std::wstring audioPath
+    + bool isLooping
+    + bool isFading
+    + std::chrono::high_resolution_clock::time_point fadeStartTime;
+    + float fadeDuration = 0.0f;
+    + PlayingSoundInfo(ma_sound* pSound, std::wstring audioPath, bool isLooping)
+    + ~PlayingSoundInfo()
+    + void Play()
+    + void Stop()
+    + void FadeOut(float milliseconds)
+    + bool IsPlaying()
+    + void Update()
 }
 
-package "Graphics System" {
-    struct Sprite {
-    	+ int sizeX
-    	+ int sizeY
-    	+ std::vector<ftxui::Color> colors
-    }
-    
-    class ImageLoader {
-        - {static} std::map<std::string, Sprite> spriteCache
-        + {static} Sprite CreateSpriteFromImage(std::wstring fileName, 
-            {static} int sizeX, int sizeY)
-        + {static} Sprite FlipSpriteX(Sprite spriteToFilp)
-        + {static} Sprite CreateHitSprite(Sprite originalSprite)
-    }
+class AudioManager <<Singleton>> {
+    - ma_engine audioEngine
+    - std::list<PlayingSoundInfo*> activeSounds
+    - std::mutex soundMutex
+    - void PlayAudioThread(PlayingSoundInfo* pSoundInfo)
+    + {static} AudioManager& GetInstance()
+    + void PlayAudio(std::wstring audioPath, float volume, bool loop)
+    + void SetMasterVolume(float volume)
+    + void StopAudio(std::wstring audioPath)
+    + void FadeOutAudio(std::wstring audioPath, float fadeOutTimeInMS)
+    + bool IsPlaying(std::wstring audioPath)
 }
 
-package "Stage System" {
-    struct SpawnData {
-        + SpawnType type
-        + int x
-        + int y
-        + int health
-        + float speed
-        + float nextEnemyDelay
-    }
-    
-    struct Wave {
-        + std::vector<SpawnData> enemies
-        + float nextWaveDelay
-    }
-    
-    class StageManager {
-        - std::vector<Wave> waves
-        - float tickTimeToFloat
-        - long long tick
-        - size_t currentWaveIndex
-        - size_t currentEnemyIndex
-        - float delayTimer
-        - void GameClear()
-        + void Initialize()
-        + void Reset()
-        + void Update()
-    }
+class ImageLoader {
+    - {static} std::map<std::string, Sprite> spriteCache
+    + {static} Sprite CreateSpriteFromImage(std::wstring fileName, 
+        {static} int sizeX, int sizeY)
+    + {static} Sprite FlipSpriteX(Sprite spriteToFilp)
+    + {static} Sprite CreateHitSprite(Sprite originalSprite)
+}
+
+class StageManager {
+    - std::vector<Wave> waves
+    - float tickTimeToFloat
+    - long long tick
+    - size_t currentWaveIndex
+    - size_t currentEnemyIndex
+    - float delayTimer
+    - void GameClear()
+    + void Initialize()
+    + void Reset()
+    + void Update()
+}
+
+class ObjectPool<T> <<Singleton>> {
+    - std::vector<std::shared_ptr<T>> pool;
+    + {static} ObjectPool& GetInstance()
+    + std::shared_ptr<T> Get(Args&&... args)
+    + void Return(std::shared_ptr<T> obj)
 }
 
 ' Relationships
 
-GameApp ..> GameManager : Uses
+GameApp ..> GameManager : GameLoop
 GameManager *-- StageManager : Owns
 GameManager "1" o-- "*" GameObject : Manages List
 GameManager --> Player : Has
 AudioManager "1" o-- "*" PlayingSoundInfo : Manages List
-ImageLoader "1" o-- "*" Sprite : Manages Map
-StageManager "1" o-- "*" Wave
-Wave "1" o-- "*" SpawnData
 
-Bullet o-- Sprite
-Explosion "1" o-- "*" Sprite
-
-GameObject o-- Sprite
 GameObject <|-- Player
 GameObject <|-- Enemy
 GameObject <|-- Bullet
 GameObject <|-- Explosion
 GameObject <|-- WeaponItem
 
-Enemy o-- Sprite
 Enemy <|-- Army
 Enemy <|-- Vanguard
 Enemy <|-- Carmikaze
 Enemy <|-- Narration
 
-Narration o-- BossState : 현재 상태
-Narration o-- BossStateEnum : 현재 상태
+Narration o-- BossState
 BossState <|-- BossStateIdle
 BossState <|-- BossStateAppeared
 BossState <|-- BossStateAttackBomb
@@ -438,25 +385,23 @@ BossState <|-- BossStateSpawnCarmikaze
 BossState <|-- BossStateSpawnVanguard
 BossState <|-- BossStateDeath
 
-Player "1" o-- "3" Weapon
-Player o-- Sprite
-
-Weapon o-- WeaponType
 Weapon <|-- WeaponDefault
 Weapon <|-- WeaponHMG
 Weapon <|-- WeaponGrenade
 Weapon <|-- WeaponRocket
 Weapon <|-- WeaponShotgun
 
-GameManager ..> CollisionManager : Uses
-GameManager ..> RenderSystem : Uses
-GameManager ..> InputManager : Uses
-GameManager ..> AudioManager : Uses
-GameManager ..> EnemyFactory : Uses
-GameManager ..> ItemFactory : Uses
-GameObject ..> ImageLoader : Uses
+Player "1" o-- "3" Weapon
 
-ObjectPool "1" o-- "*" Bullet : 오브젝트 풀링
-ObjectPool "1" o-- "*" Explosion : 오브젝트 풀링
+GameManager ..> CollisionManager : ProcessCollisions
+GameManager ..> RenderSystem : RenderGameScreen
+StageManager ..> EnemyFactory : CreateEnemy
+StageManager ..> ItemFactory : CreateItem
+Player ..> InputManager : IsKeyDown
+GameObject ..> ImageLoader : CreateSpriteFromImage
+GameObject ..> AudioManager : PlayAudio
+
+ObjectPool "1" o-- "*" Bullet
+ObjectPool "1" o-- "*" Explosion
 
 @enduml

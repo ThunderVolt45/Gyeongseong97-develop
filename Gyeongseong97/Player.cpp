@@ -46,7 +46,7 @@ Player::~Player()
 	
 }
 
-void Player::Destroy()
+void Player::Death()
 {
 	GameManager& gameManager = GameManager::GetInstance();
 
@@ -188,6 +188,6 @@ void Player::TakeDamage(float damage)
 
 	if (health <= 0 && !GameManager::GetInstance().IsGameOver)
 	{
-		Destroy();
+		Death();
 	}
 }
