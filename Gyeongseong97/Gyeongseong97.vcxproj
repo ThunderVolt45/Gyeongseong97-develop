@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -70,18 +70,13 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\zxc45\source\repos\Gyeongseong97\FTXUI-6.1.9\include</IncludePath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -96,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,12 +102,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_HAS_STD_BYTE=0;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_HAS_STD_BYTE=0;NOMINMAX;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\FTXUI-6.1.9\include;$(ProjectDir)external\FTXUI-6.1.9\src;$(ProjectDir)external\miniaudio;$(ProjectDir)external\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,11 +124,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_HAS_STD_BYTE=0;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;_HAS_STD_BYTE=0;NOMINMAX;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\zxc45\source\repos\Gyeongseong97\FTXUI-6.1.9\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\FTXUI-6.1.9\include;$(ProjectDir)external\FTXUI-6.1.9\src;$(ProjectDir)external\miniaudio;$(ProjectDir)external\stb;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -244,6 +243,82 @@
     <Image Include="Sprites\item_bullet_get.png" />
     <Image Include="Sprites\player.png" />
     <Image Include="Sprites\player_death.png" />
+  </ItemGroup>
+  <!-- FTXUI 6.1.9 vendored sources (external/FTXUI-6.1.9) - x64 only -->
+  <ItemGroup Condition="'$(Platform)'=='x64'">
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\animation.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\button.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\catch_event.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\checkbox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\collapsible.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\component.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\component_options.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\container.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\dropdown.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\event.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\hoverable.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\input.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\loop.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\maybe.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\menu.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\modal.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\radiobox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\renderer.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\resizable_split.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\screen_interactive.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\slider.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\terminal_input_parser.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\util.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\component\window.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\automerge.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\blink.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\bold.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\border.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\box_helper.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\canvas.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\clear_under.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\color.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\composite_decorator.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\dbox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\dim.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\flex.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\flexbox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\flexbox_config.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\flexbox_helper.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\focus.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\frame.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\gauge.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\graph.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\gridbox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\hbox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\hyperlink.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\inverted.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\italic.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\linear_gradient.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\node.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\node_decorator.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\paragraph.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\reflect.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\scroll_indicator.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\selection.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\selection_style.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\separator.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\size.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\spinner.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\strikethrough.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\table.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\text.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\underlined.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\underlined_double.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\util.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\dom\vbox.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\box.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\color.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\color_info.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\image.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\screen.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\string.cpp" />
+    <ClCompile Include="external\FTXUI-6.1.9\src\ftxui\screen\terminal.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
