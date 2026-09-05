@@ -1,5 +1,7 @@
 # 京城 97 (Gyeongseong 97)
 
+![경성 97 인트로](/image/1.png)
+
 > **WinAPI + FTXUI + miniaudio 로 만든 C++ 콘솔(터미널) 종스크롤 슈팅 게임 포트폴리오**
 
 ![C++20](https://img.shields.io/badge/C%2B%2B-20-00599C?logo=cplusplus&logoColor=white)
@@ -9,8 +11,6 @@
 
 > [!NOTE]
 > 이 게임은 제작자의 정치적 성향과는 어떠한 연관도 없으며, 그냥 포트폴리오 겸 사람들 웃기려고 만든 게임이라는 것을 알립니다.
-
----
 
 ## 🎮 게임 소개
 
@@ -22,8 +22,6 @@
 
 > 이 모든 것이 **터미널(콘솔) 창** 안에서 컬러 픽셀 렌더링으로 돌아갑니다.
 
----
-
 ## ✨ 주요 특징
 
 - 🖥️ **터미널 위의 실시간 그래픽** — FTXUI 캔버스로 스프라이트를 컬러 렌더링하는 TUI 게임
@@ -34,8 +32,6 @@
 - 🔊 **비동기 사운드** — miniaudio 기반 BGM/효과음 재생 및 페이드 처리
 - 📜 **스테이지 데이터 외부화** — `stage_data.json` 으로 웨이브 구성 분리
 - 🧵 **멀티스레드 게임 루프** — 로직(LPS)과 렌더(FPS)를 분리
-
----
 
 ## 🕹️ 플레이 방법
 
@@ -50,8 +46,6 @@
 | `Z` | 사격 |
 | `X` | 수류탄 |
 
----
-
 ## 🛠️ 기술 스택
 
 | 구분 | 내용 |
@@ -64,8 +58,6 @@
 | 이미지 | **stb_image** — PNG 스프라이트 로드 |
 | 사운드 | **miniaudio** — BGM/효과음 출력 |
 | 데이터 | **nlohmann/json** — 스테이지 데이터 파싱 |
-
----
 
 ## 🚀 빌드 및 실행
 
@@ -84,8 +76,6 @@ git clone https://github.com/ThunderVolt45/Gyeongseong97.git
 ```
 
 실행 후에는 **Windows Terminal** 에서 플레이하는 것을 권장합니다.
-
----
 
 ## 📁 프로젝트 구조
 
@@ -114,8 +104,6 @@ docs/
 └── class-diagram/           # 클래스 다이어그램 (Mermaid)
 ```
 
----
-
 ## 🏛️ 아키텍처
 
 객체지향 설계 패턴을 적극 활용했습니다.
@@ -128,15 +116,17 @@ docs/
 
 > 📐 상세 클래스 다이어그램은 **[docs/class-diagram](docs/class-diagram/README.md)** 에서 영역별로 확인할 수 있습니다.
 
----
+## 📸 스크린샷
+
+![경성 97 게임 플레이 1](/image/2.png)
+
+![경성 97 게임 플레이 2](/image/3.png)
 
 ## 🙏 크레딧
 
 기획·개발: **[ThunderVolt45](https://github.com/ThunderVolt45)**
 
 원작·그래픽·사운드 등 전체 출처는 **[CREDIT.md](CREDIT.md)** 를 참고하세요.
-
----
 
 ## 📄 라이선스
 
